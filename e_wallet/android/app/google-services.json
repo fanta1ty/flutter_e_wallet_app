@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "852221378531",
+    "project_id": "flutter-e-wallet-demo",
+    "storage_bucket": "flutter-e-wallet-demo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852221378531:android:526c16664c98e3a9692ad6",
+        "android_client_info": {
+          "package_name": "com.ewallet.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaGA2j1qJfa6YnvL-BcqvG0smqZvbWaW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852221378531:android:a4c17c05625ae0f3692ad6",
+        "android_client_info": {
+          "package_name": "com.example.e_wallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaGA2j1qJfa6YnvL-BcqvG0smqZvbWaW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
