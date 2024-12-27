@@ -1,6 +1,9 @@
 import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/screen/signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,6 +16,60 @@ TextEditingController email = TextEditingController();
 TextEditingController pass = TextEditingController();
 
 class _LoginState extends State<Login> {
+  void login() async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email.text, password: pass.text);
+      final snackBar = SnackBar(
+        backgroundColor: btn,
+        content: const Text(
+          'Your are login now...',
+          style: TextStyle(color: Colors.white),
+        ),
+        action: SnackBarAction(
+          label: '',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      email.clear();
+      pass.clear();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        final snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          content: const Text(
+            'No user found for that email.',
+            style: TextStyle(color: Colors.white),
+          ),
+          action: SnackBarAction(
+            label: '',
+            onPressed: () {},
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (e.code == 'wrong-password') {
+        final snackBar = SnackBar(
+          backgroundColor: Colors.lightBlueAccent,
+          content: const Text(
+            'Wrong password provided for that user.',
+            style: TextStyle(color: Colors.black),
+          ),
+          action: SnackBarAction(
+            label: '',
+            onPressed: () {},
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,9 +181,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //     context, MaterialPageRoute(builder: (context) => Home()));
-                      // firbaselogin();
+                      login();
                     },
                     child: Text(
                       'Sign in',

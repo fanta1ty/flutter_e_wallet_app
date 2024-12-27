@@ -315,14 +315,14 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Latest Transaction',
-                      style: GoogleFonts.openSans(
-                          fontSize: 18, fontWeight: FontWeight.bold)),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   Row(
                     children: [
                       Text(
                         'See all ',
-                        style: GoogleFonts.openSans(
-                            fontSize: 17, color: Color(0xFF059e8c)),
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xFF059e8c)),
                       ),
                       Icon(
                         Icons.arrow_forward,
