@@ -4,6 +4,9 @@ import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/repositories/log/log.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../models/request/signup_request.dart';
+import '../../models/response/signup_response.dart';
+
 class ApiImpl implements Api {
   Log log;
 
@@ -24,8 +27,10 @@ class ApiImpl implements Api {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return Future(() => LoginResponse(
-            success: false, errorMessage: 'No user found for that email.'));
-      } else if (e.code == 'wrong-password') {
+            success: false,
+            errorMessage:
+                'There is no existing user record corresponding to the provided identifier.'));
+      } else if (e.code == 'invalid-password') {
         return Future(() => LoginResponse(
             success: false,
             errorMessage: 'Wrong password provided for that user.'));
@@ -36,6 +41,38 @@ class ApiImpl implements Api {
     } catch (e) {
       return Future(
           () => LoginResponse(success: false, errorMessage: 'Generic Error'));
+    }
+  }
+
+  @override
+  Future<SignUpResponse> signup(SignUpRequest request) async {
+    try {
+      if (request.password != request.confirmPassword) {
+        return Future(() =>
+            SignUpResponse(success: false, errorMessage: 'Password not match'));
+      }
+
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: request.email, password: request.password);
+      return Future(() => SignUpResponse(success: true, errorMessage: ''));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return Future(() => SignUpResponse(
+            success: false,
+            errorMessage: 'The password provided is too week.'));
+      } else if (e.code == 'email-already-exists') {
+        return Future(() => SignUpResponse(
+            success: false,
+            errorMessage:
+                'The provided email is already in use by an existing user.'));
+      } else {
+        return Future(() =>
+            SignUpResponse(success: false, errorMessage: 'Generic Error'));
+      }
+    } catch (e) {
+      return Future(
+          () => SignUpResponse(success: false, errorMessage: 'Generic Error'));
     }
   }
 }
