@@ -1,4 +1,5 @@
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/screen/signup.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -144,8 +145,8 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(top: 10),
                   child: TextButton(
                       onPressed: () {
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) => Signup()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Signup()));
                       },
                       child: Text(
                         "Create new account",

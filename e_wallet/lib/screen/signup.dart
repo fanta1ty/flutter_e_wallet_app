@@ -1,4 +1,6 @@
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/screen/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -13,6 +15,61 @@ TextEditingController passsig = TextEditingController();
 TextEditingController cpass = TextEditingController();
 
 class _SignupState extends State<Signup> {
+  void createUser() async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailsig.text, password: passsig.text);
+
+      final snackBar = SnackBar(
+        backgroundColor: btn,
+        content: const Text(
+          'User sucessfully add....',
+          style: TextStyle(color: Colors.white),
+        ),
+        action: SnackBarAction(label: '', onPressed: () {}),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      emailsig.clear();
+      passsig.clear();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        final snackBar = SnackBar(
+          content: const Text(
+            'The password provided is too week.',
+            style: TextStyle(color: Colors.white),
+          ),
+          action: SnackBarAction(label: '', onPressed: () {}),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (e.code == 'email-already-in-use') {
+        final snackBar = SnackBar(
+          content: const Text(
+            'The account already exists for that email.',
+            style: TextStyle(color: Colors.black),
+          ),
+          action: SnackBarAction(label: '', onPressed: () {}),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      print(e);
+      final snackBar = SnackBar(
+        content: const Text(
+          'Something went wrong',
+          style: TextStyle(color: Colors.white),
+        ),
+        action: SnackBarAction(label: '', onPressed: () {}),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +182,9 @@ class _SignupState extends State<Signup> {
                     ],
                   ),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      createUser();
+                    },
                     child: Text(
                       "Sign up",
                       style: TextStyle(color: Colors.white, fontSize: 16),
