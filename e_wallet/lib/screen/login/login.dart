@@ -2,8 +2,8 @@ import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/constant/load_status.dart';
 import 'package:e_wallet/models/request/login_request.dart';
 import 'package:e_wallet/repositories/api/api.dart';
-import 'package:e_wallet/screen/home.dart';
 import 'package:e_wallet/screen/login/login_cubit.dart';
+import 'package:e_wallet/screen/nabbar/nabbar.dart';
 import 'package:e_wallet/screen/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -191,7 +191,7 @@ class LoginPage extends StatelessWidget {
             );
           } else if (state.loadStatus == LoadStatus.Done) {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Home()));
+                context, MaterialPageRoute(builder: (context) => Nabbar()));
           }
         }));
   }
