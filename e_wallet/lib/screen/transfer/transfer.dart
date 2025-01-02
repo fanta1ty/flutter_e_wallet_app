@@ -1,5 +1,7 @@
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/screen/home/home.dart';
 import 'package:e_wallet/screen/transfer/transfer_cubit.dart';
+import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,9 +56,19 @@ class TransferPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back_ios_new,
-          color: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Home(),
+              ),
+            );
+          },
+          child: Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
         ),
         title: Center(
           child: Text(
@@ -103,7 +115,13 @@ class TransferPage extends StatelessWidget {
                             top: 30,
                           ),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TransferToFriend()),
+                              );
+                            },
                             child: Container(
                               width: 150,
                               height: 100,
