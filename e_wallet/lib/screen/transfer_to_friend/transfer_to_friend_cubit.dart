@@ -46,7 +46,8 @@ class TransferToFriendCubit extends Cubit<TransferToFriendState> {
         'amount': amount,
         'note': notes,
         'date': DateTime.now().toIso8601String(),
-        'phone': phone
+        'phone': phone,
+        'bankDate': '',
       },
     );
 
