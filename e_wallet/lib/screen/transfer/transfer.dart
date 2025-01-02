@@ -13,12 +13,12 @@ class Transfer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TransferCubit(),
-      child: TransferPage(),
+      child: _TransferPage(),
     );
   }
 }
 
-class TransferPage extends StatelessWidget {
+class _TransferPage extends StatelessWidget {
   final List<Map<String, dynamic>> transactions = [
     {
       'name': 'VCB - Thinh Nguyen',
@@ -40,7 +40,7 @@ class TransferPage extends StatelessWidget {
     },
   ];
 
-  TransferPage({super.key});
+  _TransferPage({super.key});
 
   String formatAmount(int amount) {
     // Format the amount to Indonesian Rupiah format
