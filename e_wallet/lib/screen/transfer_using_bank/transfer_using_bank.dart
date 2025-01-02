@@ -1,3 +1,4 @@
+import 'package:e_wallet/screen/submited_slip/submited_slip.dart';
 import 'package:e_wallet/screen/transfer_to_banks/transfer_to_banks.dart';
 import 'package:e_wallet/screen/transfer_using_bank/transfer_using_bank_cubit.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class TransferUsingBank extends StatelessWidget {
 }
 
 class _TransferUsingBankPage extends StatelessWidget {
+  _TransferUsingBankPage({super.key});
+
   String _phone = "";
   String _notes = "";
   String _amount = "";
@@ -300,7 +303,26 @@ class _TransferUsingBankPage extends StatelessWidget {
                 ),
               );
       },
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.isProceedToTransfer &&
+            state.loadStatus == LoadStatus.Loading) {
+          context.read<TransferUsingBankCubit>().saveAmount(
+                _amount,
+                _notes,
+              );
+        }
+
+        if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SubmitedSlip(
+                amount: _amount,
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
