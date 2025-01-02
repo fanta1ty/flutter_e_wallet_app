@@ -1,5 +1,5 @@
 import 'package:e_wallet/constant/colours.dart';
-import 'package:e_wallet/screen/home/home.dart';
+import 'package:e_wallet/screen/nabbar/nabbar.dart';
 import 'package:e_wallet/screen/transfer/transfer_cubit.dart';
 import 'package:e_wallet/screen/transfer_to_bank/transfer_to_bank.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend.dart';
@@ -62,7 +62,7 @@ class TransferPage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Home(),
+                builder: (context) => Nabbar(),
               ),
             );
           },
