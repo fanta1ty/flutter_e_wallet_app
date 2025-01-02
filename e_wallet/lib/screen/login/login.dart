@@ -15,12 +15,14 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginCubit(context.read<Api>()),
-      child: LoginPage(),
+      child: _LoginPage(),
     );
   }
 }
 
-class LoginPage extends StatelessWidget {
+class _LoginPage extends StatelessWidget {
+  _LoginPage({super.key});
+
   String _email = "";
   String _password = "";
 
