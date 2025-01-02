@@ -15,17 +15,17 @@ class SubmitedToFriend extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SubmitedToFriendCubit(),
-      child: SubmitedToFriendPage(
+      child: _SubmitedToFriendPage(
         amount: amount,
       ),
     );
   }
 }
 
-class SubmitedToFriendPage extends StatelessWidget {
+class _SubmitedToFriendPage extends StatelessWidget {
   final String amount;
 
-  SubmitedToFriendPage({required this.amount, Key? key}) : super(key: key);
+  _SubmitedToFriendPage({required this.amount, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
