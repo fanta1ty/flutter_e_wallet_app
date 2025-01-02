@@ -142,8 +142,8 @@ class TransferToContactPage extends StatelessWidget {
                                   backgroundImage:
                                       AssetImage('assets/image/image_1.png'),
                                 ),
-                                title: Text("Abdul Mustakim"),
-                                subtitle: Text("+62 12345678910"),
+                                title: Text("Thinh Nguyen"),
+                                subtitle: Text("0898417346"),
                                 trailing: Icon(
                                   Icons.edit_note,
                                   size: 30,
