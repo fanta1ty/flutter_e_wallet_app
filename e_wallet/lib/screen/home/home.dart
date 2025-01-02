@@ -13,12 +13,12 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeCubit(),
-      child: HomePage(),
+      child: _HomePage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class _HomePage extends StatelessWidget {
   final List<Map<String, String>> users = [
     {'name': 'Add New', 'image': 'assets/image/add.png'},
     {'name': 'Thinh Nguyen', 'image': 'assets/image/image1.png'},
@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
     },
   ];
 
-  HomePage({super.key});
+  _HomePage({super.key});
 
   String formatAmount(int amount) {
     // Convert amount to currency format
