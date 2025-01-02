@@ -1,5 +1,6 @@
 import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/screen/transfer/transfer.dart';
+import 'package:e_wallet/screen/transfer_to_contact/transfer_to_contact.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -148,7 +149,15 @@ class TransferToFriendPage extends StatelessWidget {
                               padding:
                                   const EdgeInsets.only(right: 10, top: 20),
                               child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            TransferToContact(),
+                                      ),
+                                    );
+                                  },
                                   icon: Icon(
                                     Icons.contact_page,
                                     size: 30,
@@ -191,8 +200,7 @@ class TransferToFriendPage extends StatelessWidget {
                                     ),
                                     onChanged: (value) {
                                       _amount = value;
-                                      final isEnabled = _phone.isNotEmpty &&
-                                          _amount.isNotEmpty &&
+                                      final isEnabled = _amount.isNotEmpty &&
                                           double.tryParse(_amount) != null;
                                       context
                                           .read<TransferToFriendCubit>()
