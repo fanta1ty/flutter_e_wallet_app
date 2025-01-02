@@ -13,17 +13,17 @@ class TransferToBank extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TransferToBankCubit(),
-      child: TransferToBankPage(),
+      child: _TransferToBankPage(),
     );
   }
 }
 
-class TransferToBankPage extends StatelessWidget {
+class _TransferToBankPage extends StatelessWidget {
   String _amount = "";
   String _notes = "";
   String _phone = "";
 
-  TransferToBankPage({super.key});
+  _TransferToBankPage({super.key});
 
   @override
   Widget build(BuildContext context) {
