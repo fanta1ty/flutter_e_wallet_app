@@ -12,12 +12,14 @@ class Nabbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => NabbarCubit(),
-      child: NabbarPage(),
+      child: _NabbarPage(),
     );
   }
 }
 
-class NabbarPage extends StatelessWidget {
+class _NabbarPage extends StatelessWidget {
+  _NabbarPage({super.key});
+
   int currentvalue = 0;
 
   getCurrentView() {
