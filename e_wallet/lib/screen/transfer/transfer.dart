@@ -1,6 +1,7 @@
 import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/screen/home/home.dart';
 import 'package:e_wallet/screen/transfer/transfer_cubit.dart';
+import 'package:e_wallet/screen/transfer_to_bank/transfer_to_bank.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,7 +120,8 @@ class TransferPage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TransferToFriend()),
+                                  builder: (context) => TransferToFriend(),
+                                ),
                               );
                             },
                             child: Container(
@@ -156,7 +158,14 @@ class TransferPage extends StatelessWidget {
                             top: 30,
                           ),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TransferToBank(),
+                                ),
+                              );
+                            },
                             child: Container(
                               width: 150,
                               height: 100,
