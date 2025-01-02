@@ -14,13 +14,13 @@ class TransferToContact extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TransferToContactCubit(),
-      child: TransferToContactPage(),
+      child: _TransferToContactPage(),
     );
   }
 }
 
-class TransferToContactPage extends StatelessWidget {
-  TransferToContactPage({super.key});
+class _TransferToContactPage extends StatelessWidget {
+  _TransferToContactPage({super.key});
 
   String _amount = "";
   String _notes = "";
