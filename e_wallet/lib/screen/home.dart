@@ -1,4 +1,5 @@
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/screen/transfer/transfer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -194,18 +195,27 @@ class _HomeState extends State<Home> {
                                 GestureDetector(
                                   child: Image.asset(
                                       'assets/image/transfer 1.png'),
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Transfer()));
+                                  },
                                 ),
                                 SizedBox(
                                   height: 7,
                                 ),
-                                Text('Transfer')
+                                Text(
+                                  'Transfer',
+                                )
                               ],
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/image/icon-wtihdraw.png'),
+                                Image.asset(
+                                  'assets/image/icon-wtihdraw.png',
+                                ),
                                 SizedBox(
                                   height: 7,
                                 ),
