@@ -15,13 +15,13 @@ class TransferToFriend extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TransferToFriendCubit(),
-      child: TransferToFriendPage(),
+      child: _TransferToFriendPage(),
     );
   }
 }
 
-class TransferToFriendPage extends StatelessWidget {
-  TransferToFriendPage({super.key});
+class _TransferToFriendPage extends StatelessWidget {
+  _TransferToFriendPage({super.key});
 
   String _phone = "";
   String _notes = "";
