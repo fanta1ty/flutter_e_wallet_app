@@ -1,14 +1,21 @@
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/screen/transfer/transfer_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Transfer extends StatefulWidget {
+class Transfer extends StatelessWidget {
   const Transfer({super.key});
 
   @override
-  State<Transfer> createState() => _TransferState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => TransferCubit(),
+      child: TransferPage(),
+    );
+  }
 }
 
-class _TransferState extends State<Transfer> {
+class TransferPage extends StatelessWidget {
   final List<Map<String, dynamic>> transactions = [
     {
       'name': 'VCB - Thinh Nguyen',
@@ -29,6 +36,8 @@ class _TransferState extends State<Transfer> {
       'image': 'assets/image/Frame 3 (2).png',
     },
   ];
+
+  TransferPage({super.key});
 
   String formatAmount(int amount) {
     // Format the amount to Indonesian Rupiah format
@@ -65,135 +74,140 @@ class _TransferState extends State<Transfer> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: _screenWidth,
-          height: _screenHeight,
-          color: btntxt,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30),
-                topLeft: Radius.circular(30),
-              ),
-            ),
-            margin: const EdgeInsets.only(
-              top: 30,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: BlocConsumer<TransferCubit, TransferState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: Container(
+              width: _screenWidth,
+              height: _screenHeight,
+              color: btntxt,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(30),
+                  ),
+                ),
+                margin: const EdgeInsets.only(
+                  top: 30,
+                ),
+                child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 5,
-                        top: 30,
-                      ),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 150,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFf9f5ff),
-                            borderRadius: BorderRadius.circular(12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 5,
+                            top: 30,
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Icon(
-                                  Icons.account_balance,
-                                  color: btntxt,
-                                  size: 50,
-                                ),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: 150,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFf9f5ff),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              SizedBox(
-                                height: 10,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Icon(
+                                      Icons.account_balance,
+                                      color: btntxt,
+                                      size: 50,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'Transfer to Bank',
+                                  )
+                                ],
                               ),
-                              Text(
-                                'Transfer to Bank',
-                              )
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                            top: 30,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: 150,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFf9f5ff),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Icon(
+                                      Icons.account_balance,
+                                      color: btntxt,
+                                      size: 50,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'Latest Transfer',
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        top: 30,
+                      padding: const EdgeInsets.only(top: 30, left: 10),
+                      child: Text(
+                        "Latest Transfer",
+                        style: TextStyle(fontSize: 18),
                       ),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 150,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFf9f5ff),
-                            borderRadius: BorderRadius.circular(12),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: transactions.length,
+                      itemBuilder: (context, index) {
+                        final transaction = transactions[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage(transaction['image']),
+                            radius: 25,
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Icon(
-                                  Icons.account_balance,
-                                  color: btntxt,
-                                  size: 50,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Latest Transfer',
-                              )
-                            ],
+                          title: Text(
+                            transaction['name'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ),
+                          subtitle: Text(transaction['date']),
+                          trailing: Text(
+                            formatAmount(transaction['amount']),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, left: 10),
-                  child: Text(
-                    "Latest Transfer",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: transactions.length,
-                  itemBuilder: (context, index) {
-                    final transaction = transactions[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage(transaction['image']),
-                        radius: 25,
-                      ),
-                      title: Text(
-                        transaction['name'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(transaction['date']),
-                      trailing: Text(
-                        formatAmount(transaction['amount']),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
+        listener: (context, state) {},
       ),
     );
   }
