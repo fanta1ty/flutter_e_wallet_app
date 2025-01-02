@@ -14,12 +14,12 @@ class TransferToBanks extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TransferToBanksCubit(),
-      child: TransferToBanksPage(),
+      child: _TransferToBanksPage(),
     );
   }
 }
 
-class TransferToBanksPage extends StatelessWidget {
+class _TransferToBanksPage extends StatelessWidget {
   String _seach = "";
   final List<Map<String, String>> contacts = [
     {"name": "Bank Central Asia (BCA)", "image": "assets/image/bank_1.png"},
@@ -36,7 +36,7 @@ class TransferToBanksPage extends StatelessWidget {
     {"name": "Bank Maybank Indonesia", "image": "assets/image/bank_9.png"},
   ];
 
-  TransferToBanksPage({super.key});
+  _TransferToBanksPage({super.key});
 
   @override
   Widget build(BuildContext context) {
