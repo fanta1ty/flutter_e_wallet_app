@@ -1,5 +1,6 @@
 import 'package:e_wallet/screen/transfer_to_bank/transfer_to_bank.dart';
 import 'package:e_wallet/screen/transfer_to_banks/transfer_to_banks_cubit.dart';
+import 'package:e_wallet/screen/transfer_using_bank/transfer_using_bank.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -138,12 +139,12 @@ class TransferToBanksPage extends StatelessWidget {
                                   size: 17,
                                 ),
                                 onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => TranferUsingBank(),
-                                  //   ),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TransferUsingBank(),
+                                    ),
+                                  );
                                 },
                               );
                             },
