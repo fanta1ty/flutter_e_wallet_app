@@ -49,7 +49,8 @@ class TransferToContactCubit extends Cubit<TransferToContactState> {
         'amount': amount,
         'note': notes,
         'date': DateTime.now().toIso8601String(),
-        'phone': ''
+        'phone': '',
+        'bankDate': '',
       },
     );
 
