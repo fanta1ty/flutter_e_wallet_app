@@ -125,7 +125,7 @@ class TransferPage extends StatelessWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    'Transfer to Bank',
+                                    'Transfer to Friends',
                                   )
                                 ],
                               ),
@@ -160,7 +160,7 @@ class TransferPage extends StatelessWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    'Latest Transfer',
+                                    'Transfer to Bank',
                                   )
                                 ],
                               ),
