@@ -1,3 +1,4 @@
+import 'package:e_wallet/constant/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/load_status.dart';
@@ -18,30 +19,52 @@ class TransferToFriendCubit extends Cubit<TransferToFriendState> {
     emit(state.copyWith(isButtonEnabled: isEnabled));
   }
 
-  Future<void> transfer(
-    String amount,
-    String note,
-    String phone,
-    String date,
-    String bankDate,
-    String bankCode,
-    String to,
-    String from,
-  ) async {
-    emit(state.copyWith(loadStatus: LoadStatus.Loading));
-    await api.transfer(
-      TransferRequest(
-        amount: '-$amount',
-        note: note,
-        phone: phone,
-        date: date,
-        bankDate: bankDate,
-        bankCode: bankCode,
-        to: to,
-        from: from,
+  void updatePhone(String phone) {
+    emit(state.copyWith(phone: phone));
+    _validateForm();
+  }
+
+  void updateNotes(String notes) {
+    emit(state.copyWith(notes: notes));
+  }
+
+  void updateAmount(String amount) {
+    emit(state.copyWith(amount: amount));
+    _validateForm();
+  }
+
+  void _validateForm() {
+    final isEnabled = state.phone.isNotEmpty &&
+        state.amount.isNotEmpty &&
+        double.tryParse(state.amount) != null;
+    emit(state.copyWith(isButtonEnabled: isEnabled));
+  }
+
+  Future<void> transfer() async {
+    emit(
+      state.copyWith(
+        loadStatus: LoadStatus.Loading,
+        date: DateTime.now().toIso8601String(),
+        to: generateVietnameseName(),
       ),
     );
-    emit(state.copyWith(loadStatus: LoadStatus.Done));
-    emit(state.copyWith(isTransferSuccess: true));
+
+    await api.transfer(
+      TransferRequest(
+        amount: '-${state.amount}',
+        note: state.notes,
+        phone: state.phone,
+        date: state.date,
+        bankDate: '',
+        bankCode: '',
+        to: state.to,
+        from: 'thnu',
+      ),
+    );
+
+    emit(state.copyWith(
+      loadStatus: LoadStatus.Done,
+      isTransferSuccess: true,
+    ));
   }
 }
