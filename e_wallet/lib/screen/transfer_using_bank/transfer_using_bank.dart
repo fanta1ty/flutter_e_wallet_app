@@ -277,6 +277,9 @@ class _TransferUsingBankPage extends StatelessWidget {
                                                   '',
                                                   DateTime.now()
                                                       .toIso8601String(),
+                                                  '',
+                                                  '',
+                                                  '',
                                                 );
                                           }
                                         : null,
