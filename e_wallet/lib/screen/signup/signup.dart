@@ -1,5 +1,4 @@
 import 'package:e_wallet/constant/load_status.dart';
-import 'package:e_wallet/models/request/signup_request.dart';
 import 'package:e_wallet/screen/signup/signup_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,117 +24,130 @@ class _SignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String _email = "";
-    String _password = "";
-    String _confirmPassword = "";
-
     return Scaffold(
-      backgroundColor: Colors.white,
       body: BlocConsumer<SignupCubit, SignupState>(
         builder: (context, state) {
-          return state.loadStatus == LoadStatus.Loading
-              ? const Center(child: CircularProgressIndicator())
-              : SafeArea(
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 50, horizontal: 30),
-                        padding: const EdgeInsets.all(25),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 3,
-                              blurRadius: 10,
-                              offset: const Offset(0, 6),
+          return SafeArea(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF00B4DB), Color(0xFF0083B0)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 50),
+                    child: Container(
+                      padding: const EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 3,
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/image/logo.png', width: 200),
+                          const SizedBox(height: 30),
+                          const Text(
+                            'Create Account',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/image/logo.png',
-                              width: 250,
+                          ),
+                          const SizedBox(height: 40),
+                          _buildTextField(
+                            hint: "Email",
+                            icon: Icons.email,
+                            onChanged: context.read<SignupCubit>().updateEmail,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            hint: "Password",
+                            icon: Icons.lock,
+                            obscureText: true,
+                            onChanged:
+                                context.read<SignupCubit>().updatePassword,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            hint: "Confirm Password",
+                            icon: Icons.lock_outline,
+                            obscureText: true,
+                            onChanged: context
+                                .read<SignupCubit>()
+                                .updateConfirmPassword,
+                          ),
+                          const SizedBox(height: 40),
+                          ElevatedButton(
+                            onPressed: state.isButtonEnabled
+                                ? context.read<SignupCubit>().signup
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: btn,
+                              minimumSize: const Size(300, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
-                            const SizedBox(height: 20),
-                            const Text(
-                              'Demo E-Wallet',
+                            child: state.loadStatus == LoadStatus.Loading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text(
+                                    "Sign up",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                          ),
+                          const SizedBox(height: 15),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login()),
+                              );
+                            },
+                            child: const Text(
+                              "Already have an account? Sign in",
                               style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: btntxt,
-                              ),
+                                  fontSize: 14, color: Colors.black54),
                             ),
-                            const SizedBox(height: 40),
-                            _buildTextField(
-                              hint: "Email",
-                              icon: Icons.email,
-                              onChanged: (value) => _email = value,
-                            ),
-                            const SizedBox(height: 20),
-                            _buildTextField(
-                              hint: "Password",
-                              icon: Icons.lock,
-                              obscureText: true,
-                              onChanged: (value) => _password = value,
-                            ),
-                            const SizedBox(height: 20),
-                            _buildTextField(
-                              hint: "Confirm Password",
-                              icon: Icons.lock_outline,
-                              obscureText: true,
-                              onChanged: (value) => _confirmPassword = value,
-                            ),
-                            const SizedBox(height: 30),
-                            _buildSignupButton(
-                                context, _email, _password, _confirmPassword),
-                            const SizedBox(height: 15),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Login()),
-                                );
-                              },
-                              child: const Text(
-                                "Already have an account?",
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.black54),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                );
+                ),
+              ),
+            ),
+          );
         },
         listener: (context, state) {
-          if (state.loadStatus == LoadStatus.Error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.response!.errorMessage),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else if (state.loadStatus == LoadStatus.Done) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'User successfully registered!',
-                  style: TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Colors.blueAccent,
-              ),
-            );
-            Navigator.push(
+          if (state.loadStatus == LoadStatus.Done) {
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const Login()),
+            );
+          } else if (state.loadStatus == LoadStatus.Error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.response?.errorMessage ?? "Error occurred"),
+                backgroundColor: Colors.red,
+              ),
             );
           }
         },
@@ -158,38 +170,13 @@ class _SignupPage extends StatelessWidget {
         filled: true,
         fillColor: Colors.grey[100],
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: btn, width: 2),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSignupButton(BuildContext context, String email, String password,
-      String confirmPassword) {
-    return ElevatedButton(
-      onPressed: () {
-        context.read<SignupCubit>().signup(
-              SignUpRequest(
-                  email: email,
-                  password: password,
-                  confirmPassword: confirmPassword),
-            );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: btn,
-        minimumSize: const Size(300, 50),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: const Text(
-        "Sign up",
-        style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     );
   }
