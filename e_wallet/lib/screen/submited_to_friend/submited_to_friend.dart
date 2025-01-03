@@ -1,3 +1,4 @@
+import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_to_friend/submited_to_friend_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,34 +8,35 @@ import '../../constant/colours.dart';
 import '../nabbar/nabbar.dart';
 
 class SubmitedToFriend extends StatelessWidget {
-  final String amount;
+  final TransferRequest request;
 
-  SubmitedToFriend({required this.amount, Key? key}) : super(key: key);
+  SubmitedToFriend({required this.request, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SubmitedToFriendCubit(),
       child: _SubmitedToFriendPage(
-        amount: amount,
+        request: request,
       ),
     );
   }
 }
 
 class _SubmitedToFriendPage extends StatelessWidget {
-  final String amount;
+  final TransferRequest request;
 
-  _SubmitedToFriendPage({required this.amount, Key? key}) : super(key: key);
+  _SubmitedToFriendPage({required this.request, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final currentDateTime = DateTime.now();
-    final formattedDate = DateFormat('MMMM d, yyyy').format(currentDateTime);
-    final formattedTime = DateFormat('hh:mm a').format(currentDateTime);
+    final formattedDate =
+        DateFormat('MMMM d, yyyy').format(DateTime.parse(request.date));
+    final formattedTime =
+        DateFormat('hh:mm a').format(DateTime.parse(request.date));
 
     // Parse the amount to double
-    final double parsedAmount = double.tryParse(amount) ?? 0.0;
+    final double parsedAmount = double.tryParse(request.amount) ?? 0.0;
     final double totalPayment = parsedAmount + 2.0;
 
     return BlocConsumer<SubmitedToFriendCubit, SubmitedToFriendState>(
@@ -67,10 +69,12 @@ class _SubmitedToFriendPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 5),
-                        const Text("Your transaction was successful"),
+                        const Text(
+                          "Your transaction was successful",
+                        ),
                         const SizedBox(height: 20),
                         Text(
-                          'Rp ${parsedAmount.toStringAsFixed(2)}',
+                          '\$ ${parsedAmount.toStringAsFixed(2)}',
                           // Display formatted amount
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -85,8 +89,12 @@ class _SubmitedToFriendPage extends StatelessWidget {
                               backgroundImage:
                                   AssetImage('assets/image/image_1.png'),
                             ),
-                            title: const Text("Abdul Mustakim"),
-                            subtitle: const Text("+62 12345678910"),
+                            title: Text(
+                              request.to,
+                            ),
+                            subtitle: Text(
+                              request.phone,
+                            ),
                           ),
                         ),
                         const Text(
@@ -106,7 +114,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
                                     fontSize: 14, fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                'Rp ${parsedAmount.toStringAsFixed(2)}',
+                                '\$ ${parsedAmount.toStringAsFixed(2)}',
                                 style: const TextStyle(fontSize: 14),
                               ),
                             ],
@@ -198,7 +206,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
                                     color: btntxt),
                               ),
                               Text(
-                                'Rp ${totalPayment.toStringAsFixed(2)}',
+                                '\$ ${totalPayment.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                     fontSize: 18, color: btntxt),
                               ),
@@ -212,10 +220,6 @@ class _SubmitedToFriendPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {},
-                  child: const Text(
-                    'Share',
-                    style: TextStyle(color: Colors.white),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: btn,
                     padding: const EdgeInsets.symmetric(
@@ -226,6 +230,10 @@ class _SubmitedToFriendPage extends StatelessWidget {
                       side: const BorderSide(
                           color: Colors.white, width: 2), // White border
                     ),
+                  ),
+                  child: const Text(
+                    'Share',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 15),
