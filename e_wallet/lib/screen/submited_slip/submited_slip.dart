@@ -81,7 +81,7 @@ class _SubmitedSlipPage extends StatelessWidget {
                             leading: const CircleAvatar(
                               radius: 26,
                               backgroundImage:
-                                  AssetImage('assets/image/bank_1.png'),
+                                  AssetImage('assets/image/bank_1.jpg'),
                             ),
                             title: const Text("Nguyen Van A"),
                             subtitle: const Text("••••• •••• 80901"),
