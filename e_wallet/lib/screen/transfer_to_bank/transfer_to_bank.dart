@@ -1,3 +1,4 @@
+import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip.dart';
 import 'package:e_wallet/screen/transfer/transfer.dart';
 import 'package:e_wallet/screen/transfer_to_bank/transfer_to_bank_cubit.dart';
@@ -28,6 +29,7 @@ class _TransferToBankPage extends StatelessWidget {
   String _notes = "";
   String _code = "";
   String _to = "";
+  String _date = "";
 
   _TransferToBankPage({super.key});
 
@@ -302,6 +304,8 @@ class _TransferToBankPage extends StatelessWidget {
                                             .state
                                             .isButtonEnabled
                                         ? () {
+                                            _date = DateTime.now()
+                                                .toIso8601String();
                                             context
                                                 .read<TransferToBankCubit>()
                                                 .transfer(
@@ -309,8 +313,7 @@ class _TransferToBankPage extends StatelessWidget {
                                                   _notes,
                                                   '',
                                                   '',
-                                                  DateTime.now()
-                                                      .toIso8601String(),
+                                                  _date,
                                                   _code.toLowerCase(),
                                                   _to,
                                                   'thnu',
@@ -356,7 +359,16 @@ class _TransferToBankPage extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => SubmitedSlip(
-                amount: _amount,
+                request: TransferRequest(
+                  amount: _amount,
+                  note: _notes,
+                  phone: '',
+                  date: '',
+                  bankDate: _date,
+                  bankCode: _code.toLowerCase(),
+                  to: _to,
+                  from: 'thnu',
+                ),
               ),
             ),
           );
