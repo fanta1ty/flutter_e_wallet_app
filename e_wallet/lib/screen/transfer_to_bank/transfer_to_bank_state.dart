@@ -5,15 +5,18 @@ class TransferToBankState {
 
   final bool isButtonEnabled;
 
-  TransferToBankState.init({
-    this.loadStatus = LoadStatus.Init,
-    this.isButtonEnabled = false,
-  });
+  final bool isTransferSuccess;
+
+  TransferToBankState.init(
+      {this.loadStatus = LoadStatus.Init,
+      this.isButtonEnabled = false,
+      this.isTransferSuccess = false});
 
 //<editor-fold desc="Data Methods">
   const TransferToBankState({
     required this.loadStatus,
     required this.isButtonEnabled,
+    required this.isTransferSuccess,
   });
 
   @override
@@ -22,26 +25,33 @@ class TransferToBankState {
       (other is TransferToBankState &&
           runtimeType == other.runtimeType &&
           loadStatus == other.loadStatus &&
-          isButtonEnabled == other.isButtonEnabled);
+          isButtonEnabled == other.isButtonEnabled &&
+          isTransferSuccess == other.isTransferSuccess);
 
   @override
-  int get hashCode => loadStatus.hashCode ^ isButtonEnabled.hashCode;
+  int get hashCode =>
+      loadStatus.hashCode ^
+      isButtonEnabled.hashCode ^
+      isTransferSuccess.hashCode;
 
   @override
   String toString() {
     return 'TransferToBankState{' +
         ' loadStatus: $loadStatus,' +
         ' isButtonEnabled: $isButtonEnabled,' +
+        ' isTransferSuccess: $isTransferSuccess,' +
         '}';
   }
 
   TransferToBankState copyWith({
     LoadStatus? loadStatus,
     bool? isButtonEnabled,
+    bool? isTransferSuccess,
   }) {
     return TransferToBankState(
       loadStatus: loadStatus ?? this.loadStatus,
       isButtonEnabled: isButtonEnabled ?? this.isButtonEnabled,
+      isTransferSuccess: isTransferSuccess ?? this.isTransferSuccess,
     );
   }
 
@@ -49,6 +59,7 @@ class TransferToBankState {
     return {
       'loadStatus': this.loadStatus,
       'isButtonEnabled': this.isButtonEnabled,
+      'isTransferSuccess': this.isTransferSuccess,
     };
   }
 
@@ -56,6 +67,7 @@ class TransferToBankState {
     return TransferToBankState(
       loadStatus: map['loadStatus'] as LoadStatus,
       isButtonEnabled: map['isButtonEnabled'] as bool,
+      isTransferSuccess: map['isTransferSuccess'] as bool,
     );
   }
 
