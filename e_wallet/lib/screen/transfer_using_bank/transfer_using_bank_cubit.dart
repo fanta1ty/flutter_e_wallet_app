@@ -14,35 +14,37 @@ class TransferUsingBankCubit extends Cubit<TransferUsingBankState> {
           TransferUsingBankState.init(),
         );
 
-  Future<void> setButtonEnabled(
-    bool isEnabled,
-  ) async {
-    emit(
-      state.copyWith(isButtonEnabled: isEnabled),
-    );
+  void updateAmount(String amount) {
+    emit(state.copyWith(amount: amount));
+    _validateForm();
   }
 
-  Future<void> transfer(
-    String amount,
-    String note,
-    String phone,
-    String date,
-    String bankDate,
-    String bankCode,
-    String to,
-    String from,
-  ) async {
-    emit(state.copyWith(loadStatus: LoadStatus.Loading));
+  void updateNotes(String notes) {
+    emit(state.copyWith(notes: notes));
+  }
+
+  void _validateForm() {
+    final isEnabled =
+        state.amount.isNotEmpty && double.tryParse(state.amount) != null;
+    emit(state.copyWith(isButtonEnabled: isEnabled));
+  }
+
+  Future<void> transfer(String to) async {
+    emit(state.copyWith(
+      loadStatus: LoadStatus.Loading,
+      to: to,
+      date: DateTime.now().toIso8601String(),
+    ));
     await api.transfer(
       TransferRequest(
-        amount: '-$amount',
-        note: note,
-        phone: phone,
-        date: date,
-        bankDate: bankDate,
-        bankCode: bankCode,
-        to: to,
-        from: from,
+        amount: '-${state.amount}',
+        note: state.notes,
+        phone: '',
+        date: '',
+        bankDate: state.date,
+        bankCode: state.code,
+        to: state.to,
+        from: 'thnu',
       ),
     );
     emit(state.copyWith(loadStatus: LoadStatus.Done));
