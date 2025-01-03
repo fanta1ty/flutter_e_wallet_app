@@ -1,3 +1,4 @@
+import 'package:e_wallet/screen/history/history.dart';
 import 'package:e_wallet/screen/home/home.dart';
 import 'package:e_wallet/screen/nabbar/nabbar_cubit.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _NabbarPage extends StatelessWidget {
     if (currentvalue == 0) {
       return Home();
     } else if (currentvalue == 1) {
-      // return chatVeiw();
+      return History();
     } else if (currentvalue == 2) {
       // return Signup();
     } else {
@@ -48,6 +49,8 @@ class _NabbarPage extends StatelessWidget {
             final index = context.watch<NabbarCubit>().state.index;
             if (index == 0) {
               return Home();
+            } else if (index == 1) {
+              return History();
             } else {
               return Container(
                 child: Center(
