@@ -1,7 +1,6 @@
 import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/transfer/transfer.dart';
-import 'package:e_wallet/screen/transfer_to_contact/transfer_to_contact.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
