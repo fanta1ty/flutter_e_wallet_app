@@ -1,11 +1,14 @@
 import 'package:bloc/bloc.dart';
 
 import '../../constant/load_status.dart';
+import '../../repositories/api/api.dart';
 
 part 'transfer_to_bank_state.dart';
 
 class TransferToBankCubit extends Cubit<TransferToBankState> {
-  TransferToBankCubit()
+  final Api api;
+
+  TransferToBankCubit(this.api)
       : super(
           TransferToBankState.init(),
         );
@@ -16,5 +19,24 @@ class TransferToBankCubit extends Cubit<TransferToBankState> {
     emit(
       state.copyWith(isButtonEnabled: isEnabled),
     );
+  }
+
+  Future<void> transfer(
+    String amount,
+    String note,
+    String phone,
+    String date,
+    String bankDate,
+  ) async {
+    emit(state.copyWith(loadStatus: LoadStatus.Loading));
+    await api.transfer(
+      amount,
+      note,
+      phone,
+      date,
+      bankDate,
+    );
+    emit(state.copyWith(loadStatus: LoadStatus.Done));
+    emit(state.copyWith(isTransferSuccess: true));
   }
 }
