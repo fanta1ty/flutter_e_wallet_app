@@ -22,18 +22,15 @@ class TransferToBanks extends StatelessWidget {
 class _TransferToBanksPage extends StatelessWidget {
   String _seach = "";
   final List<Map<String, String>> contacts = [
-    {"name": "Bank Central Asia (BCA)", "image": "assets/image/bank_1.png"},
-    {"name": "Bank Negara Indonesia (BNI)", "image": "assets/image/bank_2.png"},
-    {"name": "Bank Rakyat Indonesia (BRI)", "image": "assets/image/bank_3.png"},
-    {"name": "Bank Tabungan Negara (BTN)", "image": "assets/image/bank_4.png"},
-    {"name": "Bank Mandiri", "image": "assets/image/bank_5.png"},
-    {
-      "name": "Bank Artha Graha Internasional",
-      "image": "assets/image/bank_6.png"
-    },
-    {"name": "Bank CIMB Niaga", "image": "assets/image/bank_7.png"},
-    {"name": "Bank Danamon Indonesia", "image": "assets/image/bank_8.png"},
-    {"name": "Bank Maybank Indonesia", "image": "assets/image/bank_9.png"},
+    {"name": "Techcombank (TCB)", "image": "assets/image/bank_1.jpg"},
+    {"name": "Vietcombank (VCB)", "image": "assets/image/bank_2.png"},
+    {"name": "VietinBank (CTG)", "image": "assets/image/bank_3.png"},
+    {"name": "MBBank (MBB)", "image": "assets/image/bank_4.png"},
+    {"name": "ACB", "image": "assets/image/bank_5.png"},
+    {"name": "HDBank (HDB)", "image": "assets/image/bank_6.png"},
+    {"name": "TPBank (TPB)", "image": "assets/image/bank_7.png"},
+    {"name": "OCB", "image": "assets/image/bank_8.png"},
+    {"name": "SCB", "image": "assets/image/bank_9.png"},
   ];
 
   _TransferToBanksPage({super.key});
