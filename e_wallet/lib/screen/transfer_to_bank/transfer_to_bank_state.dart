@@ -7,16 +7,33 @@ class TransferToBankState {
 
   final bool isTransferSuccess;
 
-  TransferToBankState.init(
-      {this.loadStatus = LoadStatus.Init,
-      this.isButtonEnabled = false,
-      this.isTransferSuccess = false});
+  final String amount;
+  final String notes;
+  final String code;
+  final String to;
+  final String date;
+
+  TransferToBankState.init({
+    this.loadStatus = LoadStatus.Init,
+    this.isButtonEnabled = false,
+    this.isTransferSuccess = false,
+    this.amount = '',
+    this.notes = '',
+    this.code = '',
+    this.to = '',
+    this.date = '',
+  });
 
 //<editor-fold desc="Data Methods">
   const TransferToBankState({
     required this.loadStatus,
     required this.isButtonEnabled,
     required this.isTransferSuccess,
+    required this.amount,
+    required this.notes,
+    required this.code,
+    required this.to,
+    required this.date,
   });
 
   @override
@@ -26,13 +43,23 @@ class TransferToBankState {
           runtimeType == other.runtimeType &&
           loadStatus == other.loadStatus &&
           isButtonEnabled == other.isButtonEnabled &&
-          isTransferSuccess == other.isTransferSuccess);
+          isTransferSuccess == other.isTransferSuccess &&
+          amount == other.amount &&
+          notes == other.notes &&
+          code == other.code &&
+          to == other.to &&
+          date == other.date);
 
   @override
   int get hashCode =>
       loadStatus.hashCode ^
       isButtonEnabled.hashCode ^
-      isTransferSuccess.hashCode;
+      isTransferSuccess.hashCode ^
+      amount.hashCode ^
+      notes.hashCode ^
+      code.hashCode ^
+      to.hashCode ^
+      date.hashCode;
 
   @override
   String toString() {
@@ -40,6 +67,11 @@ class TransferToBankState {
         ' loadStatus: $loadStatus,' +
         ' isButtonEnabled: $isButtonEnabled,' +
         ' isTransferSuccess: $isTransferSuccess,' +
+        ' amount: $amount,' +
+        ' notes: $notes,' +
+        ' code: $code,' +
+        ' to: $to,' +
+        ' date: $date,' +
         '}';
   }
 
@@ -47,11 +79,21 @@ class TransferToBankState {
     LoadStatus? loadStatus,
     bool? isButtonEnabled,
     bool? isTransferSuccess,
+    String? amount,
+    String? notes,
+    String? code,
+    String? to,
+    String? date,
   }) {
     return TransferToBankState(
       loadStatus: loadStatus ?? this.loadStatus,
       isButtonEnabled: isButtonEnabled ?? this.isButtonEnabled,
       isTransferSuccess: isTransferSuccess ?? this.isTransferSuccess,
+      amount: amount ?? this.amount,
+      notes: notes ?? this.notes,
+      code: code ?? this.code,
+      to: to ?? this.to,
+      date: date ?? this.date,
     );
   }
 
@@ -60,6 +102,11 @@ class TransferToBankState {
       'loadStatus': this.loadStatus,
       'isButtonEnabled': this.isButtonEnabled,
       'isTransferSuccess': this.isTransferSuccess,
+      'amount': this.amount,
+      'notes': this.notes,
+      'code': this.code,
+      'to': this.to,
+      'date': this.date,
     };
   }
 
@@ -68,6 +115,11 @@ class TransferToBankState {
       loadStatus: map['loadStatus'] as LoadStatus,
       isButtonEnabled: map['isButtonEnabled'] as bool,
       isTransferSuccess: map['isTransferSuccess'] as bool,
+      amount: map['amount'] as String,
+      notes: map['notes'] as String,
+      code: map['code'] as String,
+      to: map['to'] as String,
+      date: map['date'] as String,
     );
   }
 
