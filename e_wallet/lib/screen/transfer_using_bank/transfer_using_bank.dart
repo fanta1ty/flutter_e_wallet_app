@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/colours.dart';
 import '../../constant/load_status.dart';
+import '../../repositories/api/api.dart';
 
 class TransferUsingBank extends StatelessWidget {
   TransferUsingBank({super.key});
@@ -13,7 +14,9 @@ class TransferUsingBank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TransferUsingBankCubit(),
+      create: (context) => TransferUsingBankCubit(
+        context.read<Api>(),
+      ),
       child: _TransferUsingBankPage(),
     );
   }
@@ -267,8 +270,13 @@ class _TransferUsingBankPage extends StatelessWidget {
                                         ? () {
                                             context
                                                 .read<TransferUsingBankCubit>()
-                                                .checkIsProceedToTransfer(
-                                                  true,
+                                                .transfer(
+                                                  _amount,
+                                                  _notes,
+                                                  _phone,
+                                                  '',
+                                                  DateTime.now()
+                                                      .toIso8601String(),
                                                 );
                                           }
                                         : null,
@@ -304,14 +312,6 @@ class _TransferUsingBankPage extends StatelessWidget {
               );
       },
       listener: (context, state) {
-        if (state.isProceedToTransfer &&
-            state.loadStatus == LoadStatus.Loading) {
-          context.read<TransferUsingBankCubit>().saveAmount(
-                _amount,
-                _notes,
-              );
-        }
-
         if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
           Navigator.push(
             context,
