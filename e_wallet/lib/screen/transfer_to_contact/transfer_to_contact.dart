@@ -1,3 +1,4 @@
+import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/transfer_to_contact/transfer_to_contact_cubit.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _TransferToContactPage extends StatelessWidget {
 
   String _amount = "";
   String _notes = "";
+  String _date = "";
 
   @override
   Widget build(BuildContext context) {
@@ -262,14 +264,15 @@ class _TransferToContactPage extends StatelessWidget {
                                             .state
                                             .isButtonEnabled
                                         ? () {
+                                            _date = DateTime.now()
+                                                .toIso8601String();
                                             context
                                                 .read<TransferToContactCubit>()
                                                 .transfer(
                                                   _amount,
                                                   _notes,
                                                   '',
-                                                  DateTime.now()
-                                                      .toIso8601String(),
+                                                  _date,
                                                   '',
                                                   '',
                                                   '',
@@ -314,7 +317,16 @@ class _TransferToContactPage extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => SubmitedToFriend(
-              amount: _amount,
+              request: TransferRequest(
+                amount: _amount,
+                note: _notes,
+                phone: '',
+                date: _date,
+                bankDate: '',
+                bankCode: '',
+                to: '',
+                from: 'thnu',
+              ),
             ),
           ),
         );
