@@ -23,48 +23,30 @@ class _TransferToBanksPage extends StatelessWidget {
   String _seach = "";
   final List<Map<String, String>> contacts = [
     {
-      "name": "Techcombank (TCB)",
-      "image": "assets/image/bank_1.jpg",
       "code": "TCB",
     },
     {
-      "name": "Vietcombank (VCB)",
-      "image": "assets/image/bank_2.png",
       "code": "VCB",
     },
     {
-      "name": "VietinBank (CTG)",
-      "image": "assets/image/bank_3.png",
       "code": "CTG",
     },
     {
-      "name": "MBBank (MBB)",
-      "image": "assets/image/bank_4.png",
       "code": "MBB",
     },
     {
-      "name": "ACB",
-      "image": "assets/image/bank_5.png",
       "code": "ACB",
     },
     {
-      "name": "HDBank (HDB)",
-      "image": "assets/image/bank_6.png",
       "code": "HDB",
     },
     {
-      "name": "TPBank (TPB)",
-      "image": "assets/image/bank_7.png",
       "code": "TPB",
     },
     {
-      "name": "OCB",
-      "image": "assets/image/bank_8.png",
       "code": "OCB",
     },
     {
-      "name": "SCB",
-      "image": "assets/image/bank_9.png",
       "code": "SCB",
     },
   ];
@@ -135,7 +117,7 @@ class _TransferToBanksPage extends StatelessWidget {
                                   onChanged: (value) => _seach = value,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.search),
-                                      hintText: "Search Phone Number",
+                                      hintText: "Search Bank Code",
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(15))),
@@ -163,10 +145,15 @@ class _TransferToBanksPage extends StatelessWidget {
                               return ListTile(
                                 leading: CircleAvatar(
                                   radius: 24,
-                                  backgroundImage:
-                                      AssetImage(contact['image']!),
+                                  backgroundImage: AssetImage(
+                                    fetchBankImageWith(
+                                      contact['code']!,
+                                    ),
+                                  ),
                                 ),
-                                title: Text(contact['name']!),
+                                title: Text(
+                                  fetchBankNameWith(contact['code']!),
+                                ),
                                 trailing: Icon(
                                   Icons.arrow_forward_ios,
                                   size: 17,
