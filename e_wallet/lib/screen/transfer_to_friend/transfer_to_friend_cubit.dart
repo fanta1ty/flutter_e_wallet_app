@@ -1,12 +1,14 @@
-import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/load_status.dart';
+import '../../repositories/api/api.dart';
 
 part 'transfer_to_friend_state.dart';
 
 class TransferToFriendCubit extends Cubit<TransferToFriendState> {
-  TransferToFriendCubit()
+  final Api api;
+
+  TransferToFriendCubit(this.api)
       : super(
           TransferToFriendState.init(),
         );
@@ -15,50 +17,22 @@ class TransferToFriendCubit extends Cubit<TransferToFriendState> {
     emit(state.copyWith(isButtonEnabled: isEnabled));
   }
 
-  Future<void> checkIsProceedToTransfer(
-    bool isProceedToTransfer,
-  ) async {
-    emit(
-      state.copyWith(isProceedToTransfer: isProceedToTransfer),
-    );
-    if (isProceedToTransfer) {
-      emit(
-        state.copyWith(
-          loadStatus: LoadStatus.Loading,
-        ),
-      );
-    }
-  }
-
-  Future<void> saveAmount(
+  Future<void> transfer(
     String amount,
-    String notes,
+    String note,
     String phone,
+    String date,
+    String bankDate,
   ) async {
-    final doc = FirebaseFirestore.instance
-        .collection(
-          'transactions',
-        )
-        .doc();
-
-    await doc.set(
-      {
-        'amount': amount,
-        'note': notes,
-        'date': DateTime.now().toIso8601String(),
-        'phone': phone,
-        'bankDate': '',
-      },
+    emit(state.copyWith(loadStatus: LoadStatus.Loading));
+    await api.transfer(
+      amount,
+      note,
+      phone,
+      date,
+      bankDate,
     );
-
-    emit(
-      state.copyWith(
-        loadStatus: LoadStatus.Done,
-      ),
-    );
-
-    emit(
-      state.copyWith(isTransferSuccess: true),
-    );
+    emit(state.copyWith(loadStatus: LoadStatus.Done));
+    emit(state.copyWith(isTransferSuccess: true));
   }
 }
