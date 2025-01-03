@@ -53,7 +53,7 @@ class _TransferToFriendPage extends StatelessWidget {
                   amount: state.amount,
                   note: state.notes,
                   phone: state.phone,
-                  date: DateTime.now().toIso8601String(),
+                  date: state.date,
                   bankDate: '',
                   bankCode: '',
                   to: state.to,
