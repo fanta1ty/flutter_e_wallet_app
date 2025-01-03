@@ -352,7 +352,7 @@ class _TransferToFriendPage extends StatelessWidget {
                 request: TransferRequest(
                   amount: _amount,
                   note: _notes,
-                  phone: '',
+                  phone: _phone,
                   date: _date,
                   bankDate: '',
                   bankCode: '',
