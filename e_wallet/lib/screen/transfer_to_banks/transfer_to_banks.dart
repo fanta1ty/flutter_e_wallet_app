@@ -9,179 +9,178 @@ import '../../constant/colours.dart';
 import '../../constant/load_status.dart';
 
 class TransferToBanks extends StatelessWidget {
-  TransferToBanks({super.key});
+  const TransferToBanks({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TransferToBanksCubit(),
-      child: _TransferToBanksPage(),
+      child: const _TransferToBanksPage(),
     );
   }
 }
 
-class _TransferToBanksPage extends StatelessWidget {
-  String _seach = "";
-  final List<Map<String, String>> contacts = [
-    {
-      "code": "TCB",
-    },
-    {
-      "code": "VCB",
-    },
-    {
-      "code": "CTG",
-    },
-    {
-      "code": "MBB",
-    },
-    {
-      "code": "ACB",
-    },
-    {
-      "code": "HDB",
-    },
-    {
-      "code": "TPB",
-    },
-    {
-      "code": "OCB",
-    },
-    {
-      "code": "SCB",
-    },
-  ];
+class _TransferToBanksPage extends StatefulWidget {
+  const _TransferToBanksPage({super.key});
 
-  _TransferToBanksPage({super.key});
+  @override
+  State<_TransferToBanksPage> createState() => _TransferToBanksPageState();
+}
+
+class _TransferToBanksPageState extends State<_TransferToBanksPage> {
+  String _search = "";
+  final List<Map<String, String>> contacts = [
+    {"code": "TCB"},
+    {"code": "VCB"},
+    {"code": "CTG"},
+    {"code": "MBB"},
+    {"code": "ACB"},
+    {"code": "HDB"},
+    {"code": "TPB"},
+    {"code": "OCB"},
+    {"code": "SCB"},
+  ];
 
   @override
   Widget build(BuildContext context) {
-    double _screenHeight = MediaQuery.of(context).size.height;
-    double _screenWidth = MediaQuery.of(context).size.width;
-
     return BlocConsumer<TransferToBanksCubit, TransferToBanksState>(
       builder: (context, state) {
         return state.loadStatus == LoadStatus.Loading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
+            ? const Center(child: CircularProgressIndicator())
             : Scaffold(
                 appBar: AppBar(
-                  leading: GestureDetector(
-                    onTap: () {
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new,
+                        color: Colors.white),
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TransferToBank(),
+                          builder: (context) => const TransferToBank(),
                         ),
                       );
                     },
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    ),
                   ),
-                  title: Center(
-                      child: Text(
+                  title: const Text(
                     "Transfer to Banks",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  )),
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  centerTitle: true,
                   backgroundColor: btntxt,
                   actions: [
-                    Image(image: AssetImage('assets/image/help.png')),
-                    SizedBox(
-                      width: 30,
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: Image.asset('assets/image/help.png', height: 26),
+                    ),
                   ],
                 ),
                 body: Container(
-                  width: _screenWidth,
-                  height: _screenHeight,
                   color: btntxt,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(30),
-                            topLeft: Radius.circular(30))),
-                    margin: EdgeInsets.only(top: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, top: 30),
-                          child: Row(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 30),
+                      _buildSearchBar(),
+                      const SizedBox(height: 30),
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(30),
+                              topLeft: Radius.circular(30),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: 340,
-                                child: TextField(
-                                  onChanged: (value) => _seach = value,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.search),
-                                      hintText: "Search Bank Code",
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15))),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                child: Text(
+                                  "All Banks",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
+                              Expanded(child: _buildBankList(context)),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30, left: 20),
-                          child: Text(
-                            "All Banks",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: contacts.length,
-                            itemBuilder: (context, index) {
-                              final contact = contacts[index];
-                              return ListTile(
-                                leading: CircleAvatar(
-                                  radius: 24,
-                                  backgroundImage: AssetImage(
-                                    fetchBankImageWith(
-                                      contact['code']!,
-                                    ),
-                                  ),
-                                ),
-                                title: Text(
-                                  fetchBankNameWith(contact['code']!),
-                                ),
-                                trailing: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 17,
-                                ),
-                                onTap: () {
-                                  final code = contact['code']!;
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TransferUsingBank(
-                                        bankCode: code,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               );
       },
       listener: (context, state) {},
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        onChanged: (value) {
+          setState(() {
+            _search = value;
+          });
+        },
+        decoration: InputDecoration(
+          hintText: "Search Bank Code",
+          filled: true,
+          fillColor: Colors.white,
+          suffixIcon: const Icon(Icons.search, color: btntxt),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBankList(BuildContext context) {
+    final filteredContacts = contacts
+        .where((contact) =>
+            contact['code']!.toLowerCase().contains(_search.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: filteredContacts.length,
+      itemBuilder: (context, index) {
+        final contact = filteredContacts[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            leading: CircleAvatar(
+              radius: 24,
+              backgroundImage: AssetImage(
+                fetchBankImageWith(contact['code']!),
+              ),
+            ),
+            title: Text(
+              fetchBankNameWith(contact['code']!),
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {
+              final code = contact['code']!;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TransferUsingBank(bankCode: code),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
