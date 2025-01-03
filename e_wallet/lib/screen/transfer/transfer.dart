@@ -78,6 +78,8 @@ class _TransferPage extends StatelessWidget {
                               ),
                               Expanded(
                                 child: ListView.builder(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
                                   itemCount: transactions.length,
                                   itemBuilder: (context, index) {
                                     final transaction = transactions[index];
@@ -225,16 +227,36 @@ class _TransactionItem extends StatelessWidget {
     final formattedDate =
         DateFormat('MMMM dd, yyyy - hh:mm a').format(parsedDate);
 
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: AssetImage(imagePath),
-        radius: 25,
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
       ),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(formattedDate),
-      trailing: Text(
-        formatAmount(transaction.amount),
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(12),
+        leading: CircleAvatar(
+          backgroundImage: AssetImage(imagePath),
+          radius: 30,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        subtitle: Text(
+          formattedDate,
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+        trailing: Text(
+          formatAmount(transaction.amount),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: transaction.amount.startsWith('-')
+                ? Colors.redAccent
+                : Colors.green,
+          ),
+        ),
       ),
     );
   }
