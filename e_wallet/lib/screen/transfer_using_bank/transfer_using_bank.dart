@@ -33,298 +33,23 @@ class _TransferUsingBankPage extends StatelessWidget {
 
   _TransferUsingBankPage({super.key, required this.bankCode});
 
-  String _phone = "";
-  String _notes = "";
-  String _amount = "";
-  String _date = "";
-
   final String _to = generateVietnameseName();
 
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width;
-
     return BlocConsumer<TransferUsingBankCubit, TransferUsingBankState>(
       builder: (context, state) {
         return state.loadStatus == LoadStatus.Loading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
+            ? const Center(child: CircularProgressIndicator())
             : Scaffold(
-                appBar: AppBar(
-                  leading: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TransferToBanks(),
-                        ),
-                      );
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    ),
-                  ),
-                  title: Center(
-                      child: Text(
-                    "Transfer through Bank",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  )),
-                  backgroundColor: btntxt,
-                  actions: [
-                    Image(image: AssetImage('assets/image/help.png')),
-                    SizedBox(
-                      width: 30,
-                    )
-                  ],
-                ),
+                appBar: _buildAppBar(context),
                 body: SingleChildScrollView(
-                  child: Container(
-                      width: _screenWidth,
-                      color: btntxt,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text("Your Balance",
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.white)),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "\$ 24.321.900",
-                                      style: TextStyle(
-                                          fontSize: 23, color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Icon(
-                                        Icons.wallet,
-                                        color: btntxt,
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "Top Up",
-                                        style: TextStyle(
-                                            color: btntxt,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30))),
-                            margin: EdgeInsets.only(top: 20),
-                            child: Column(children: [
-                              SizedBox(
-                                height: 30,
-                              ),
-                              ListTile(
-                                leading: CircleAvatar(
-                                  radius: 26,
-                                  backgroundImage:
-                                      AssetImage('assets/image/bank_1.jpg'),
-                                ),
-                                title: Text(
-                                  _to,
-                                ),
-                                subtitle: Text("••••• •••• 80901"),
-                                trailing: Icon(
-                                  Icons.edit_note,
-                                  size: 30,
-                                  color: btn,
-                                ),
-                                onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //     builder: (context) => ContactToTranfer()));
-                                },
-                              ),
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 40),
-                                    child: Text(
-                                      "Set Amount",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '\$',
-                                        style: TextStyle(
-                                            fontSize: 32,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Container(
-                                        width: 60,
-                                        child: TextField(
-                                          style: TextStyle(
-                                              fontSize: 32,
-                                              fontWeight: FontWeight.bold),
-                                          keyboardType: TextInputType.number,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                          ),
-                                          onChanged: (value) {
-                                            _amount = value;
-
-                                            final isEnabled =
-                                                _amount.isNotEmpty &&
-                                                    double.tryParse(_amount) !=
-                                                        null;
-                                            context
-                                                .read<TransferUsingBankCubit>()
-                                                .setButtonEnabled(isEnabled);
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 60, left: 20),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Notes",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "(Optional)",
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    width: 320,
-                                    child: TextField(
-                                      onChanged: (value) => _notes = value,
-                                      decoration: InputDecoration(
-                                        hintText: "Payment for Lunch",
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        fillColor: Colors.grey[100],
-                                        filled: true,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            color:
-                                                btn, // Border color when focused
-                                            width: 2.0,
-                                          ),
-                                        ),
-                                      ),
-                                      maxLines: 3,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 60,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: context
-                                            .watch<TransferUsingBankCubit>()
-                                            .state
-                                            .isButtonEnabled
-                                        ? () {
-                                            _date = DateTime.now()
-                                                .toIso8601String();
-                                            context
-                                                .read<TransferUsingBankCubit>()
-                                                .transfer(
-                                                  _amount,
-                                                  _notes,
-                                                  _phone,
-                                                  '',
-                                                  _date,
-                                                  '',
-                                                  _to,
-                                                  'thnu',
-                                                );
-                                          }
-                                        : null,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: context
-                                              .watch<TransferUsingBankCubit>()
-                                              .state
-                                              .isButtonEnabled
-                                          ? btntxt
-                                          : Colors.grey,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 15, horizontal: 90),
-                                    ),
-                                    child: Text(
-                                      'Proceed to Transfer',
-                                      style: TextStyle(
-                                        color: context
-                                                .watch<TransferUsingBankCubit>()
-                                                .state
-                                                .isButtonEnabled
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                          ),
-                        ],
-                      )),
+                  child: Column(
+                    children: [
+                      _buildBalanceSection(),
+                      _buildTransferForm(context),
+                    ],
+                  ),
                 ),
               );
       },
@@ -335,13 +60,13 @@ class _TransferUsingBankPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => SubmitedSlip(
                 request: TransferRequest(
-                  amount: _amount,
-                  note: _notes,
-                  phone: _phone,
+                  amount: state.amount,
+                  note: state.notes,
+                  phone: '',
                   date: '',
-                  bankDate: _date,
-                  bankCode: '',
-                  to: _to,
+                  bankDate: state.date,
+                  bankCode: state.code,
+                  to: state.to,
                   from: 'thnu',
                 ),
               ),
@@ -349,6 +74,158 @@ class _TransferUsingBankPage extends StatelessWidget {
           );
         }
       },
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TransferToBanks()),
+          );
+        },
+      ),
+      title: const Text(
+        "Transfer through Bank",
+        style: TextStyle(color: Colors.white, fontSize: 18),
+      ),
+      centerTitle: true,
+      backgroundColor: btntxt,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: Image.asset('assets/image/help.png', height: 26),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBalanceSection() {
+    return Container(
+      width: double.infinity,
+      color: btntxt,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Your Balance",
+                style: TextStyle(fontSize: 15, color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "\$ 24,321,900",
+                style: TextStyle(fontSize: 24, color: Colors.white),
+              ),
+            ],
+          ),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.wallet, color: btntxt),
+            label: const Text(
+              "Top Up",
+              style: TextStyle(color: btntxt),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransferForm(BuildContext context) {
+    final cubit = context.read<TransferUsingBankCubit>();
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      child: Column(
+        children: [
+          ListTile(
+            leading: CircleAvatar(
+              radius: 28,
+              backgroundImage: const AssetImage('assets/image/bank_1.jpg'),
+            ),
+            title: Text(_to, style: const TextStyle(fontSize: 16)),
+            subtitle: const Text("••••• •••• 80901"),
+            trailing: const Icon(Icons.edit, color: btn),
+          ),
+          const SizedBox(height: 30),
+          _buildAmountField(context, cubit),
+          const SizedBox(height: 40),
+          _buildNotesField(context, cubit),
+          const SizedBox(height: 50),
+          _buildSubmitButton(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAmountField(BuildContext context, TransferUsingBankCubit cubit) {
+    return Column(
+      children: [
+        const Text("Set Amount",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('\$', style: TextStyle(fontSize: 32)),
+            const SizedBox(width: 10),
+            SizedBox(
+              width: 100,
+              child: TextField(
+                onChanged: cubit.updateAmount,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(fontSize: 32),
+                decoration: const InputDecoration(border: InputBorder.none),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNotesField(BuildContext context, TransferUsingBankCubit cubit) {
+    return TextField(
+      onChanged: cubit.updateNotes,
+      decoration: InputDecoration(
+        hintText: "Add a note (optional)",
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      maxLines: 3,
+    );
+  }
+
+  Widget _buildSubmitButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: context.watch<TransferUsingBankCubit>().state.isButtonEnabled
+          ? () {
+              context.read<TransferUsingBankCubit>().transfer(_to);
+            }
+          : null,
+      child: Center(
+        child: const Text("Proceed to Transfer"),
+      ),
     );
   }
 }
