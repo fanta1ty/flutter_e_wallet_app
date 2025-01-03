@@ -1,3 +1,4 @@
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip.dart';
 import 'package:e_wallet/screen/transfer_to_banks/transfer_to_banks.dart';
@@ -36,6 +37,8 @@ class _TransferUsingBankPage extends StatelessWidget {
   String _notes = "";
   String _amount = "";
   String _date = "";
+
+  final String _to = generateVietnameseName();
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +156,9 @@ class _TransferUsingBankPage extends StatelessWidget {
                                   backgroundImage:
                                       AssetImage('assets/image/bank_1.jpg'),
                                 ),
-                                title: Text("Nguyen Van A"),
+                                title: Text(
+                                  _to,
+                                ),
                                 subtitle: Text("••••• •••• 80901"),
                                 trailing: Icon(
                                   Icons.edit_note,
@@ -287,8 +292,8 @@ class _TransferUsingBankPage extends StatelessWidget {
                                                   '',
                                                   _date,
                                                   '',
-                                                  '',
-                                                  '',
+                                                  _to,
+                                                  'thnu',
                                                 );
                                           }
                                         : null,
@@ -336,8 +341,8 @@ class _TransferUsingBankPage extends StatelessWidget {
                   date: '',
                   bankDate: _date,
                   bankCode: '',
-                  to: '',
-                  from: '',
+                  to: _to,
+                  from: 'thnu',
                 ),
               ),
             ),
