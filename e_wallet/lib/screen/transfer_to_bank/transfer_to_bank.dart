@@ -97,33 +97,6 @@ class _TransferToBankPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Container(
-                                width: 100,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(
-                                      Icons.wallet,
-                                      color: btntxt,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "Top Up",
-                                      style: TextStyle(
-                                          color: btntxt,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         ),
