@@ -147,10 +147,7 @@ class _TransferToFriendPage extends StatelessWidget {
             label: "Phone Number",
             hint: "Input Phone Number",
             icon: Icons.contact_page,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TransferToContact()),
-            ),
+            onTap: () {},
             onChanged: cubit.updatePhone,
           ),
           const SizedBox(height: 30),
