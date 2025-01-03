@@ -111,7 +111,7 @@ class _TransferToBanksPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 30, left: 20),
                           child: Text(
-                            "All Contact",
+                            "All Banks",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
