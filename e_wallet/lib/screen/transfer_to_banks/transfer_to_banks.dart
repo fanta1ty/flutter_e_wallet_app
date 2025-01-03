@@ -67,7 +67,7 @@ class _TransferToBanksPage extends StatelessWidget {
                   ),
                   title: Center(
                       child: Text(
-                    "Transfer to Bank",
+                    "Transfer to Banks",
                     style: TextStyle(color: Colors.white, fontSize: 17),
                   )),
                   backgroundColor: btntxt,
