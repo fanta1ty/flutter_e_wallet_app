@@ -14,205 +14,183 @@ class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => SignupCubit(context.read<Api>()),
-        child: _SignupPage());
+      create: (context) => SignupCubit(context.read<Api>()),
+      child: const _SignupPage(),
+    );
   }
 }
 
 class _SignupPage extends StatelessWidget {
-  _SignupPage({super.key});
-
-  String _email = "";
-  String _password = "";
-
-  String _confirmPassword = "";
+  const _SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String _email = "";
+    String _password = "";
+    String _confirmPassword = "";
+
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: BlocConsumer<SignupCubit, SignupState>(builder: (context, state) {
+      backgroundColor: Colors.white,
+      body: BlocConsumer<SignupCubit, SignupState>(
+        builder: (context, state) {
           return state.loadStatus == LoadStatus.Loading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? const Center(child: CircularProgressIndicator())
               : SafeArea(
                   child: SingleChildScrollView(
-                  child: Container(
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 30, right: 30, top: 20),
-                            child: Center(
-                              child: Image.asset(
-                                'assets/image/logo.png',
-                                width: 300,
+                    child: Center(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 50, horizontal: 30),
+                        padding: const EdgeInsets.all(25),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              spreadRadius: 3,
+                              blurRadius: 10,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/image/logo.png',
+                              width: 250,
+                            ),
+                            const SizedBox(height: 20),
+                            const Text(
+                              'Demo E-Wallet',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: btntxt,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 40, right: 40),
-                              child: Text(
-                                'Demo E-Wallet',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'pppins',
-                                    color: btntxt),
-                                textAlign: TextAlign.center,
-                              )),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 315,
-                            child: TextField(
+                            const SizedBox(height: 40),
+                            _buildTextField(
+                              hint: "Email",
+                              icon: Icons.email,
                               onChanged: (value) => _email = value,
-                              decoration: InputDecoration(
-                                  hintText: ' Email',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  fillColor: Colors.grey[100],
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: btn, width: 2.0))),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 315,
-                            child: TextField(
+                            const SizedBox(height: 20),
+                            _buildTextField(
+                              hint: "Password",
+                              icon: Icons.lock,
+                              obscureText: true,
                               onChanged: (value) => _password = value,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  hintText: ' Password',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  fillColor: Colors.grey[100],
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: btn, width: 2.0))),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 315,
-                            child: TextField(
+                            const SizedBox(height: 20),
+                            _buildTextField(
+                              hint: "Confirm Password",
+                              icon: Icons.lock_outline,
+                              obscureText: true,
                               onChanged: (value) => _confirmPassword = value,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  hintText: ' Confirm Password',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  fillColor: Colors.grey[100],
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: btn, width: 2.0))),
                             ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Button color
-                              borderRadius: BorderRadius.circular(12.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xFFd6deff),
-                                  spreadRadius: 2,
-                                  blurRadius: 7,
-                                  offset: const Offset(0, 3), // Shadow position
-                                ),
-                              ],
-                            ),
-                            child: ElevatedButton(
+                            const SizedBox(height: 30),
+                            _buildSignupButton(
+                                context, _email, _password, _confirmPassword),
+                            const SizedBox(height: 15),
+                            TextButton(
                               onPressed: () {
-                                context.read<SignupCubit>().signup(
-                                    SignUpRequest(
-                                        email: _email,
-                                        password: _password,
-                                        confirmPassword: _confirmPassword));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Login()),
+                                );
                               },
-                              child: Text(
-                                "Sign up",
+                              child: const Text(
+                                "Already have an account?",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: btn,
-                                minimumSize: Size(300, 50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                                    fontSize: 14, color: Colors.black54),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Login()));
-                                },
-                                child: Text(
-                                  "Already have an account",
-                                  style: TextStyle(
-                                      fontFamily: 'pppinsbold',
-                                      fontSize: 13,
-                                      color: Color(0xFF4a4a4a)),
-                                )),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ));
-        }, listener: (context, state) {
+                );
+        },
+        listener: (context, state) {
           if (state.loadStatus == LoadStatus.Error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                  content: Text(state.response!.errorMessage),
-                  backgroundColor: Colors.red),
+                content: Text(state.response!.errorMessage),
+                backgroundColor: Colors.red,
+              ),
             );
           } else if (state.loadStatus == LoadStatus.Done) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text('User sucessfully add....',
-                      style: TextStyle(color: Colors.white)),
-                  backgroundColor: Colors.blueAccent),
+              const SnackBar(
+                content: Text(
+                  'User successfully registered!',
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.blueAccent,
+              ),
             );
-
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Login()));
+              context,
+              MaterialPageRoute(builder: (context) => const Login()),
+            );
           }
-        }));
+        },
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String hint,
+    required void Function(String) onChanged,
+    bool obscureText = false,
+    IconData? icon,
+  }) {
+    return TextField(
+      onChanged: onChanged,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        prefixIcon: icon != null ? Icon(icon, color: btn) : null,
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: btn, width: 2),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignupButton(BuildContext context, String email, String password,
+      String confirmPassword) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<SignupCubit>().signup(
+              SignUpRequest(
+                  email: email,
+                  password: password,
+                  confirmPassword: confirmPassword),
+            );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: btn,
+        minimumSize: const Size(300, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: const Text(
+        "Sign up",
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    );
   }
 }
-
-TextEditingController emailsig = TextEditingController();
-TextEditingController passsig = TextEditingController();
-TextEditingController cpass = TextEditingController();
