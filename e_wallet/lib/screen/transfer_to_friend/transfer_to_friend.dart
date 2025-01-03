@@ -1,5 +1,4 @@
 import 'package:e_wallet/constant/colours.dart';
-import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/transfer/transfer.dart';
 import 'package:e_wallet/screen/transfer_to_contact/transfer_to_contact.dart';
@@ -17,349 +16,47 @@ class TransferToFriend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TransferToFriendCubit(
-        context.read<Api>(),
-      ),
-      child: _TransferToFriendPage(),
+      create: (context) => TransferToFriendCubit(context.read<Api>()),
+      child: const _TransferToFriendPage(),
     );
   }
 }
 
 class _TransferToFriendPage extends StatelessWidget {
-  _TransferToFriendPage({super.key});
-
-  String _phone = "";
-  String _notes = "";
-  String _amount = "";
-  String _date = "";
-
-  final String _to = generateVietnameseName();
+  const _TransferToFriendPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double _screenHeight = MediaQuery.of(context).size.height;
-    double _screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<TransferToFriendCubit, TransferToFriendState>(
       builder: (context, state) {
         return state.loadStatus == LoadStatus.Loading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : SafeArea(
-                child: Scaffold(
-                  appBar: AppBar(
-                    leading: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Transfer(),
-                          ),
-                        );
-                      },
-                      child:
-                          Icon(Icons.arrow_back_ios_new, color: Colors.white),
-                    ),
-                    title: Center(
-                      child: Text(
-                        'Transfer to Friends',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    backgroundColor: btntxt,
-                    actions: [
-                      Image.asset('assets/image/help.png'),
-                      SizedBox(
-                        width: 30,
-                      ),
+            ? const Center(child: CircularProgressIndicator())
+            : Scaffold(
+                appBar: _buildAppBar(context),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildBalanceCard(),
+                      _buildTransferForm(context),
                     ],
-                  ),
-                  body: SingleChildScrollView(
-                    child: Container(
-                      color: btntxt,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text("Your Balance",
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.white)),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "\$ 24.321.900",
-                                      style: TextStyle(
-                                          fontSize: 23, color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Icon(
-                                        Icons.wallet,
-                                        color: btntxt,
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "Top Up",
-                                        style: TextStyle(
-                                            color: btntxt,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: _screenWidth,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(30),
-                                topLeft: Radius.circular(30),
-                              ),
-                            ),
-                            margin: EdgeInsets.only(top: 30),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                        top: 20,
-                                        left: 20,
-                                      ),
-                                      width: 300,
-                                      child: TextField(
-                                        onChanged: (value) => _phone = value,
-                                        keyboardType: TextInputType.phone,
-                                        decoration: InputDecoration(
-                                          hintText: "Input Phone Number",
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 10, top: 20),
-                                      child: IconButton(
-                                          onPressed: () {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    TransferToContact(),
-                                              ),
-                                            );
-                                          },
-                                          icon: Icon(
-                                            Icons.contact_page,
-                                            size: 30,
-                                            color: btntxt,
-                                          )),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 40),
-                                      child: Text(
-                                        "Set Amount",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '\$',
-                                          style: TextStyle(
-                                              fontSize: 32,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Container(
-                                          width: 60,
-                                          child: TextField(
-                                            style: TextStyle(
-                                                fontSize: 32,
-                                                fontWeight: FontWeight.bold),
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                            ),
-                                            onChanged: (value) {
-                                              _amount = value;
-                                              final isEnabled = _amount
-                                                      .isNotEmpty &&
-                                                  double.tryParse(_amount) !=
-                                                      null;
-                                              context
-                                                  .read<TransferToFriendCubit>()
-                                                  .setButtonEnabled(isEnabled);
-                                            },
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 80, left: 20),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "Notes",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "(Optional)",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      width: 320,
-                                      child: TextField(
-                                        onChanged: (value) => _notes = value,
-                                        decoration: InputDecoration(
-                                          hintText: "Write your notes here",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          fillColor: Colors.grey[100],
-                                          filled: true,
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: BorderSide.none,
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                              color:
-                                                  btn, // Border color when focused
-                                              width: 2.0,
-                                            ),
-                                          ),
-                                        ),
-                                        maxLines: 3,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 70,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: context
-                                              .watch<TransferToFriendCubit>()
-                                              .state
-                                              .isButtonEnabled
-                                          ? () {
-                                              _date = DateTime.now()
-                                                  .toIso8601String();
-                                              context
-                                                  .read<TransferToFriendCubit>()
-                                                  .transfer(
-                                                    _amount,
-                                                    _notes,
-                                                    _phone,
-                                                    _date,
-                                                    '',
-                                                    '',
-                                                    _to,
-                                                    'thnu',
-                                                  );
-                                            }
-                                          : null,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: context
-                                                .watch<TransferToFriendCubit>()
-                                                .state
-                                                .isButtonEnabled
-                                            ? btntxt
-                                            : Colors.grey,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 15, horizontal: 90),
-                                      ),
-                                      child: Text(
-                                        'Proceed to Transfer',
-                                        style: TextStyle(
-                                          color: context
-                                                  .watch<
-                                                      TransferToFriendCubit>()
-                                                  .state
-                                                  .isButtonEnabled
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               );
       },
       listener: (context, state) {
         if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => SubmitedToFriend(
                 request: TransferRequest(
-                  amount: _amount,
-                  note: _notes,
-                  phone: _phone,
-                  date: _date,
+                  amount: state.amount,
+                  note: state.notes,
+                  phone: state.phone,
+                  date: DateTime.now().toIso8601String(),
                   bankDate: '',
                   bankCode: '',
-                  to: _to,
+                  to: state.to,
                   from: 'thnu',
                 ),
               ),
@@ -367,6 +64,180 @@ class _TransferToFriendPage extends StatelessWidget {
           );
         }
       },
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Transfer()),
+          );
+        },
+      ),
+      title: const Text(
+        'Transfer to Friends',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      centerTitle: true,
+      backgroundColor: btntxt,
+      elevation: 0,
+    );
+  }
+
+  Widget _buildBalanceCard() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      color: btntxt,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Your Balance",
+                style: TextStyle(fontSize: 15, color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "\$ 24,321,900",
+                style: TextStyle(fontSize: 24, color: Colors.white),
+              ),
+            ],
+          ),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.wallet, color: btntxt),
+            label: const Text(
+              "Top Up",
+              style: TextStyle(color: btntxt),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransferForm(BuildContext context) {
+    final cubit = context.read<TransferToFriendCubit>();
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTextField(
+            label: "Phone Number",
+            hint: "Input Phone Number",
+            icon: Icons.contact_page,
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TransferToContact()),
+            ),
+            onChanged: cubit.updatePhone,
+          ),
+          const SizedBox(height: 30),
+          _buildAmountField(context, cubit),
+          const SizedBox(height: 30),
+          _buildTextField(
+            label: "Notes (Optional)",
+            hint: "Write your notes here",
+            onChanged: cubit.updateNotes,
+            maxLines: 3,
+          ),
+          const SizedBox(height: 50),
+          _buildSubmitButton(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String label,
+    required String hint,
+    IconData? icon,
+    void Function()? onTap,
+    void Function(String)? onChanged,
+    int maxLines = 1,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        const SizedBox(height: 10),
+        TextField(
+          onChanged: onChanged,
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            hintText: hint,
+            filled: true,
+            fillColor: Colors.grey[100],
+            suffixIcon: icon != null
+                ? IconButton(onPressed: onTap, icon: Icon(icon, color: btntxt))
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAmountField(BuildContext context, TransferToFriendCubit cubit) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Set Amount",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('\$', style: TextStyle(fontSize: 32)),
+            const SizedBox(width: 5),
+            SizedBox(
+              width: 100,
+              child: TextField(
+                style: const TextStyle(fontSize: 32),
+                keyboardType: TextInputType.number,
+                onChanged: cubit.updateAmount,
+                decoration: const InputDecoration(border: InputBorder.none),
+              ),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _buildSubmitButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: context.watch<TransferToFriendCubit>().state.isButtonEnabled
+          ? () => context.read<TransferToFriendCubit>().transfer()
+          : null,
+      child: Center(child: const Text('Proceed to Transfer')),
     );
   }
 }
