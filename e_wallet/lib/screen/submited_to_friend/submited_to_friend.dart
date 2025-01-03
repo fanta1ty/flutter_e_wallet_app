@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_to_friend/submited_to_friend_cubit.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
 
     return BlocConsumer<SubmitedToFriendCubit, SubmitedToFriendState>(
       builder: (context, state) {
+        final imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
         return Scaffold(
           backgroundColor: btntxt,
           body: Padding(
@@ -82,18 +85,17 @@ class _SubmitedToFriendPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 30),
+                          padding: const EdgeInsets.only(left: 30, bottom: 30),
                           child: ListTile(
-                            leading: const CircleAvatar(
+                            leading: CircleAvatar(
                               radius: 26,
-                              backgroundImage:
-                                  AssetImage('assets/image/image_1.png'),
+                              backgroundImage: AssetImage(imagePath),
                             ),
                             title: Text(
-                              request.to,
-                            ),
-                            subtitle: Text(
                               request.phone,
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                              ),
                             ),
                           ),
                         ),
