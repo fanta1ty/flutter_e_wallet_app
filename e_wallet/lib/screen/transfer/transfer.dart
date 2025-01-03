@@ -83,125 +83,111 @@ class _TransferPage extends StatelessWidget {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : SingleChildScrollView(
+              : Container(
+                  width: _screenWidth,
+                  height: _screenHeight,
+                  color: btntxt,
                   child: Container(
-                    width: _screenWidth,
-                    height: _screenHeight,
-                    color: btntxt,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          topLeft: Radius.circular(30),
-                        ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
                       ),
-                      margin: const EdgeInsets.only(
-                        top: 30,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 5,
-                                  top: 30,
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            TransferToFriend(),
+                    ),
+                    margin: const EdgeInsets.only(top: 30),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 5,
+                                top: 30,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TransferToFriend(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 150,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFf9f5ff),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Icon(
+                                          Icons.account_balance,
+                                          color: btntxt,
+                                          size: 50,
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 150,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFf9f5ff),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Icon(
-                                            Icons.account_balance,
-                                            color: btntxt,
-                                            size: 50,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          'Transfer to Friends',
-                                        )
-                                      ],
-                                    ),
+                                      SizedBox(height: 10),
+                                      Text('Transfer to Friends'),
+                                    ],
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10,
-                                  top: 30,
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TransferToBank(),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 150,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFf9f5ff),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Icon(
-                                            Icons.account_balance,
-                                            color: btntxt,
-                                            size: 50,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          'Transfer to Bank',
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 30, left: 10),
-                            child: Text(
-                              "Latest Transfer",
-                              style: TextStyle(fontSize: 18),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                                top: 30,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TransferToBank(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 150,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFf9f5ff),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Icon(
+                                          Icons.account_balance,
+                                          color: btntxt,
+                                          size: 50,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text('Transfer to Bank'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30, left: 10),
+                          child: Text(
+                            "Latest Transfer",
+                            style: TextStyle(fontSize: 18),
                           ),
-                          ListView.builder(
-                            shrinkWrap: true,
+                        ),
+                        Expanded(
+                          child: ListView.builder(
                             itemCount: transactions.length,
                             itemBuilder: (context, index) {
                               final transaction = transactions[index];
@@ -252,8 +238,8 @@ class _TransferPage extends StatelessWidget {
                               );
                             },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );
