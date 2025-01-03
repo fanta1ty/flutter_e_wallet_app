@@ -1,4 +1,5 @@
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/transfer/transfer.dart';
 import 'package:e_wallet/screen/transfer_to_contact/transfer_to_contact.dart';
@@ -31,6 +32,8 @@ class _TransferToFriendPage extends StatelessWidget {
   String _notes = "";
   String _amount = "";
   String _date = "";
+
+  final String _to = generateVietnameseName();
 
   @override
   Widget build(BuildContext context) {
@@ -303,8 +306,8 @@ class _TransferToFriendPage extends StatelessWidget {
                                                     _date,
                                                     '',
                                                     '',
-                                                    '',
-                                                    '',
+                                                    _to,
+                                                    'thnu',
                                                   );
                                             }
                                           : null,
@@ -356,7 +359,7 @@ class _TransferToFriendPage extends StatelessWidget {
                   date: _date,
                   bankDate: '',
                   bankCode: '',
-                  to: '',
+                  to: _to,
                   from: 'thnu',
                 ),
               ),
