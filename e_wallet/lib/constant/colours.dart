@@ -6,7 +6,7 @@ const Color btn = Color(0xFF662bb3);
 const Color btntxt = Color(0xFF662bb3);
 
 String fetchBankImageWith(String bankCode) {
-  switch (bankCode) {
+  switch (bankCode.toLowerCase()) {
     case 'vcb':
       return 'assets/image/bank_2.png';
     case 'ctg':
@@ -25,5 +25,28 @@ String fetchBankImageWith(String bankCode) {
       return 'assets/image/bank_9.png';
     default:
       return 'assets/image/bank_1.jpg';
+  }
+}
+
+String fetchBankNameWith(String bankCode) {
+  switch (bankCode.toLowerCase()) {
+    case 'vcb':
+      return 'Vietcombank (VCB)';
+    case 'ctg':
+      return 'VietinBank (CTG)';
+    case 'mbb':
+      return 'MBBank (MBB)';
+    case 'acb':
+      return 'ACB';
+    case 'hdb':
+      return 'HDBank (HDB)';
+    case 'tpb':
+      return 'TPBank (TPB)';
+    case 'ocb':
+      return 'OCB';
+    case 'scb':
+      return 'SCB';
+    default:
+      return 'Techcombank (TCB)';
   }
 }
