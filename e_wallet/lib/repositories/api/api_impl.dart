@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_wallet/models/request/login_request.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/models/response/login_response.dart';
+import 'package:e_wallet/models/response/transaction_response.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/repositories/log/log.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,6 +104,24 @@ class ApiImpl implements Api {
         'to': request.to,
         'from': request.from,
       },
+    );
+  }
+
+  @override
+  Future<List<TransactionResponse>> fetchTransactions(
+      String collectionPath) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final querySnapshot = await firestore.collection(collectionPath).get();
+    final transactions = querySnapshot.docs
+        .map(
+          (doc) => TransactionResponse.fromMap(
+            doc.data(),
+            doc.id,
+          ),
+        )
+        .toList();
+    return Future(
+      () => transactions,
     );
   }
 }
