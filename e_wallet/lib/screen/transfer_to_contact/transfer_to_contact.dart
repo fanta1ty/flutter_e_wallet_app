@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/colours.dart';
 import '../../constant/load_status.dart';
+import '../../repositories/api/api.dart';
 import '../submited_to_friend/submited_to_friend.dart';
 
 class TransferToContact extends StatelessWidget {
@@ -13,7 +14,9 @@ class TransferToContact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TransferToContactCubit(),
+      create: (context) => TransferToContactCubit(
+        context.read<Api>(),
+      ),
       child: _TransferToContactPage(),
     );
   }
@@ -261,7 +264,14 @@ class _TransferToContactPage extends StatelessWidget {
                                         ? () {
                                             context
                                                 .read<TransferToContactCubit>()
-                                                .checkIsProceedToTransfer(true);
+                                                .transfer(
+                                                  _amount,
+                                                  _notes,
+                                                  '',
+                                                  '',
+                                                  DateTime.now()
+                                                      .toIso8601String(),
+                                                );
                                           }
                                         : null,
                                     style: ElevatedButton.styleFrom(
@@ -296,13 +306,6 @@ class _TransferToContactPage extends StatelessWidget {
               ),
             );
     }, listener: (context, state) {
-      if (state.isProceedToTransfer && state.loadStatus == LoadStatus.Loading) {
-        context.read<TransferToContactCubit>().saveAmount(
-              _amount,
-              _notes,
-            );
-      }
-
       if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
         Navigator.push(
           context,
