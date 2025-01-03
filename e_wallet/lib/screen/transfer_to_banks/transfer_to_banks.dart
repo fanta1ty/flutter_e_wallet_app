@@ -4,6 +4,7 @@ import 'package:e_wallet/screen/transfer_using_bank/transfer_using_bank.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constant/banks.dart';
 import '../../constant/colours.dart';
 import '../../constant/load_status.dart';
 
