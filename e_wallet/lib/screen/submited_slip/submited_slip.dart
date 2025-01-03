@@ -176,7 +176,7 @@ class _SubmitedSlipPage extends StatelessWidget {
                                     fontSize: 14, fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                "Rp 2.0",
+                                "\$ 2.0",
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
