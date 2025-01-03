@@ -11,9 +11,29 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit(this.api) : super(LoginState.init());
 
-  Future<void> login(LoginRequest request) async {
+  void updateEmail(String email) {
+    emit(state.copyWith(email: email));
+    _validateForm();
+  }
+
+  void updatePassword(String password) {
+    emit(state.copyWith(password: password));
+    _validateForm();
+  }
+
+  void _validateForm() {
+    final isFormValid = state.email.contains('@') && state.password.isNotEmpty;
+    emit(state.copyWith(isButtonEnabled: isFormValid));
+  }
+
+  Future<void> login() async {
     emit(state.copyWith(loadStatus: LoadStatus.Loading));
-    var result = await api.login(request);
+    var result = await api.login(
+      LoginRequest(
+        email: state.email,
+        password: state.password,
+      ),
+    );
     if (result.success) {
       emit(state.copyWith(loadStatus: LoadStatus.Done, response: result));
     } else {
