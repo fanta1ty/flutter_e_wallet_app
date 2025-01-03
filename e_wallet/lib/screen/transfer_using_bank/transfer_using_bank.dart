@@ -1,3 +1,4 @@
+import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip.dart';
 import 'package:e_wallet/screen/transfer_to_banks/transfer_to_banks.dart';
 import 'package:e_wallet/screen/transfer_using_bank/transfer_using_bank_cubit.dart';
@@ -28,6 +29,7 @@ class _TransferUsingBankPage extends StatelessWidget {
   String _phone = "";
   String _notes = "";
   String _amount = "";
+  String _date = "";
 
   @override
   Widget build(BuildContext context) {
@@ -268,6 +270,8 @@ class _TransferUsingBankPage extends StatelessWidget {
                                             .state
                                             .isButtonEnabled
                                         ? () {
+                                            _date = DateTime.now()
+                                                .toIso8601String();
                                             context
                                                 .read<TransferUsingBankCubit>()
                                                 .transfer(
@@ -275,8 +279,7 @@ class _TransferUsingBankPage extends StatelessWidget {
                                                   _notes,
                                                   _phone,
                                                   '',
-                                                  DateTime.now()
-                                                      .toIso8601String(),
+                                                  _date,
                                                   '',
                                                   '',
                                                   '',
@@ -320,7 +323,16 @@ class _TransferUsingBankPage extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => SubmitedSlip(
-                amount: _amount,
+                request: TransferRequest(
+                  amount: _amount,
+                  note: _notes,
+                  phone: _phone,
+                  date: '',
+                  bankDate: _date,
+                  bankCode: '',
+                  to: '',
+                  from: '',
+                ),
               ),
             ),
           );
