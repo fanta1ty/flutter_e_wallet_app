@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_wallet/models/request/login_request.dart';
 import 'package:e_wallet/models/response/login_response.dart';
 import 'package:e_wallet/repositories/api/api.dart';
@@ -13,7 +14,9 @@ class ApiImpl implements Api {
   ApiImpl(this.log);
 
   @override
-  Future<LoginResponse> login(LoginRequest request) async {
+  Future<LoginResponse> login(
+    LoginRequest request,
+  ) async {
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: request.email,
@@ -45,7 +48,9 @@ class ApiImpl implements Api {
   }
 
   @override
-  Future<SignUpResponse> signup(SignUpRequest request) async {
+  Future<SignUpResponse> signup(
+    SignUpRequest request,
+  ) async {
     try {
       if (request.password != request.confirmPassword) {
         return Future(() =>
@@ -74,5 +79,30 @@ class ApiImpl implements Api {
       return Future(
           () => SignUpResponse(success: false, errorMessage: 'Generic Error'));
     }
+  }
+
+  @override
+  Future<void> transfer(
+    String amount,
+    String note,
+    String phone,
+    String date,
+    String bankDate,
+  ) async {
+    final doc = FirebaseFirestore.instance
+        .collection(
+          'transactions',
+        )
+        .doc();
+
+    await doc.set(
+      {
+        'amount': amount,
+        'note': note,
+        'date': date,
+        'phone': phone,
+        'bankDate': bankDate,
+      },
+    );
   }
 }
