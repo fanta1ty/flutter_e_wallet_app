@@ -10,7 +10,9 @@ import '../../constant/load_status.dart';
 import '../../repositories/api/api.dart';
 
 class TransferUsingBank extends StatelessWidget {
-  TransferUsingBank({super.key});
+  final String bankCode;
+
+  const TransferUsingBank({super.key, required this.bankCode});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +20,17 @@ class TransferUsingBank extends StatelessWidget {
       create: (context) => TransferUsingBankCubit(
         context.read<Api>(),
       ),
-      child: _TransferUsingBankPage(),
+      child: _TransferUsingBankPage(
+        bankCode: bankCode,
+      ),
     );
   }
 }
 
 class _TransferUsingBankPage extends StatelessWidget {
-  _TransferUsingBankPage({super.key});
+  final String bankCode;
+
+  _TransferUsingBankPage({super.key, required this.bankCode});
 
   String _phone = "";
   String _notes = "";
