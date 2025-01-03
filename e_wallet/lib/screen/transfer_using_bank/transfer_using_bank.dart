@@ -143,7 +143,7 @@ class _TransferUsingBankPage extends StatelessWidget {
                                 leading: CircleAvatar(
                                   radius: 26,
                                   backgroundImage:
-                                      AssetImage('assets/image/bank_1.png'),
+                                      AssetImage('assets/image/bank_1.jpg'),
                                 ),
                                 title: Text("Nguyen Van A"),
                                 subtitle: Text("••••• •••• 80901"),
