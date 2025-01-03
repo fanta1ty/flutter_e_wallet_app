@@ -26,7 +26,8 @@ class TransferToBank extends StatelessWidget {
 class _TransferToBankPage extends StatelessWidget {
   String _amount = "";
   String _notes = "";
-  String _phone = "";
+  String _code = "";
+  String _to = "";
 
   _TransferToBankPage({super.key});
 
@@ -139,33 +140,58 @@ class _TransferToBankPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                      padding: EdgeInsets.only(
-                                        top: 20,
-                                        left: 20,
+                                    padding: EdgeInsets.only(
+                                      top: 20,
+                                      left: 20,
+                                    ),
+                                    width: 350,
+                                    child: TextField(
+                                      onChanged: (value) => _code = value,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        suffixIcon: IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TransferToBanks(),
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(
+                                                Icons.keyboard_arrow_down)),
+                                        hintText: "Bank code",
                                       ),
-                                      width: 350,
-                                      child: TextField(
-                                        onChanged: (value) => _phone = value,
-                                        keyboardType: TextInputType.phone,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          suffixIcon: IconButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        TransferToBanks(),
-                                                  ),
-                                                );
-                                              },
-                                              icon: Icon(
-                                                  Icons.keyboard_arrow_down)),
-                                          hintText: "Select bank destination",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          top: 20,
+                                          left: 20,
                                         ),
-                                      )),
+                                        width: 300,
+                                        child: TextField(
+                                          onChanged: (value) => _to = value,
+                                          keyboardType: TextInputType.name,
+                                          decoration: InputDecoration(
+                                            hintText: "To",
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                               Column(
@@ -281,10 +307,13 @@ class _TransferToBankPage extends StatelessWidget {
                                                 .transfer(
                                                   _amount,
                                                   _notes,
-                                                  _phone,
+                                                  '',
                                                   '',
                                                   DateTime.now()
                                                       .toIso8601String(),
+                                                  _code.toLowerCase(),
+                                                  _to,
+                                                  'thnu',
                                                 );
                                           }
                                         : null,
