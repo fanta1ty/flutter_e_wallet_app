@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../constant/banks.dart';
 import '../../constant/load_status.dart';
 
 class Transfer extends StatelessWidget {
