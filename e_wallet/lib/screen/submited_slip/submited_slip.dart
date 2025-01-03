@@ -1,3 +1,4 @@
+import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,32 +8,33 @@ import '../../constant/colours.dart';
 import '../nabbar/nabbar.dart';
 
 class SubmitedSlip extends StatelessWidget {
-  final String amount;
+  final TransferRequest request;
 
-  const SubmitedSlip({required this.amount, Key? key}) : super(key: key);
+  const SubmitedSlip({required this.request, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SubmitedSlipCubit(),
       child: _SubmitedSlipPage(
-        amount: amount,
+        request: request,
       ),
     );
   }
 }
 
 class _SubmitedSlipPage extends StatelessWidget {
-  final String amount;
+  final TransferRequest request;
 
-  _SubmitedSlipPage({required this.amount, Key? key}) : super(key: key);
+  _SubmitedSlipPage({required this.request, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final currentDateTime = DateTime.now();
-    final formattedDate = DateFormat('MMMM d, yyyy').format(currentDateTime);
-    final formattedTime = DateFormat('hh:mm a').format(currentDateTime);
-    final double parsedAmount = double.tryParse(amount) ?? 0.0;
+    final formattedDate =
+        DateFormat('MMMM d, yyyy').format(DateTime.parse(request.bankDate));
+    final formattedTime =
+        DateFormat('hh:mm a').format(DateTime.parse(request.bankDate));
+    final double parsedAmount = double.tryParse(request.amount) ?? 0.0;
     final double totalPayment = parsedAmount + 2.0;
 
     return BlocConsumer<SubmitedSlipCubit, SubmitedSlipState>(
@@ -68,7 +70,7 @@ class _SubmitedSlipPage extends StatelessWidget {
                         const Text("Your transaction was successful"),
                         const SizedBox(height: 20),
                         Text(
-                          'Rp ${parsedAmount.toStringAsFixed(2)}',
+                          '\$ ${parsedAmount.toStringAsFixed(2)}',
                           // Display formatted amount
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -83,7 +85,9 @@ class _SubmitedSlipPage extends StatelessWidget {
                               backgroundImage:
                                   AssetImage('assets/image/bank_1.jpg'),
                             ),
-                            title: const Text("Nguyen Van A"),
+                            title: Text(
+                              request.to,
+                            ),
                             subtitle: const Text("••••• •••• 80901"),
                           ),
                         ),
@@ -104,7 +108,7 @@ class _SubmitedSlipPage extends StatelessWidget {
                                     fontSize: 14, fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                'Rp ${parsedAmount.toStringAsFixed(2)}',
+                                '\$ ${parsedAmount.toStringAsFixed(2)}',
                                 style: const TextStyle(fontSize: 14),
                               ),
                             ],
@@ -196,7 +200,7 @@ class _SubmitedSlipPage extends StatelessWidget {
                                     color: btntxt),
                               ),
                               Text(
-                                'Rp ${totalPayment.toStringAsFixed(2)}',
+                                '\$ ${totalPayment.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                     fontSize: 18, color: btntxt),
                               ),
