@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_to_friend/submited_to_friend_cubit.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
                               backgroundImage: AssetImage(imagePath),
                             ),
                             title: Text(
-                              request.phone,
+                              formattedPhone(request.phone),
                               style: TextStyle(
                                 color: Colors.blueAccent,
                               ),
