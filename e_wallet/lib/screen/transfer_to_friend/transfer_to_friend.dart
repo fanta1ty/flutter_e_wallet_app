@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/load_status.dart';
+import '../../repositories/api/api.dart';
 import '../submited_to_friend/submited_to_friend.dart';
 
 class TransferToFriend extends StatelessWidget {
@@ -14,7 +15,9 @@ class TransferToFriend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TransferToFriendCubit(),
+      create: (context) => TransferToFriendCubit(
+        context.read<Api>(),
+      ),
       child: _TransferToFriendPage(),
     );
   }
@@ -288,8 +291,13 @@ class _TransferToFriendPage extends StatelessWidget {
                                           ? () {
                                               context
                                                   .read<TransferToFriendCubit>()
-                                                  .checkIsProceedToTransfer(
-                                                    true,
+                                                  .transfer(
+                                                    _amount,
+                                                    _notes,
+                                                    _phone,
+                                                    DateTime.now()
+                                                        .toIso8601String(),
+                                                    '',
                                                   );
                                             }
                                           : null,
@@ -329,15 +337,6 @@ class _TransferToFriendPage extends StatelessWidget {
               );
       },
       listener: (context, state) {
-        if (state.isProceedToTransfer &&
-            state.loadStatus == LoadStatus.Loading) {
-          context.read<TransferToFriendCubit>().saveAmount(
-                _amount,
-                _notes,
-                _phone,
-              );
-        }
-
         if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
           Navigator.push(
             context,
