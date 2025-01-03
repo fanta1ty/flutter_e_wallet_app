@@ -217,7 +217,8 @@ class _TransferPage extends StatelessWidget {
                                     fetchBankImageWith(transaction.bankCode);
                                 transactionDate = transaction.bankDate!;
                               } else {
-                                title = formattedPhone(transaction.phone);
+                                title =
+                                    '${formattedPhone(transaction.phone)} - ${transaction.to}';
                                 transactionDate = transaction.date!;
                                 imagePath =
                                     'assets/image/avatar_${Random().nextInt(4) + 1}.png';
