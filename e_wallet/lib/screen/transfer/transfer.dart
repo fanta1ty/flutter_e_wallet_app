@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/screen/nabbar/nabbar.dart';
 import 'package:e_wallet/screen/transfer/transfer_cubit.dart';
@@ -211,12 +212,12 @@ class _TransferPage extends StatelessWidget {
                               if (transaction.bankDate != null &&
                                   transaction.bankDate!.isNotEmpty) {
                                 title =
-                                    '${transaction.bankCode} - ${transaction.to}';
+                                    '${fetchBankNameWith(transaction.bankCode)} - ${transaction.to}';
                                 imagePath =
                                     fetchBankImageWith(transaction.bankCode);
                                 transactionDate = transaction.bankDate!;
                               } else {
-                                title = transaction.phone;
+                                title = formattedPhone(transaction.phone);
                                 transactionDate = transaction.date!;
                                 imagePath =
                                     'assets/image/avatar_${Random().nextInt(4) + 1}.png';
