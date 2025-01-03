@@ -41,215 +41,163 @@ class _SubmitedSlipPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: btntxt,
-          body: Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/image/icon1.png'),
-                Center(
-                  child: Container(
-                    width: 320,
-                    height: 450,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        const Text(
-                          "Transfer Successful",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                            color: Color(0xFF04ba62),
-                          ),
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/image/icon1.png'),
+                    Center(
+                      child: Container(
+                        width: constraints.maxWidth * 0.85,
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 5),
+                            )
+                          ],
                         ),
-                        const SizedBox(height: 5),
-                        const Text("Your transaction was successful"),
-                        const SizedBox(height: 20),
-                        Text(
-                          '\$ ${parsedAmount.toStringAsFixed(2)}',
-                          // Display formatted amount
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: ListTile(
-                            leading: const CircleAvatar(
-                              radius: 26,
-                              backgroundImage:
-                                  AssetImage('assets/image/bank_1.jpg'),
+                        child: Column(
+                          children: [
+                            const Text(
+                              "Transfer Successful",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color(0xFF04ba62),
+                              ),
                             ),
-                            title: Text(
-                              request.to,
+                            const SizedBox(height: 5),
+                            const Text(
+                              "Your transaction was successful",
+                              style: TextStyle(fontSize: 15),
                             ),
-                            subtitle: const Text("••••• •••• 80901"),
-                          ),
+                            const SizedBox(height: 20),
+                            Text(
+                              '\$ ${parsedAmount.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            ListTile(
+                              leading: const CircleAvatar(
+                                radius: 28,
+                                backgroundImage:
+                                    AssetImage('assets/image/bank_1.jpg'),
+                              ),
+                              title: Text(
+                                request.to,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              subtitle: const Text("••••• •••• 80901"),
+                            ),
+                            const Divider(),
+                            _buildTransactionDetails("Payment",
+                                '\$ ${parsedAmount.toStringAsFixed(2)}'),
+                            _buildTransactionDetails("Date", formattedDate),
+                            _buildTransactionDetails("Time", formattedTime),
+                            _buildTransactionDetails(
+                                "Reference Number", "ALKS-9928-HGJD-1134"),
+                            _buildTransactionDetails("Fee", "\$ 2.0"),
+                            const Divider(),
+                            _buildTransactionDetails(
+                              "Total Payment",
+                              '\$ ${totalPayment.toStringAsFixed(2)}',
+                              isBold: true,
+                              color: btntxt,
+                              fontSize: 18,
+                            ),
+                          ],
                         ),
-                        const Text(
-                          "Transaction Details",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Payment",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                '\$ ${parsedAmount.toStringAsFixed(2)}',
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Date",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                formattedDate,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Time",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                formattedTime,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Reference Number",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                "ALKS-9928-HGJD-1134",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Fee",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                "\$ 2.0",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Total Payment",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: btntxt),
-                              ),
-                              Text(
-                                '\$ ${totalPayment.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                    fontSize: 18, color: btntxt),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Share',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: btn,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 130),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      // Adjust the radius as needed
-                      side: const BorderSide(
-                          color: Colors.white, width: 2), // White border
+                    _buildButton(
+                      context,
+                      label: "Share",
+                      onPressed: () {},
+                      backgroundColor: btn,
+                      textColor: Colors.white,
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    _buildButton(
+                      context,
+                      label: "Back to Home",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Nabbar()),
+                        );
+                      },
+                      backgroundColor: Colors.white,
+                      textColor: btntxt,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 15),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Nabbar()));
-                  },
-                  child: const Text('Back to Home',
-                      style: TextStyle(color: btntxt)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 100),
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
       listener: (context, state) {},
+    );
+  }
+
+  Widget _buildTransactionDetails(String label, String value,
+      {bool isBold = false, Color color = Colors.black, double fontSize = 14}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButton(
+    BuildContext context, {
+    required String label,
+    required VoidCallback onPressed,
+    required Color backgroundColor,
+    required Color textColor,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 120),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(color: textColor, fontSize: 16),
+      ),
     );
   }
 }
