@@ -268,9 +268,9 @@ class _TransferToContactPage extends StatelessWidget {
                                                   _amount,
                                                   _notes,
                                                   '',
-                                                  '',
                                                   DateTime.now()
                                                       .toIso8601String(),
+                                                  '',
                                                 );
                                           }
                                         : null,
