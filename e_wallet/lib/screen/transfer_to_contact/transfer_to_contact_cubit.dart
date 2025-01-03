@@ -35,7 +35,7 @@ class TransferToContactCubit extends Cubit<TransferToContactState> {
     emit(state.copyWith(loadStatus: LoadStatus.Loading));
     await api.transfer(
       TransferRequest(
-        amount: amount,
+        amount: '-$amount',
         note: note,
         phone: phone,
         date: date,
