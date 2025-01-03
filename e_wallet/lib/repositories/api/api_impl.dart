@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_wallet/models/request/login_request.dart';
+import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/models/response/login_response.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/repositories/log/log.dart';
@@ -83,11 +84,7 @@ class ApiImpl implements Api {
 
   @override
   Future<void> transfer(
-    String amount,
-    String note,
-    String phone,
-    String date,
-    String bankDate,
+    TransferRequest request,
   ) async {
     final doc = FirebaseFirestore.instance
         .collection(
@@ -97,11 +94,14 @@ class ApiImpl implements Api {
 
     await doc.set(
       {
-        'amount': amount,
-        'note': note,
-        'date': date,
-        'phone': phone,
-        'bankDate': bankDate,
+        'amount': request.amount,
+        'note': request.note,
+        'date': request.date,
+        'phone': request.phone,
+        'bankDate': request.bankDate,
+        'bankCode': request.bankCode,
+        'to': request.to,
+        'from': request.from,
       },
     );
   }
