@@ -1,4 +1,5 @@
 import 'package:e_wallet/constant/colours.dart';
+import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/transfer/transfer.dart';
 import 'package:e_wallet/screen/transfer_to_contact/transfer_to_contact.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend_cubit.dart';
@@ -29,6 +30,7 @@ class _TransferToFriendPage extends StatelessWidget {
   String _phone = "";
   String _notes = "";
   String _amount = "";
+  String _date = "";
 
   @override
   Widget build(BuildContext context) {
@@ -290,14 +292,15 @@ class _TransferToFriendPage extends StatelessWidget {
                                               .state
                                               .isButtonEnabled
                                           ? () {
+                                              _date = DateTime.now()
+                                                  .toIso8601String();
                                               context
                                                   .read<TransferToFriendCubit>()
                                                   .transfer(
                                                     _amount,
                                                     _notes,
                                                     _phone,
-                                                    DateTime.now()
-                                                        .toIso8601String(),
+                                                    _date,
                                                     '',
                                                     '',
                                                     '',
@@ -346,7 +349,16 @@ class _TransferToFriendPage extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => SubmitedToFriend(
-                amount: _amount,
+                request: TransferRequest(
+                  amount: _amount,
+                  note: _notes,
+                  phone: '',
+                  date: _date,
+                  bankDate: '',
+                  bankCode: '',
+                  to: '',
+                  from: 'thnu',
+                ),
               ),
             ),
           );
