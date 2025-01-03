@@ -114,7 +114,12 @@ class _TransferPage extends StatelessWidget {
           );
         },
       ),
-      title: const Text('Transfer', style: TextStyle(color: Colors.white)),
+      title: const Text(
+        'Transfer',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
       centerTitle: true,
       backgroundColor: btntxt,
       actions: [
