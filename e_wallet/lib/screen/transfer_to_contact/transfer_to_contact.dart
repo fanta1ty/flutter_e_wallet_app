@@ -1,3 +1,4 @@
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/transfer_to_contact/transfer_to_contact_cubit.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend.dart';
@@ -29,6 +30,8 @@ class _TransferToContactPage extends StatelessWidget {
   String _amount = "";
   String _notes = "";
   String _date = "";
+
+  final String _to = generateVietnameseName();
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +150,7 @@ class _TransferToContactPage extends StatelessWidget {
                                   backgroundImage:
                                       AssetImage('assets/image/image_1.png'),
                                 ),
-                                title: Text("Thinh Nguyen"),
+                                title: Text(_to),
                                 subtitle: Text("0898417346"),
                                 trailing: Icon(
                                   Icons.edit_note,
@@ -324,7 +327,7 @@ class _TransferToContactPage extends StatelessWidget {
                 date: _date,
                 bankDate: '',
                 bankCode: '',
-                to: '',
+                to: _to,
                 from: 'thnu',
               ),
             ),
