@@ -12,9 +12,37 @@ class SignupCubit extends Cubit<SignupState> {
 
   SignupCubit(this.api) : super(SignupState.init());
 
-  Future<void> signup(SignUpRequest request) async {
+  void updateEmail(String email) {
+    emit(state.copyWith(email: email));
+    _validateForm();
+  }
+
+  void updatePassword(String password) {
+    emit(state.copyWith(password: password));
+    _validateForm();
+  }
+
+  void updateConfirmPassword(String confirmPassword) {
+    emit(state.copyWith(confirmPassword: confirmPassword));
+    _validateForm();
+  }
+
+  void _validateForm() {
+    final isFormValid = state.email.contains('@') &&
+        state.password.length >= 6 &&
+        state.password == state.confirmPassword;
+
+    emit(state.copyWith(isButtonEnabled: isFormValid));
+  }
+
+  Future<void> signup() async {
     emit(state.copyWith(loadStatus: LoadStatus.Loading));
-    var result = await api.signup(request);
+    var result = await api.signup(SignUpRequest(
+      email: state.email,
+      password: state.password,
+      confirmPassword: state.confirmPassword,
+    ));
+
     if (result.success) {
       emit(state.copyWith(loadStatus: LoadStatus.Done, response: result));
     } else {
