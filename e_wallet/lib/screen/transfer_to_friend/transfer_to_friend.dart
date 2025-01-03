@@ -147,18 +147,19 @@ class _TransferToFriendPage extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                        padding: EdgeInsets.only(
-                                          top: 20,
-                                          left: 20,
+                                      padding: EdgeInsets.only(
+                                        top: 20,
+                                        left: 20,
+                                      ),
+                                      width: 300,
+                                      child: TextField(
+                                        onChanged: (value) => _phone = value,
+                                        keyboardType: TextInputType.phone,
+                                        decoration: InputDecoration(
+                                          hintText: "Input Phone Number",
                                         ),
-                                        width: 300,
-                                        child: TextField(
-                                          onChanged: (value) => _phone = value,
-                                          keyboardType: TextInputType.phone,
-                                          decoration: InputDecoration(
-                                            hintText: "Input Phone Number",
-                                          ),
-                                        )),
+                                      ),
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           right: 10, top: 20),
@@ -297,6 +298,9 @@ class _TransferToFriendPage extends StatelessWidget {
                                                     _phone,
                                                     DateTime.now()
                                                         .toIso8601String(),
+                                                    '',
+                                                    '',
+                                                    '',
                                                     '',
                                                   );
                                             }
