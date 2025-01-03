@@ -41,10 +41,21 @@ class _HistoryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('History', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Transaction History',
+          style: TextStyle(color: Colors.white, fontSize: 22),
+        ),
         centerTitle: true,
-        backgroundColor: btntxt,
-        elevation: 0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [btntxt, Colors.deepPurple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        elevation: 2,
       ),
       body: _buildHistoryList(context),
     );
@@ -57,17 +68,25 @@ class _HistoryPage extends StatelessWidget {
 
         return state.loadStatus == LoadStatus.Loading
             ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: transactions.length,
-                itemBuilder: (context, index) {
-                  final transaction = transactions[index];
-                  return _TransactionItem(
-                    transaction: transaction,
-                    formatAmount: formatAmount,
+            : transactions.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No transactions yet',
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
+                    itemCount: transactions.length,
+                    itemBuilder: (context, index) {
+                      final transaction = transactions[index];
+                      return _TransactionItem(
+                        transaction: transaction,
+                        formatAmount: formatAmount,
+                      );
+                    },
                   );
-                },
-              );
       },
       listener: (context, state) {},
     );
@@ -105,17 +124,34 @@ class _TransactionItem extends StatelessWidget {
         DateFormat('MMMM dd, yyyy - hh:mm a').format(parsedDate);
 
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: ListTile(
+        contentPadding: const EdgeInsets.all(12),
         leading: CircleAvatar(
           backgroundImage: AssetImage(imagePath),
-          radius: 25,
+          radius: 30,
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(formattedDate),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        subtitle: Text(
+          formattedDate,
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
         trailing: Text(
           formatAmount(transaction.amount),
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: transaction.amount.startsWith('-')
+                ? Colors.redAccent
+                : Colors.green,
+          ),
         ),
       ),
     );
