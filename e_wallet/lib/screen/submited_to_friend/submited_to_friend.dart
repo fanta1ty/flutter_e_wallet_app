@@ -98,6 +98,12 @@ class _SubmitedToFriendPage extends StatelessWidget {
                                 color: Colors.blueAccent,
                               ),
                             ),
+                            subtitle: Text(
+                              request.to,
+                              style: TextStyle(
+                                color: Colors.pinkAccent,
+                              ),
+                            ),
                           ),
                         ),
                         const Text(
