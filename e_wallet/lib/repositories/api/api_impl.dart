@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../models/request/signup_request.dart';
 import '../../models/response/signup_response.dart';
+import '../../models/user_session.dart';
 
 class ApiImpl implements Api {
   Log log;
@@ -23,6 +24,11 @@ class ApiImpl implements Api {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: request.email,
         password: request.password,
+      );
+      _storeUserInfo(
+        credential.user?.uid,
+        credential.user?.email,
+        credential.user?.displayName,
       );
       return Future(() => LoginResponse(
           success: true,
@@ -47,6 +53,17 @@ class ApiImpl implements Api {
       return Future(
           () => LoginResponse(success: false, errorMessage: 'Generic Error'));
     }
+  }
+
+  void _storeUserInfo(
+    String? userId,
+    String? email,
+    String? displayName,
+  ) {
+    final session = UserSession();
+    session.userId = userId;
+    session.email = email;
+    session.name = displayName;
   }
 
   @override
@@ -87,9 +104,10 @@ class ApiImpl implements Api {
   Future<void> transfer(
     TransferRequest request,
   ) async {
+    final sessionId = UserSession().userId;
     final doc = FirebaseFirestore.instance
         .collection(
-          'transactions',
+          'transactions_$sessionId',
         )
         .doc();
 
@@ -110,8 +128,10 @@ class ApiImpl implements Api {
   @override
   Future<List<TransactionResponse>> fetchTransactions(
       String collectionPath) async {
+    final sessionId = UserSession().userId;
+    final path = '$collectionPath' + '_' + '$sessionId';
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final querySnapshot = await firestore.collection(collectionPath).get();
+    final querySnapshot = await firestore.collection(path).get();
     final transactions = querySnapshot.docs
         .map(
           (doc) => TransactionResponse.fromMap(
