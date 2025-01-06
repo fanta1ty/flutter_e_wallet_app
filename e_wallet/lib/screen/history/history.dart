@@ -116,16 +116,23 @@ class _TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String title;
-    String imagePath;
-    String transactionDate;
+    String title = '';
+    String imagePath = '';
+    String transactionDate = '';
 
-    if (transaction.bankDate != null && transaction.bankDate!.isNotEmpty) {
-      title = '${fetchBankNameWith(transaction.bankCode)} - ${transaction.to}';
-      imagePath = fetchBankImageWith(transaction.bankCode);
-      transactionDate = transaction.bankDate!;
-    } else {
-      title = '${formattedPhone(transaction.phone)} - ${transaction.to}';
+    if (transaction.type == 'transfer') {
+      if (transaction.bankDate != null && transaction.bankDate!.isNotEmpty) {
+        title =
+            '${fetchBankNameWith(transaction.bankCode)} - ${transaction.to}';
+        imagePath = fetchBankImageWith(transaction.bankCode);
+        transactionDate = transaction.bankDate!;
+      } else {
+        title = '${formattedPhone(transaction.phone)} - ${transaction.to}';
+        transactionDate = transaction.date!;
+        imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
+      }
+    } else if (transaction.type == 'top_up') {
+      title = 'Bank Transfer - ${transaction.to}';
       transactionDate = transaction.date!;
       imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
     }
