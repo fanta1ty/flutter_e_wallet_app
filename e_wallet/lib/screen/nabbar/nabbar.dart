@@ -19,64 +19,37 @@ class Nabbar extends StatelessWidget {
 }
 
 class _NabbarPage extends StatelessWidget {
-  _NabbarPage({super.key});
+  const _NabbarPage({super.key});
 
-  int currentvalue = 0;
-
-  getCurrentView() {
-    if (currentvalue == 0) {
-      return Home();
-    } else if (currentvalue == 1) {
-      return History();
-    } else if (currentvalue == 2) {
-      // return Signup();
-    } else {
-      return Container(
-        child: Center(
-            child: Text(
-          "No Fav",
-          style: TextStyle(fontSize: 20),
-        )),
-      );
-    }
-  }
+  static final List<Widget> _pages = [
+    const Home(),
+    const History(),
+    const Center(
+      child: Text("In Developing"),
+    )
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<NabbarCubit, NabbarState>(
-          builder: (context, state) {
-            final index = context.watch<NabbarCubit>().state.index;
-            if (index == 0) {
-              return Home();
-            } else if (index == 1) {
-              return History();
-            } else {
-              return Container(
-                child: Center(
-                  child: Text(
-                    'In Developing',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-              );
-            }
-          },
-          listener: (context, state) {}),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: context.watch<NabbarCubit>().state.index,
-          onTap: (index) {
-            context.read<NabbarCubit>().setPage(index);
-          },
-          selectedItemColor: btntxt,
-          unselectedItemColor: Colors.grey,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.compare_arrows), label: "Home"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.history), label: "History"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-          ]),
-    );
+    return BlocBuilder<NabbarCubit, NabbarState>(builder: (context, state) {
+      return Scaffold(
+        body: _pages[state.index],
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: context.watch<NabbarCubit>().state.index,
+            onTap: (index) {
+              context.read<NabbarCubit>().setPage(index);
+            },
+            selectedItemColor: btntxt,
+            unselectedItemColor: Colors.grey,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.compare_arrows), label: "Home"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.history), label: "History"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: "Profile"),
+            ]),
+      );
+    });
   }
 }
