@@ -2,7 +2,6 @@ import 'package:e_wallet/constant/banks.dart';
 import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip.dart';
-import 'package:e_wallet/screen/transfer_to_banks/transfer_to_banks.dart';
 import 'package:e_wallet/screen/transfer_using_bank/transfer_using_bank_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,10 +82,7 @@ class _TransferUsingBankPage extends StatelessWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TransferToBanks()),
-          );
+          Navigator.pop(context);
         },
       ),
       title: const Text(
@@ -229,6 +225,11 @@ class _TransferUsingBankPage extends StatelessWidget {
                   );
             }
           : null,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 50),
+      ),
       child: Center(
         child: const Text("Proceed to Transfer"),
       ),
