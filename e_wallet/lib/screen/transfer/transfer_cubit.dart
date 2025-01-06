@@ -14,9 +14,14 @@ class TransferCubit extends Cubit<TransferState> {
   Future<void> fetchTransactions() async {
     emit(state.copyWith(loadStatus: LoadStatus.Loading));
     var result = await api.fetchTransactions('transactions');
+
     emit(state.copyWith(
       loadStatus: LoadStatus.Done,
-      responses: result,
+      responses: result
+          .where(
+            (transaction) => transaction.type == 'transfer',
+          )
+          .toList(),
     ));
   }
 }
