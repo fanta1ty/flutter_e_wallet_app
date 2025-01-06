@@ -169,8 +169,10 @@ class _SubmitedToFriendPage extends StatelessWidget {
         const SizedBox(height: 15),
         ElevatedButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Nabbar()));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Nabbar()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
