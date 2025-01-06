@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/constant/utils.dart';
+import 'package:e_wallet/models/response/transaction_response.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/screen/history/history_cubit.dart';
+import 'package:e_wallet/screen/history_detail/history_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -81,9 +83,18 @@ class _HistoryPage extends StatelessWidget {
                     itemCount: transactions.length,
                     itemBuilder: (context, index) {
                       final transaction = transactions[index];
-                      return _TransactionItem(
-                        transaction: transaction,
-                        formatAmount: formatAmount,
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                HistoryDetail(transaction: transaction),
+                          ),
+                        ),
+                        child: _TransactionItem(
+                          transaction: transaction,
+                          formatAmount: formatAmount,
+                        ),
                       );
                     },
                   );
@@ -94,7 +105,7 @@ class _HistoryPage extends StatelessWidget {
 }
 
 class _TransactionItem extends StatelessWidget {
-  final dynamic transaction;
+  final TransactionResponse transaction;
   final String Function(String) formatAmount;
 
   const _TransactionItem({
