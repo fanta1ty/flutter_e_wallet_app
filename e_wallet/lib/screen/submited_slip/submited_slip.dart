@@ -136,10 +136,9 @@ class _SubmitedSlipPage extends StatelessWidget {
                       context,
                       label: "Back to Home",
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const Nabbar()),
+                          MaterialPageRoute(builder: (context) => Nabbar()),
                         );
                       },
                       backgroundColor: Colors.white,
