@@ -104,10 +104,10 @@ class ApiImpl implements Api {
   Future<void> transfer(
     TransferRequest request,
   ) async {
-    final sessionId = UserSession().userId;
+    final userSession = UserSession();
     final doc = FirebaseFirestore.instance
         .collection(
-          'transactions_$sessionId',
+          'transactions_${userSession.userId}',
         )
         .doc();
 
@@ -120,7 +120,7 @@ class ApiImpl implements Api {
         'bankDate': request.bankDate,
         'bankCode': request.bankCode,
         'to': request.to,
-        'from': request.from,
+        'from': userSession.email,
         'type': 'transfer',
       },
     );
