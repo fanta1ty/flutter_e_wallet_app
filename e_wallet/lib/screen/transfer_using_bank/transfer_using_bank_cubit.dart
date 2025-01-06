@@ -29,7 +29,10 @@ class TransferUsingBankCubit extends Cubit<TransferUsingBankState> {
     emit(state.copyWith(isButtonEnabled: isEnabled));
   }
 
-  Future<void> transfer(String to) async {
+  Future<void> transfer(
+    String to,
+    String code,
+  ) async {
     emit(state.copyWith(
       loadStatus: LoadStatus.Loading,
       to: to,
@@ -42,7 +45,7 @@ class TransferUsingBankCubit extends Cubit<TransferUsingBankState> {
         phone: '',
         date: '',
         bankDate: state.date,
-        bankCode: state.code,
+        bankCode: code,
         to: state.to,
         from: 'thnu',
       ),
