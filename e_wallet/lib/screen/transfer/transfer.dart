@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/repositories/api/api.dart';
-import 'package:e_wallet/screen/nabbar/nabbar.dart';
 import 'package:e_wallet/screen/transfer/transfer_cubit.dart';
 import 'package:e_wallet/screen/transfer_to_bank/transfer_to_bank.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend.dart';
@@ -108,10 +107,7 @@ class _TransferPage extends StatelessWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Nabbar()),
-          );
+          Navigator.pop(context);
         },
       ),
       title: const Text(
