@@ -132,7 +132,9 @@ class _LoginPage extends StatelessWidget {
           if (state.loadStatus == LoadStatus.Done) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const Nabbar()),
+              MaterialPageRoute(
+                builder: (context) => Nabbar(),
+              ),
             );
           } else if (state.loadStatus == LoadStatus.Error) {
             ScaffoldMessenger.of(context).showSnackBar(
