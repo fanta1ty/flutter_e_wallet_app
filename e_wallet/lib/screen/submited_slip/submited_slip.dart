@@ -1,3 +1,4 @@
+import 'package:e_wallet/constant/banks.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip_cubit.dart';
 import 'package:flutter/material.dart';
@@ -91,10 +92,11 @@ class _SubmitedSlipPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 15),
                             ListTile(
-                              leading: const CircleAvatar(
+                              leading: CircleAvatar(
                                 radius: 28,
-                                backgroundImage:
-                                    AssetImage('assets/image/bank_1.jpg'),
+                                backgroundImage: AssetImage(fetchBankImageWith(
+                                  request.bankCode,
+                                )),
                               ),
                               title: Text(
                                 request.to,
