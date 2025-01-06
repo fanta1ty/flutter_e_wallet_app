@@ -121,6 +121,7 @@ class ApiImpl implements Api {
         'bankCode': request.bankCode,
         'to': request.to,
         'from': request.from,
+        'type': 'transfer',
       },
     );
   }
