@@ -1,4 +1,3 @@
-import 'package:e_wallet/screen/transfer_to_bank/transfer_to_bank.dart';
 import 'package:e_wallet/screen/transfer_to_banks/transfer_to_banks_cubit.dart';
 import 'package:e_wallet/screen/transfer_using_bank/transfer_using_bank.dart';
 import 'package:flutter/material.dart';
@@ -53,12 +52,7 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
                     icon: const Icon(Icons.arrow_back_ios_new,
                         color: Colors.white),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TransferToBank(),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                   title: const Text(
