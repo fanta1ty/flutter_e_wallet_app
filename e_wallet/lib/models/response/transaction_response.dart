@@ -8,6 +8,7 @@ class TransactionResponse {
   final String bankCode;
   final String to;
   final String from;
+  final String type;
 
 //<editor-fold desc="Data Methods">
   const TransactionResponse({
@@ -20,6 +21,7 @@ class TransactionResponse {
     required this.bankCode,
     required this.to,
     required this.from,
+    required this.type,
   });
 
   @override
@@ -27,6 +29,7 @@ class TransactionResponse {
       identical(this, other) ||
       (other is TransactionResponse &&
           runtimeType == other.runtimeType &&
+          id == other.id &&
           amount == other.amount &&
           note == other.note &&
           phone == other.phone &&
@@ -34,10 +37,12 @@ class TransactionResponse {
           bankDate == other.bankDate &&
           bankCode == other.bankCode &&
           to == other.to &&
-          from == other.from);
+          from == other.from &&
+          type == other.type);
 
   @override
   int get hashCode =>
+      id.hashCode ^
       amount.hashCode ^
       note.hashCode ^
       phone.hashCode ^
@@ -45,7 +50,8 @@ class TransactionResponse {
       bankDate.hashCode ^
       bankCode.hashCode ^
       to.hashCode ^
-      from.hashCode;
+      from.hashCode ^
+      type.hashCode;
 
   @override
   String toString() {
@@ -59,6 +65,7 @@ class TransactionResponse {
         ' bankCode: $bankCode,' +
         ' to: $to,' +
         ' from: $from,' +
+        ' type: $type,' +
         '}';
   }
 
@@ -72,6 +79,7 @@ class TransactionResponse {
     String? bankCode,
     String? to,
     String? from,
+    String? type,
   }) {
     return TransactionResponse(
       id: id ?? this.id,
@@ -83,6 +91,7 @@ class TransactionResponse {
       bankCode: bankCode ?? this.bankCode,
       to: to ?? this.to,
       from: from ?? this.from,
+      type: type ?? this.type,
     );
   }
 
@@ -97,11 +106,14 @@ class TransactionResponse {
       'bankCode': this.bankCode,
       'to': this.to,
       'from': this.from,
+      'type': this.type,
     };
   }
 
   factory TransactionResponse.fromMap(
-      Map<String, dynamic> map, String documentId) {
+    Map<String, dynamic> map,
+    String documentId,
+  ) {
     return TransactionResponse(
       id: documentId,
       amount: map['amount'] as String,
@@ -112,6 +124,7 @@ class TransactionResponse {
       bankCode: map['bankCode'] as String,
       to: map['to'] as String,
       from: map['from'] as String,
+      type: map['type'] as String,
     );
   }
 
