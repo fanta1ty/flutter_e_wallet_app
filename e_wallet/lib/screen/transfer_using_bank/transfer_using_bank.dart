@@ -1,3 +1,4 @@
+import 'package:e_wallet/constant/banks.dart';
 import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip.dart';
@@ -158,7 +159,9 @@ class _TransferUsingBankPage extends StatelessWidget {
           ListTile(
             leading: CircleAvatar(
               radius: 28,
-              backgroundImage: const AssetImage('assets/image/bank_1.jpg'),
+              backgroundImage: AssetImage(
+                fetchBankImageWith(bankCode),
+              ),
             ),
             title: Text(_to, style: const TextStyle(fontSize: 16)),
             subtitle: const Text("••••• •••• 80901"),
@@ -220,7 +223,10 @@ class _TransferUsingBankPage extends StatelessWidget {
     return ElevatedButton(
       onPressed: context.watch<TransferUsingBankCubit>().state.isButtonEnabled
           ? () {
-              context.read<TransferUsingBankCubit>().transfer(_to);
+              context.read<TransferUsingBankCubit>().transfer(
+                    _to,
+                    bankCode,
+                  );
             }
           : null,
       child: Center(
