@@ -1,6 +1,5 @@
 import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
-import 'package:e_wallet/screen/transfer/transfer.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,10 +70,7 @@ class _TransferToFriendPage extends StatelessWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Transfer()),
-          );
+          Navigator.pop(context);
         },
       ),
       title: const Text(
@@ -233,6 +229,11 @@ class _TransferToFriendPage extends StatelessWidget {
       onPressed: context.watch<TransferToFriendCubit>().state.isButtonEnabled
           ? () => context.read<TransferToFriendCubit>().transfer()
           : null,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 50),
+      ),
       child: Center(child: const Text('Proceed to Transfer')),
     );
   }
