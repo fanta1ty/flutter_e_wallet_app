@@ -31,135 +31,129 @@ class _TopUpScreenPage extends StatelessWidget {
       body: BlocConsumer<TopUpCubit, TopUpState>(builder: (context, state) {
         final transactions = state.responses;
         final cubit = context.read<TopUpCubit>();
-        return state.loadStatus == LoadStatus.Loading
-            ? const Center(child: CircularProgressIndicator())
-            : Container(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Top-Up Amount',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 20),
 
-                        // Quick Amount Selection
-                        Wrap(
-                          spacing: 12,
-                          children: quickAmounts.map((amount) {
-                            return ChoiceChip(
-                              label: Text(
-                                '\$ $amount',
-                                style: TextStyle(
-                                    color:
-                                        cubit.state.amount == amount.toString()
-                                            ? Colors.white
-                                            : Colors.black),
-                              ),
-                              selected: cubit.state.amount == amount.toString(),
-                              selectedColor: Colors.deepPurple,
-                              onSelected: (selected) {
-                                cubit.updateAmount(amount.toString());
-                              },
-                            );
-                          }).toList(),
-                        ),
+        if (state.loadStatus == LoadStatus.Loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-                        const SizedBox(height: 20),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Top-Up Amount',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 20),
 
-                        ListTile(
-                          leading: const Icon(Icons.account_balance_wallet),
-                          title: const Text('Bank Transfer'),
-                          trailing: Radio<String>(
-                            value: 'Bank Transfer',
-                            groupValue: selectedMethod,
-                            onChanged: (selected) {},
-                          ),
-                        ),
+                // Quick Amount Selection
+                Wrap(
+                  spacing: 12,
+                  children: quickAmounts.map((amount) {
+                    return ChoiceChip(
+                      label: Text(
+                        '\$ $amount',
+                        style: TextStyle(
+                            color: cubit.state.amount == amount.toString()
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                      selected: cubit.state.amount == amount.toString(),
+                      selectedColor: Colors.deepPurple,
+                      onSelected: (selected) {
+                        cubit.updateAmount(amount.toString());
+                      },
+                    );
+                  }).toList(),
+                ),
 
-                        const SizedBox(height: 30),
+                const SizedBox(height: 20),
 
-                        // Top-Up Button
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: cubit.state.isButtonEnabled
-                                ? () {
-                                    cubit.topUp();
-                                  }
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurple,
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(double.infinity, 50),
-                            ),
-                            child: const Text('Top-Up Now'),
-                          ),
-                        ),
-
-                        const SizedBox(height: 40),
-
-                        // Transaction List
-                        const Text(
-                          'Recent Transactions',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 10),
-                        state.responses.isEmpty
-                            ? const Text('No transactions yet.')
-                            : ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height *
-                                          0.5, // Limit the height
-                                ),
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: state.responses.length,
-                                  itemBuilder: (context, index) {
-                                    final transaction = state.responses[index];
-
-                                    final parsedDate =
-                                        DateTime.parse(transaction.date ?? "");
-                                    final formattedDate =
-                                        DateFormat('MMMM dd, yyyy - hh:mm a')
-                                            .format(parsedDate);
-                                    return Card(
-                                      elevation: 4,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: ListTile(
-                                        leading: const Icon(Icons.check_circle,
-                                            color: Colors.green),
-                                        title: Text('\$${transaction.amount}',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                              color: transaction.amount
-                                                      .startsWith('-')
-                                                  ? Colors.redAccent
-                                                  : Colors.green,
-                                            )),
-                                        subtitle: Text('Bank Transfer'),
-                                        trailing: Text(formattedDate),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                      ],
-                    ),
+                ListTile(
+                  leading: const Icon(Icons.account_balance_wallet),
+                  title: const Text('Bank Transfer'),
+                  trailing: Radio<String>(
+                    value: 'Bank Transfer',
+                    groupValue: selectedMethod,
+                    onChanged: (selected) {},
                   ),
                 ),
-              );
+
+                const SizedBox(height: 30),
+
+                // Top-Up Button
+                Center(
+                  child: ElevatedButton(
+                    onPressed: cubit.state.isButtonEnabled
+                        ? () {
+                            cubit.topUp();
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
+                    child: const Text('Top-Up Now'),
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // Transaction List
+                const Text(
+                  'Recent Transactions',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 10),
+                state.responses.isEmpty
+                    ? const Text('No transactions yet.')
+                    : ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height *
+                              0.5, // Limit the height
+                        ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.responses.length,
+                          itemBuilder: (context, index) {
+                            final transaction = state.responses[index];
+
+                            final parsedDate =
+                                DateTime.parse(transaction.date ?? "");
+                            final formattedDate =
+                                DateFormat('MMMM dd, yyyy - hh:mm a')
+                                    .format(parsedDate);
+                            return Card(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: ListTile(
+                                leading: const Icon(Icons.check_circle,
+                                    color: Colors.green),
+                                title: Text('\$${transaction.amount}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: transaction.amount.startsWith('-')
+                                          ? Colors.redAccent
+                                          : Colors.green,
+                                    )),
+                                subtitle: Text('Bank Transfer'),
+                                trailing: Text(formattedDate),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ],
+            ),
+          ),
+        );
       }, listener: (context, state) {
         if (state.isTopUpSuccess && state.loadStatus == LoadStatus.Done) {
           Navigator.push(
