@@ -64,9 +64,7 @@ class _TopUpScreenPage extends StatelessWidget {
                               selected: cubit.state.amount == amount.toString(),
                               selectedColor: Colors.deepPurple,
                               onSelected: (selected) {
-                                context
-                                    .read<TopUpCubit>()
-                                    .updateAmount(amount.toString());
+                                cubit.updateAmount(amount.toString());
                               },
                             );
                           }).toList(),
