@@ -32,28 +32,28 @@ class _HomePage extends StatelessWidget {
     {
       'title': 'Transfer',
       'date': 'Yesterday · 19:12',
-      'amount': -600000,
+      'amount': "-600000",
       'icon': Icons.swap_horiz,
       'color': Colors.red
     },
     {
       'title': 'Top Up',
       'date': 'May 29, 2023 · 19:12',
-      'amount': 60000,
+      'amount': "60000",
       'icon': Icons.account_balance_wallet,
       'color': Colors.green
     },
     {
       'title': 'Internet',
       'date': 'May 16, 2023 · 17:34',
-      'amount': -350000,
+      'amount': "-350000",
       'icon': Icons.wifi,
       'color': Colors.red
     },
     {
       'title': 'Work history',
       'date': 'May 13, 2022 · 17:94',
-      'amount': 450000,
+      'amount': "450000",
       'icon': Icons.work_history,
       'color': Colors.green
     },
