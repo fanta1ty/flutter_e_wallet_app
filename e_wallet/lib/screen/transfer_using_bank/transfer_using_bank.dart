@@ -37,43 +37,45 @@ class _TransferUsingBankPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TransferUsingBankCubit, TransferUsingBankState>(
-      builder: (context, state) {
-        return state.loadStatus == LoadStatus.Loading
-            ? const Center(child: CircularProgressIndicator())
-            : Scaffold(
-                appBar: _buildAppBar(context),
-                body: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _buildBalanceSection(),
-                      _buildTransferForm(context),
-                    ],
-                  ),
-                ),
-              );
-      },
-      listener: (context, state) {
-        if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SubmitedSlip(
-                request: TransferRequest(
-                  amount: state.amount,
-                  note: state.notes,
-                  phone: '',
-                  date: '',
-                  bankDate: state.date,
-                  bankCode: state.code,
-                  to: state.to,
-                  from: 'thnu',
-                ),
-              ),
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: BlocConsumer<TransferUsingBankCubit, TransferUsingBankState>(
+        builder: (context, state) {
+          if (state.loadStatus == LoadStatus.Loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildBalanceSection(),
+                _buildTransferForm(context),
+              ],
             ),
           );
-        }
-      },
+        },
+        listener: (context, state) {
+          if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubmitedSlip(
+                  request: TransferRequest(
+                    amount: state.amount,
+                    note: state.notes,
+                    phone: '',
+                    date: '',
+                    bankDate: state.date,
+                    bankCode: state.code,
+                    to: state.to,
+                    from: 'thnu',
+                  ),
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
