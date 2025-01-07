@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../constant/colours.dart';
+import '../../constant/utils.dart';
 import '../transfer/transfer.dart';
 
 class Home extends StatelessWidget {
@@ -58,12 +59,6 @@ class _HomePage extends StatelessWidget {
     },
   ];
 
-  String formatAmount(int amount) {
-    String formatted = amount.abs().toString().replaceAllMapped(
-        RegExp(r'(\d)(?=(\d{3})+$)'), (Match m) => '${m[1]}.');
-    return amount < 0 ? '-\$ $formatted' : '\$ $formatted';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +108,7 @@ class _HomePage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(formatAmount(100),
+                    Text(formatAmount("100"),
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 25,
