@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+
 String formattedPhone(String phone) {
   final cleanPhone = phone.replaceAll(RegExp(r'[^0-9]'), '');
   if (cleanPhone.length == 10) {
@@ -69,4 +71,30 @@ String generateVietnameseName() {
 
   // Assemble the full name
   return '$lastName $middleName $firstName';
+}
+
+String getTransactionTitle(String type) {
+  switch (type) {
+    case 'top_up':
+      return 'Top-Ups';
+    case 'withdraw':
+      return 'Withdrawals';
+    case 'transfer':
+      return 'Transfers';
+    default:
+      return 'Transactions';
+  }
+}
+
+IconData getTransactionIcon(String type) {
+  switch (type) {
+    case 'top_up':
+      return Icons.account_balance_wallet;
+    case 'withdraw':
+      return Icons.arrow_downward_rounded;
+    case 'transfer':
+      return Icons.swap_horiz;
+    default:
+      return Icons.receipt_long;
+  }
 }
