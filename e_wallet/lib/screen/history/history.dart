@@ -127,11 +127,11 @@ class _TransactionItem extends StatelessWidget {
     } else if (transaction.type == 'top_up') {
       title = 'Bank Transfer - ${transaction.to}';
       transactionDate = transaction.date!;
-      imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
+      imagePath = 'assets/image/topup_icon.png';
     } else if (transaction.type == 'withdraw') {
       title = 'Bank Transfer - ${transaction.to}';
       transactionDate = transaction.date!;
-      imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
+      imagePath = 'assets/image/withdraw_icon.png';
     }
 
     final parsedDate = DateTime.parse(transactionDate);
