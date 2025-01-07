@@ -28,43 +28,45 @@ class _TransferToBankPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
 
-    return BlocConsumer<TransferToBankCubit, TransferToBankState>(
-      builder: (context, state) {
-        return state.loadStatus == LoadStatus.Loading
-            ? const Center(child: CircularProgressIndicator())
-            : Scaffold(
-                appBar: _buildAppBar(context),
-                body: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _buildBalanceCard(),
-                      _buildTransferForm(context, _screenWidth),
-                    ],
-                  ),
-                ),
-              );
-      },
-      listener: (context, state) {
-        if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SubmitedSlip(
-                request: TransferRequest(
-                  amount: state.amount,
-                  note: state.notes,
-                  phone: '',
-                  date: '',
-                  bankDate: state.date,
-                  bankCode: state.code.toLowerCase(),
-                  to: state.to,
-                  from: 'thnu',
-                ),
-              ),
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: BlocConsumer<TransferToBankCubit, TransferToBankState>(
+        builder: (context, state) {
+          if (state.loadStatus == LoadStatus.Loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildBalanceCard(),
+                _buildTransferForm(context, _screenWidth),
+              ],
             ),
           );
-        }
-      },
+        },
+        listener: (context, state) {
+          if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubmitedSlip(
+                  request: TransferRequest(
+                    amount: state.amount,
+                    note: state.notes,
+                    phone: '',
+                    date: '',
+                    bankDate: state.date,
+                    bankCode: state.code.toLowerCase(),
+                    to: state.to,
+                    from: 'thnu',
+                  ),
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
