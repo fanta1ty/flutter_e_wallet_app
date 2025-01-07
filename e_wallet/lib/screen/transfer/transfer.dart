@@ -39,56 +39,58 @@ class _TransferPage extends StatelessWidget {
         builder: (context, state) {
           final transactions = state.responses;
 
-          return state.loadStatus == LoadStatus.Loading
-              ? const Center(child: CircularProgressIndicator())
-              : Container(
-                  height: screenHeight,
-                  color: btntxt,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
-                      _buildTransferOptions(context),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(30),
-                              topLeft: Radius.circular(30),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text(
-                                  "Latest Transfer",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 16),
-                                  itemCount: transactions.length,
-                                  itemBuilder: (context, index) {
-                                    final transaction = transactions[index];
-                                    return _TransactionItem(
-                                      transaction: transaction,
-                                      formatAmount: formatAmount,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
+          if (state.loadStatus == LoadStatus.Loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return Container(
+            height: screenHeight,
+            color: btntxt,
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                _buildTransferOptions(context),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Latest Transfer",
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            itemCount: transactions.length,
+                            itemBuilder: (context, index) {
+                              final transaction = transactions[index];
+                              return _TransactionItem(
+                                transaction: transaction,
+                                formatAmount: formatAmount,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                );
+                ),
+              ],
+            ),
+          );
         },
         listener: (context, state) {},
       ),
