@@ -44,11 +44,11 @@ class _SubmitedToFriendPage extends StatelessWidget {
     final double totalPayment = parsedAmount + 2.0;
     final imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
 
-    return BlocConsumer<SubmitedToFriendCubit, SubmitedToFriendState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: btntxt,
-          body: Center(
+    return Scaffold(
+      backgroundColor: btntxt,
+      body: BlocConsumer<SubmitedToFriendCubit, SubmitedToFriendState>(
+        builder: (context, state) {
+          return Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
               child: Column(
@@ -63,10 +63,10 @@ class _SubmitedToFriendPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        );
-      },
-      listener: (context, state) {},
+          );
+        },
+        listener: (context, state) {},
+      ),
     );
   }
 
