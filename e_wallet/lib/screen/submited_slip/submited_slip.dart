@@ -38,11 +38,11 @@ class _SubmitedSlipPage extends StatelessWidget {
     final double parsedAmount = double.tryParse(request.amount) ?? 0.0;
     final double totalPayment = parsedAmount + 2.0;
 
-    return BlocConsumer<SubmitedSlipCubit, SubmitedSlipState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: btntxt,
-          body: LayoutBuilder(
+    return Scaffold(
+      backgroundColor: btntxt,
+      body: BlocConsumer<SubmitedSlipCubit, SubmitedSlipState>(
+        builder: (context, state) {
+          return LayoutBuilder(
             builder: (context, constraints) {
               return Padding(
                 padding: const EdgeInsets.only(top: 50),
@@ -148,10 +148,10 @@ class _SubmitedSlipPage extends StatelessWidget {
                 ),
               );
             },
-          ),
-        );
-      },
-      listener: (context, state) {},
+          );
+        },
+        listener: (context, state) {},
+      ),
     );
   }
 
