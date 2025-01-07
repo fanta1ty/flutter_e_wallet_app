@@ -42,73 +42,55 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TransferToBanksCubit, TransferToBanksState>(
-      builder: (context, state) {
-        return state.loadStatus == LoadStatus.Loading
-            ? const Center(child: CircularProgressIndicator())
-            : Scaffold(
-                appBar: AppBar(
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new,
-                        color: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  title: const Text(
-                    "Transfer to Banks",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  centerTitle: true,
-                  backgroundColor: btntxt,
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: Image.asset('assets/image/help.png', height: 26),
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: BlocConsumer<TransferToBanksCubit, TransferToBanksState>(
+        builder: (context, state) {
+          if (state.loadStatus == LoadStatus.Loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return Container(
+            color: btntxt,
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                _buildSearchBar(),
+                const SizedBox(height: 30),
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
+                      ),
                     ),
-                  ],
-                ),
-                body: Container(
-                  color: btntxt,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
-                      _buildSearchBar(),
-                      const SizedBox(height: 30),
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(30),
-                              topLeft: Radius.circular(30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          child: Text(
+                            "All Banks",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 20),
-                                child: Text(
-                                  "All Banks",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(child: _buildBankList(context)),
-                            ],
-                          ),
                         ),
-                      ),
-                    ],
+                        Expanded(child: _buildBankList(context)),
+                      ],
+                    ),
                   ),
                 ),
-              );
-      },
-      listener: (context, state) {},
+              ],
+            ),
+          );
+        },
+        listener: (context, state) {},
+      ),
     );
   }
 
@@ -175,6 +157,31 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
           ),
         );
       },
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      title: const Text(
+        'Transfer to Banks',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      centerTitle: true,
+      backgroundColor: btntxt,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: Image.asset('assets/image/help.png', height: 26),
+        ),
+      ],
     );
   }
 }
