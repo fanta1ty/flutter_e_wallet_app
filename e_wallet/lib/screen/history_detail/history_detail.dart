@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../constant/utils.dart';
+
 class HistoryDetail extends StatelessWidget {
   final TransactionResponse transaction;
 
@@ -69,13 +71,6 @@ class _HistoryDetailPage extends StatelessWidget {
     } catch (e) {
       return "Invalid Date";
     }
-  }
-
-  String formatAmount(String amount) {
-    return "\$ ${amount.replaceAllMapped(
-      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    )}";
   }
 
   void _shareTransaction(
