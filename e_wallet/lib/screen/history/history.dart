@@ -128,6 +128,10 @@ class _TransactionItem extends StatelessWidget {
       title = 'Bank Transfer - ${transaction.to}';
       transactionDate = transaction.date!;
       imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
+    } else if (transaction.type == 'withdraw') {
+      title = 'Bank Transfer - ${transaction.to}';
+      transactionDate = transaction.date!;
+      imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
     }
 
     final parsedDate = DateTime.parse(transactionDate);
