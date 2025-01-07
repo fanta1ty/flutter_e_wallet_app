@@ -6,7 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../constant/colours.dart';
+import '../../constant/load_status.dart';
 import '../../constant/utils.dart';
+import '../../models/response/transaction_response.dart';
+import '../../repositories/api/api.dart';
 import '../transfer/transfer.dart';
 
 class Home extends StatelessWidget {
@@ -15,7 +18,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(),
+      create: (context) => HomeCubit(context.read<Api>())..fetchTransactions(),
       child: const _HomePage(),
     );
   }
@@ -29,49 +32,20 @@ class _HomePage extends StatelessWidget {
     {'name': 'Thinh Nguyen', 'image': 'assets/image/image1.png'},
   ];
 
-  static const List<Map<String, dynamic>> transactions = [
-    {
-      'title': 'Transfer',
-      'date': 'Yesterday · 19:12',
-      'amount': "-600000",
-      'icon': Icons.swap_horiz,
-      'color': Colors.red
-    },
-    {
-      'title': 'Top Up',
-      'date': 'May 29, 2023 · 19:12',
-      'amount': "60000",
-      'icon': Icons.account_balance_wallet,
-      'color': Colors.green
-    },
-    {
-      'title': 'Internet',
-      'date': 'May 16, 2023 · 17:34',
-      'amount': "-350000",
-      'icon': Icons.wifi,
-      'color': Colors.red
-    },
-    {
-      'title': 'Work history',
-      'date': 'May 13, 2022 · 17:94',
-      'amount': "450000",
-      'icon': Icons.work_history,
-      'color': Colors.green
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<HomeCubit, HomeState>(
         builder: (context, state) {
+          if (state.loadStatus == LoadStatus.Loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           return SafeArea(
             child: CustomScrollView(
               slivers: [
                 _buildHeader(context),
-                _buildQuickActions(),
-                _buildSendAgainSection(),
-                _buildLatestTransactions(),
+                _buildLatestTransactions(state.responses),
               ],
             ),
           );
@@ -268,23 +242,126 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildLatestTransactions() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        final transaction = transactions[index];
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.purple[100],
-            child: Icon(transaction['icon'], color: Colors.purple),
-          ),
-          title: Text(transaction['title'],
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text(transaction['date']),
-          trailing: Text(formatAmount(transaction['amount']),
+  Widget _buildLatestTransactions(List<TransactionResponse> transactions) {
+    int topUpCount = 0;
+    int transferCount = 0;
+    int withdrawCount = 0;
+
+    // Single pass to count transaction types
+    for (var transaction in transactions) {
+      switch (transaction.type) {
+        case 'top_up':
+          topUpCount++;
+          break;
+        case 'transfer':
+          transferCount++;
+          break;
+        case 'withdraw':
+          withdrawCount++;
+          break;
+      }
+    }
+
+    // Summary Items
+    final List<Map<String, dynamic>> summaries = [
+      {
+        'title': 'Top-Ups',
+        'count': topUpCount,
+        'icon': Icons.account_balance_wallet,
+        'color1': const Color(0xFF6DD5FA),
+        'color2': const Color(0xFF2980B9),
+      },
+      {
+        'title': 'Transfers',
+        'count': transferCount,
+        'icon': Icons.swap_horiz,
+        'color1': const Color(0xFFB993D6),
+        'color2': const Color(0xFF8CA6DB),
+      },
+      {
+        'title': 'Withdrawals',
+        'count': withdrawCount,
+        'icon': Icons.arrow_downward_rounded,
+        'color1': const Color(0xFFF8C471),
+        'color2': const Color(0xFFD35400),
+      },
+    ];
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Transaction Overview',
               style: TextStyle(
-                  color: transaction['color'], fontWeight: FontWeight.bold)),
-        );
-      }, childCount: transactions.length),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 15),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: summaries.length,
+              itemBuilder: (context, index) {
+                final summary = summaries[index];
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 15),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        summary['color1'],
+                        summary['color2'],
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: summary['color2'].withOpacity(0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 20),
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.white.withOpacity(0.15),
+                      child: Icon(
+                        summary['icon'],
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                    title: Text(
+                      summary['title'],
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    trailing: Text(
+                      '${summary['count']}',
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
