@@ -10,6 +10,13 @@ String formattedPhone(String phone) {
   return phone;
 }
 
+String formatAmount(String amount) {
+  return "\$ ${amount.replaceAllMapped(
+    RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+    (Match m) => '${m[1]},',
+  )}";
+}
+
 String generateVietnameseName() {
   final Random random = Random();
 
