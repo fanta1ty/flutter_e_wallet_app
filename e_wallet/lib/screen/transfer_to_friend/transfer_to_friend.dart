@@ -25,43 +25,45 @@ class _TransferToFriendPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TransferToFriendCubit, TransferToFriendState>(
-      builder: (context, state) {
-        return state.loadStatus == LoadStatus.Loading
-            ? const Center(child: CircularProgressIndicator())
-            : Scaffold(
-                appBar: _buildAppBar(context),
-                body: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _buildBalanceCard(),
-                      _buildTransferForm(context),
-                    ],
-                  ),
-                ),
-              );
-      },
-      listener: (context, state) {
-        if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SubmitedToFriend(
-                request: TransferRequest(
-                  amount: state.amount,
-                  note: state.notes,
-                  phone: state.phone,
-                  date: state.date,
-                  bankDate: '',
-                  bankCode: '',
-                  to: state.to,
-                  from: 'thnu',
-                ),
-              ),
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: BlocConsumer<TransferToFriendCubit, TransferToFriendState>(
+        builder: (context, state) {
+          if (state.loadStatus == LoadStatus.Loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildBalanceCard(),
+                _buildTransferForm(context),
+              ],
             ),
           );
-        }
-      },
+        },
+        listener: (context, state) {
+          if (state.isTransferSuccess && state.loadStatus == LoadStatus.Done) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubmitedToFriend(
+                  request: TransferRequest(
+                    amount: state.amount,
+                    note: state.notes,
+                    phone: state.phone,
+                    date: state.date,
+                    bankDate: '',
+                    bankCode: '',
+                    to: state.to,
+                    from: 'thnu',
+                  ),
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
