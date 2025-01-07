@@ -1,6 +1,7 @@
 import 'package:e_wallet/constant/load_status.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/screen/withdraw/withdraw_cubit.dart';
+import 'package:e_wallet/screen/withdraw_success/withdraw_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -159,14 +160,14 @@ class _WithdrawPage extends StatelessWidget {
         },
         listener: (context, state) {
           if (state.isWithdrawSuccess && state.loadStatus == LoadStatus.Done) {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => TopUpSuccessScreen(
-            //       amount: state.amount,
-            //     ),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WithdrawSuccessScreen(
+                  amount: state.amount,
+                ),
+              ),
+            );
           }
         },
       ),
