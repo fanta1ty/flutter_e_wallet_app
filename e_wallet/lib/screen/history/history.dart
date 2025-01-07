@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:e_wallet/constant/colours.dart';
-import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/response/transaction_response.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/screen/history/history_cubit.dart';
@@ -12,6 +11,7 @@ import 'package:intl/intl.dart';
 
 import '../../constant/banks.dart';
 import '../../constant/load_status.dart';
+import '../../constant/utils.dart';
 
 class History extends StatelessWidget {
   const History({super.key});
@@ -31,28 +31,30 @@ class _HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'Transaction History',
-          style: TextStyle(color: Colors.white, fontSize: 22),
-        ),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [btntxt, Colors.deepPurple],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+      appBar: _buildAppBar(),
+      body: _buildHistoryList(context),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: const Text(
+        'Transaction History',
+        style: TextStyle(color: Colors.white, fontSize: 22),
+      ),
+      centerTitle: true,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [btntxt, Colors.deepPurple],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
-        elevation: 2,
       ),
-      body: _buildHistoryList(context),
+      elevation: 2,
     );
   }
 
@@ -61,22 +63,39 @@ class _HistoryPage extends StatelessWidget {
       builder: (context, state) {
         final transactions = state.responses;
 
-        return state.loadStatus == LoadStatus.Loading
-            ? const Center(child: CircularProgressIndicator())
-            : transactions.isEmpty
-                ? const Center(
-                    child: Text(
-                      'No transactions yet',
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 16),
-                    itemCount: transactions.length,
-                    itemBuilder: (context, index) {
-                      final transaction = transactions[index];
-                      return GestureDetector(
+        if (state.loadStatus == LoadStatus.Loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (transactions.isEmpty) {
+          return const Center(
+            child: Text(
+              'No transactions yet',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+          );
+        }
+
+        final groupedTransactions = _groupTransactions(transactions);
+
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          itemCount: groupedTransactions.length,
+          itemBuilder: (context, index) {
+            final date = groupedTransactions.keys.elementAt(index);
+            final types = groupedTransactions[date]!;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildDateHeader(date),
+                ...types.entries.expand((typeEntry) {
+                  final type = typeEntry.key;
+                  final transactionsByType = typeEntry.value;
+
+                  return [
+                    _buildTypeHeader(type),
+                    ...transactionsByType.map(
+                      (transaction) => GestureDetector(
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -88,12 +107,79 @@ class _HistoryPage extends StatelessWidget {
                           transaction: transaction,
                           formatAmount: formatAmount,
                         ),
-                      );
-                    },
-                  );
+                      ),
+                    ),
+                  ];
+                }),
+              ],
+            );
+          },
+        );
       },
       listener: (context, state) {},
     );
+  }
+
+  Widget _buildDateHeader(String date) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Text(
+        date,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTypeHeader(String type) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 4, left: 5),
+      child: Text(
+        type,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.deepPurple,
+        ),
+      ),
+    );
+  }
+
+  Map<String, Map<String, List<TransactionResponse>>> _groupTransactions(
+      List<TransactionResponse> transactions) {
+    Map<String, Map<String, List<TransactionResponse>>> groupedTransactions =
+        {};
+
+    for (var transaction in transactions) {
+      final parsedDate = DateTime.parse(transaction.bankDate?.isNotEmpty == true
+          ? transaction.bankDate!
+          : transaction.date!);
+      final formattedDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+
+      final type = _getTransactionType(transaction.type);
+
+      groupedTransactions.putIfAbsent(formattedDate, () => {});
+      groupedTransactions[formattedDate]!
+          .putIfAbsent(type, () => [])
+          .add(transaction);
+    }
+    return groupedTransactions;
+  }
+
+  String _getTransactionType(String type) {
+    switch (type) {
+      case 'top_up':
+        return 'Top-Ups';
+      case 'transfer':
+        return 'Transfers';
+      case 'withdraw':
+        return 'Withdrawals';
+      default:
+        return 'Others';
+    }
   }
 }
 
@@ -109,55 +195,31 @@ class _TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String title = '';
-    String imagePath = '';
-    String transactionDate = '';
-
-    if (transaction.type == 'transfer') {
-      if (transaction.bankDate != null && transaction.bankDate!.isNotEmpty) {
-        title =
-            '${fetchBankNameWith(transaction.bankCode)} - ${transaction.to}';
-        imagePath = fetchBankImageWith(transaction.bankCode);
-        transactionDate = transaction.bankDate!;
-      } else {
-        title = '${formattedPhone(transaction.phone)} - ${transaction.to}';
-        transactionDate = transaction.date!;
-        imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
-      }
-    } else if (transaction.type == 'top_up') {
-      title = 'Bank Transfer - ${transaction.to}';
-      transactionDate = transaction.date!;
-      imagePath = 'assets/image/topup_icon.png';
-    } else if (transaction.type == 'withdraw') {
-      title = 'Bank Transfer - ${transaction.to}';
-      transactionDate = transaction.date!;
-      imagePath = 'assets/image/withdraw_icon.png';
-    }
-
-    final parsedDate = DateTime.parse(transactionDate);
+    final title = _getTitle();
+    final imagePath = _getImagePath();
+    final parsedDate = DateTime.parse(transaction.bankDate?.isNotEmpty == true
+        ? transaction.bankDate!
+        : transaction.date!);
     final formattedDate =
         DateFormat('MMMM dd, yyyy - hh:mm a').format(parsedDate);
 
     return Card(
-      elevation: 4,
+      elevation: 3,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(12),
+        contentPadding: const EdgeInsets.all(14),
         leading: CircleAvatar(
           backgroundImage: AssetImage(imagePath),
-          radius: 30,
+          radius: 28,
         ),
         title: Text(
           title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
-        subtitle: Text(
-          formattedDate,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
+        subtitle: Text(formattedDate),
         trailing: Text(
           formatAmount(transaction.amount),
           style: TextStyle(
@@ -170,5 +232,28 @@ class _TransactionItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getTitle() {
+    if (transaction.type == 'transfer') {
+      return '${fetchBankNameWith(transaction.bankCode)} - ${transaction.to}';
+    }
+    return transaction.to ?? 'Transaction';
+  }
+
+  String _getImagePath() {
+    switch (transaction.type) {
+      case 'top_up':
+        return 'assets/image/topup_icon.png';
+      case 'withdraw':
+        return 'assets/image/withdraw_icon.png';
+      case 'transfer':
+        return (transaction.bankDate != null &&
+                transaction.bankDate!.isNotEmpty)
+            ? fetchBankImageWith(transaction.bankCode)
+            : 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
+      default:
+        return 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
+    }
   }
 }
