@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../models/request/signup_request.dart';
 import '../../models/request/topup_request.dart';
+import '../../models/request/withdraw_request.dart';
 import '../../models/response/signup_response.dart';
 import '../../models/user_session.dart';
 
@@ -167,6 +168,31 @@ class ApiImpl implements Api {
         'to': userSession.email,
         'from': userSession.email,
         'type': 'top_up',
+      },
+    );
+  }
+
+  Future<void> withdraw(
+    WithdrawRequest request,
+  ) async {
+    final userSession = UserSession();
+    final doc = FirebaseFirestore.instance
+        .collection(
+          'transactions_${userSession.userId}',
+        )
+        .doc();
+
+    await doc.set(
+      {
+        'amount': request.amount,
+        'note': '',
+        'date': request.date,
+        'phone': '',
+        'bankDate': '',
+        'bankCode': '',
+        'to': userSession.email,
+        'from': userSession.email,
+        'type': 'withdraw',
       },
     );
   }
