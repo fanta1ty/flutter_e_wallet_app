@@ -1,4 +1,5 @@
 import 'package:e_wallet/screen/home/home_cubit.dart';
+import 'package:e_wallet/screen/more/more.dart';
 import 'package:e_wallet/screen/topup/topup.dart';
 import 'package:e_wallet/screen/withdraw/withdraw.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +167,9 @@ class _HomePage extends StatelessWidget {
             _buildActionItem(context, 'Withdraw', 'icon-wallet.png',
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => WithdrawScreen()))),
-            _buildActionItem(context, 'More', 'icon-more.png'),
+            _buildActionItem(context, 'More', 'icon-more.png',
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MoreScreen()))),
           ],
         ),
       ),
