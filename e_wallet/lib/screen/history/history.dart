@@ -29,13 +29,6 @@ class History extends StatelessWidget {
 class _HistoryPage extends StatelessWidget {
   const _HistoryPage({super.key});
 
-  String formatAmount(String amount) {
-    return '\$ ${amount.replaceAllMapped(
-      RegExp(r'(\d)(?=(\d{3})+\$)'),
-      (Match m) => '${m[1]}.',
-    )}';
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
