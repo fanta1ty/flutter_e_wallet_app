@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/load_status.dart';
+import '../../l10n/app_localizations.dart';
 import '../../repositories/api/api.dart';
 import '../submited_to_friend/submited_to_friend.dart';
 
@@ -36,7 +37,7 @@ class _TransferToFriendPage extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               children: [
-                _buildBalanceCard(),
+                _buildBalanceCard(context),
                 _buildTransferForm(context),
               ],
             ),
@@ -68,6 +69,7 @@ class _TransferToFriendPage extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -75,8 +77,8 @@ class _TransferToFriendPage extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      title: const Text(
-        'Transfer to Friends',
+      title: Text(
+        appLoc.transfer_to_friends,
         style: TextStyle(
           color: Colors.white,
         ),
@@ -87,18 +89,19 @@ class _TransferToFriendPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBalanceCard() {
+  Widget _buildBalanceCard(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       color: btntxt,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Your Balance",
+                appLoc.your_balance,
                 style: TextStyle(fontSize: 15, color: Colors.white),
               ),
               SizedBox(height: 10),
@@ -108,21 +111,21 @@ class _TransferToFriendPage extends StatelessWidget {
               ),
             ],
           ),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.wallet, color: btntxt),
-            label: const Text(
-              "Top Up",
-              style: TextStyle(color: btntxt),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-            ),
-          )
+          // ElevatedButton.icon(
+          //   onPressed: () {},
+          //   icon: const Icon(Icons.wallet, color: btntxt),
+          //   label: Text(
+          //     appLoc.top_up,
+          //     style: TextStyle(color: btntxt),
+          //   ),
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Colors.white,
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(20),
+          //     ),
+          //     padding: const EdgeInsets.symmetric(horizontal: 20),
+          //   ),
+          // )
         ],
       ),
     );
@@ -130,7 +133,7 @@ class _TransferToFriendPage extends StatelessWidget {
 
   Widget _buildTransferForm(BuildContext context) {
     final cubit = context.read<TransferToFriendCubit>();
-
+    final appLoc = AppLocalizations.of(context)!;
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -141,8 +144,8 @@ class _TransferToFriendPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTextField(
-            label: "Phone Number",
-            hint: "Input Phone Number",
+            label: appLoc.phone_number,
+            hint: appLoc.input_phone_number,
             icon: Icons.contact_page,
             onTap: () {},
             onChanged: cubit.updatePhone,
@@ -151,8 +154,8 @@ class _TransferToFriendPage extends StatelessWidget {
           _buildAmountField(context, cubit),
           const SizedBox(height: 30),
           _buildTextField(
-            label: "Notes (Optional)",
-            hint: "Write your notes here",
+            label: appLoc.notes_optional,
+            hint: appLoc.write_your_notes_here,
             onChanged: cubit.updateNotes,
             maxLines: 3,
           ),
@@ -198,11 +201,12 @@ class _TransferToFriendPage extends StatelessWidget {
   }
 
   Widget _buildAmountField(BuildContext context, TransferToFriendCubit cubit) {
+    final appLoc = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
-          "Set Amount",
+        Text(
+          appLoc.set_amount,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
@@ -227,6 +231,7 @@ class _TransferToFriendPage extends StatelessWidget {
   }
 
   Widget _buildSubmitButton(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return ElevatedButton(
       onPressed: context.watch<TransferToFriendCubit>().state.isButtonEnabled
           ? () => context.read<TransferToFriendCubit>().transfer()
@@ -236,7 +241,7 @@ class _TransferToFriendPage extends StatelessWidget {
         foregroundColor: Colors.white,
         minimumSize: const Size(double.infinity, 50),
       ),
-      child: Center(child: const Text('Proceed to Transfer')),
+      child: Center(child: Text(appLoc.proceed_to_transfer)),
     );
   }
 }
