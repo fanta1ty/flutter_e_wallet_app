@@ -1,6 +1,9 @@
+import 'package:e_wallet/main_cubit.dart';
 import 'package:e_wallet/screen/more/more_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../constant/colours.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -14,49 +17,41 @@ class MoreScreen extends StatelessWidget {
   }
 }
 
-class MoreScreenContent extends StatelessWidget {
+class MoreScreenContent extends StatefulWidget {
   const MoreScreenContent({super.key});
 
   @override
+  State<MoreScreenContent> createState() => _MoreScreenContentState();
+}
+
+class _MoreScreenContentState extends State<MoreScreenContent> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final mainCubit = context.read<MainCubit>();
+    final mainState = context.watch<MainCubit>().state;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(color: Colors.white, fontSize: 22),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        elevation: 2,
-      ),
+      appBar: _buildAppBar(context),
       body: BlocBuilder<MoreCubit, MoreState>(
         builder: (context, state) {
           return ListView(
             padding: const EdgeInsets.all(20),
             children: [
               _buildSettingsTile(
-                title: 'Notifications',
-                icon: Icons.notifications_active_outlined,
-                trailing: Switch(
-                  value: state.notificationsEnabled,
-                  onChanged: (bool value) {
-                    context.read<MoreCubit>().toggleNotifications(value);
-                  },
-                ),
-              ),
-              const Divider(height: 1, thickness: 0.5),
-              _buildSettingsTile(
                 title: 'Dark Mode',
                 icon: Icons.dark_mode_outlined,
                 trailing: Switch(
-                  value: state.isDarkMode,
+                  value: mainState.isDarkMode,
                   onChanged: (bool value) {
-                    context.read<MoreCubit>().toggleDarkMode(value);
+                    mainCubit.toggleTheme(value);
                   },
                 ),
               ),
-              const Divider(height: 1, thickness: 0.5),
-              _buildLanguageSelector(context, state),
             ],
           );
         },
@@ -80,49 +75,22 @@ class MoreScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _buildLanguageSelector(BuildContext context, MoreState state) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-      leading: const Icon(Icons.language_outlined,
-          color: Colors.deepPurple, size: 28),
-      title: const Text(
-        'Language',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
-      subtitle: Text(state.selectedLanguage,
-          style: const TextStyle(fontSize: 16, color: Colors.grey)),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-      onTap: () {
-        _showLanguageSelectionDialog(context, state.selectedLanguage);
-      },
-    );
-  }
-
-  void _showLanguageSelectionDialog(
-      BuildContext context, String selectedLanguage) {
-    final List<String> languages = ['English', 'Spanish', 'French', 'German'];
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Language'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: languages.map((language) {
-              return RadioListTile<String>(
-                title: Text(language),
-                value: language,
-                groupValue: selectedLanguage,
-                onChanged: (String? value) {
-                  context.read<MoreCubit>().changeLanguage(value!);
-                  Navigator.of(context).pop();
-                },
-              );
-            }).toList(),
-          ),
-        );
-      },
+      title: const Text(
+        'Settings',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      centerTitle: true,
+      backgroundColor: btntxt,
     );
   }
 }
