@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../constant/utils.dart';
+import '../../l10n/app_localizations.dart';
 
 class HistoryDetail extends StatelessWidget {
   final TransactionResponse transaction;
@@ -64,32 +65,34 @@ class _HistoryDetailPage extends StatelessWidget {
     );
   }
 
-  String _formatDate(String dateString) {
+  String _formatDate(BuildContext context, String dateString) {
+    final appLoc = AppLocalizations.of(context)!;
     try {
-      final date = DateTime.parse(dateString);
-      return "${date.day}/${date.month}/${date.year}";
+      return formatCustomDate(context, dateString);
     } catch (e) {
-      return "Invalid Date";
+      return appLoc.invalid_date;
     }
   }
 
   void _shareTransaction(
       BuildContext context, TransactionResponse transaction) {
+    final appLoc = AppLocalizations.of(context)!;
     final shareText = '''
-Transaction Details:
-To: ${transaction.to}
-Amount: ${formatAmount(transaction.amount)}
-Date: ${_formatDate(transaction.bankDate == null ? transaction.date! : transaction.bankDate!)}
-From: ${transaction.from}
+${appLoc.transaction_detail}:
+${appLoc.to}: ${transaction.to}
+${appLoc.amount}: ${formatAmount(transaction.amount)}
+${appLoc.date}: ${_formatDate(context, transaction.bankDate?.isNotEmpty == true ? transaction.bankDate! : transaction.date!)}
+${appLoc.from}: ${transaction.from}
 ''';
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Shared: \n$shareText")),
+      SnackBar(content: Text("${appLoc.shared}: \n$shareText")),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return BlocConsumer<HistoryDetailCubit, HistoryDetailState>(
       builder: (context, state) {
         return Scaffold(
@@ -101,8 +104,8 @@ From: ${transaction.from}
                 Navigator.pop(context);
               },
             ),
-            title: const Text(
-              'Transaction Detail',
+            title: Text(
+              appLoc.transaction_detail,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22,
@@ -131,26 +134,35 @@ From: ${transaction.from}
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildDetailRow("To:", transaction.to,
+                    _buildDetailRow("${appLoc.to}:", transaction.to,
                         icon: Icons.person_outline),
-                    _buildDetailRow("Amount:", formatAmount(transaction.amount),
+                    _buildDetailRow(
+                        "${appLoc.amount}:", formatAmount(transaction.amount),
                         icon: Icons.attach_money),
                     _buildDetailRow(
-                        "Date:",
-                        _formatDate(transaction.bankDate == null
-                            ? transaction.date!
-                            : transaction.bankDate!),
+                        "${appLoc.date}:",
+                        _formatDate(
+                            context,
+                            transaction.bankDate?.isNotEmpty == true
+                                ? transaction.bankDate!
+                                : transaction.date!),
                         icon: Icons.calendar_today),
-                    _buildDetailRow("From:", transaction.from,
+                    _buildDetailRow("${appLoc.from}:", transaction.from,
                         icon: Icons.account_circle_outlined),
-                    _buildDetailRow("Note:",
-                        transaction.note.isEmpty ? "No Note" : transaction.note,
+                    _buildDetailRow(
+                        "${appLoc.note}:",
+                        transaction.note.isEmpty
+                            ? appLoc.no_note
+                            : transaction.note,
                         icon: Icons.edit_note),
                     const SizedBox(height: 40),
                     Center(
                       child: ElevatedButton.icon(
-                        icon: const Icon(Icons.share),
-                        label: const Text('Share Transaction'),
+                        icon: const Icon(
+                          Icons.share,
+                          color: Colors.white,
+                        ),
+                        label: Text(appLoc.share_transaction),
                         onPressed: () {
                           _shareTransaction(context, transaction);
                         },
