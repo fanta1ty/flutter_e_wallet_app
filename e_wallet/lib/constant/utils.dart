@@ -105,3 +105,10 @@ String formatCustomDate(BuildContext context, String dateString) {
   final locale = Localizations.localeOf(context).languageCode;
   return DateFormat('MMMM dd, yyyy - hh:mm a', locale).format(date);
 }
+
+String formatCustomDate2(
+    BuildContext context, String dateString, String dateFormat) {
+  final date = DateTime.parse(dateString);
+  final locale = Localizations.localeOf(context).languageCode;
+  return DateFormat(dateFormat, locale).format(date);
+}
