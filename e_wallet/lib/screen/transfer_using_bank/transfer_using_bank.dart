@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/colours.dart';
 import '../../constant/load_status.dart';
+import '../../l10n/app_localizations.dart';
 import '../../repositories/api/api.dart';
 
 class TransferUsingBank extends StatelessWidget {
@@ -48,7 +49,7 @@ class _TransferUsingBankPage extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               children: [
-                _buildBalanceSection(),
+                _buildBalanceSection(context),
                 _buildTransferForm(context),
               ],
             ),
@@ -80,6 +81,7 @@ class _TransferUsingBankPage extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -87,8 +89,8 @@ class _TransferUsingBankPage extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      title: const Text(
-        "Transfer through Bank",
+      title: Text(
+        appLoc.transfer_to_bank,
         style: TextStyle(color: Colors.white, fontSize: 18),
       ),
       centerTitle: true,
@@ -102,7 +104,8 @@ class _TransferUsingBankPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBalanceSection() {
+  Widget _buildBalanceSection(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       color: btntxt,
@@ -110,11 +113,11 @@ class _TransferUsingBankPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Your Balance",
+                appLoc.your_balance,
                 style: TextStyle(fontSize: 15, color: Colors.white),
               ),
               SizedBox(height: 10),
@@ -124,20 +127,20 @@ class _TransferUsingBankPage extends StatelessWidget {
               ),
             ],
           ),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.wallet, color: btntxt),
-            label: const Text(
-              "Top Up",
-              style: TextStyle(color: btntxt),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-          )
+          // ElevatedButton.icon(
+          //   onPressed: () {},
+          //   icon: const Icon(Icons.wallet, color: btntxt),
+          //   label: const Text(
+          //     "Top Up",
+          //     style: TextStyle(color: btntxt),
+          //   ),
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Colors.white,
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(20),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -177,9 +180,10 @@ class _TransferUsingBankPage extends StatelessWidget {
   }
 
   Widget _buildAmountField(BuildContext context, TransferUsingBankCubit cubit) {
+    final appLoc = AppLocalizations.of(context)!;
     return Column(
       children: [
-        const Text("Set Amount",
+        Text(appLoc.set_amount,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -202,10 +206,11 @@ class _TransferUsingBankPage extends StatelessWidget {
   }
 
   Widget _buildNotesField(BuildContext context, TransferUsingBankCubit cubit) {
+    final appLoc = AppLocalizations.of(context)!;
     return TextField(
       onChanged: cubit.updateNotes,
       decoration: InputDecoration(
-        hintText: "Add a note (optional)",
+        hintText: appLoc.notes_optional,
         filled: true,
         fillColor: Colors.grey[100],
         border: OutlineInputBorder(
@@ -218,6 +223,7 @@ class _TransferUsingBankPage extends StatelessWidget {
   }
 
   Widget _buildSubmitButton(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return ElevatedButton(
       onPressed: context.watch<TransferUsingBankCubit>().state.isButtonEnabled
           ? () {
@@ -233,7 +239,7 @@ class _TransferUsingBankPage extends StatelessWidget {
         minimumSize: const Size(double.infinity, 50),
       ),
       child: Center(
-        child: const Text("Proceed to Transfer"),
+        child: Text(appLoc.proceed_to_transfer),
       ),
     );
   }
