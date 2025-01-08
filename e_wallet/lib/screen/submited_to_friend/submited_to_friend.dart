@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../constant/colours.dart';
+import '../../l10n/app_localizations.dart';
 import '../nabbar/nabbar.dart';
 
 class SubmitedToFriend extends StatelessWidget {
@@ -34,8 +35,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate =
-        DateFormat('MMMM d, yyyy').format(DateTime.parse(request.date));
+    final formattedDate = formatCustomDate(context, request.date);
     final formattedTime =
         DateFormat('hh:mm a').format(DateTime.parse(request.date));
 
@@ -72,6 +72,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
 
   Widget _buildTransactionCard(double amount, double totalPayment, String date,
       String time, String imagePath, BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       constraints: const BoxConstraints(maxWidth: 400),
@@ -90,15 +91,15 @@ class _SubmitedToFriendPage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text(
-            "Transfer Successful",
+          Text(
+            appLoc.transfer_successful,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 color: Color(0xFF04ba62)),
           ),
           const SizedBox(height: 5),
-          const Text("Your transaction was successful"),
+          Text(appLoc.your_transaction_was_successful),
           const SizedBox(height: 20),
           Text(
             '\$ ${amount.toStringAsFixed(2)}',
@@ -117,14 +118,15 @@ class _SubmitedToFriendPage extends StatelessWidget {
           ),
           const Divider(),
           _buildTransactionDetailRow(
-              "Payment", '\$ ${amount.toStringAsFixed(2)}'),
-          _buildTransactionDetailRow("Date", date),
-          _buildTransactionDetailRow("Time", time),
-          _buildTransactionDetailRow("Reference Number", "QOIU-0012-ADFE-2234"),
-          _buildTransactionDetailRow("Fee", "\$ 2.0"),
+              appLoc.payment, '\$ ${amount.toStringAsFixed(2)}'),
+          _buildTransactionDetailRow(appLoc.date, date),
+          _buildTransactionDetailRow(appLoc.time, time),
+          _buildTransactionDetailRow(
+              appLoc.reference_number, "QOIU-0012-ADFE-2234"),
+          _buildTransactionDetailRow(appLoc.fee, "\$ 2.0"),
           const Divider(),
           _buildTransactionDetailRow(
-              "Total Payment", '\$ ${totalPayment.toStringAsFixed(2)}',
+              appLoc.total_payment, '\$ ${totalPayment.toStringAsFixed(2)}',
               isBold: true, color: btntxt, fontSize: 18),
         ],
       ),
@@ -154,6 +156,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
   }
 
   Widget _buildButtons(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Column(
       children: [
         ElevatedButton(
@@ -164,7 +167,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
           ),
-          child: const Text('Share', style: TextStyle(color: Colors.white)),
+          child: Text(appLoc.share, style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 15),
         ElevatedButton(
@@ -180,7 +183,7 @@ class _SubmitedToFriendPage extends StatelessWidget {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
           ),
-          child: const Text('Back to Home', style: TextStyle(color: btntxt)),
+          child: Text(appLoc.back_to_home, style: TextStyle(color: btntxt)),
         ),
       ],
     );
