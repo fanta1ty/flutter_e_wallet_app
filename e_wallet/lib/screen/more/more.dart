@@ -1,10 +1,10 @@
+import 'package:e_wallet/constant/colours.dart';
 import 'package:e_wallet/language_cubit.dart';
 import 'package:e_wallet/main_cubit.dart';
 import 'package:e_wallet/screen/more/more_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../constant/colours.dart';
 import '../../l10n/app_localizations.dart';
 
 class MoreScreen extends StatelessWidget {
@@ -28,11 +28,6 @@ class MoreScreenContent extends StatefulWidget {
 
 class _MoreScreenContentState extends State<MoreScreenContent> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final mainCubit = context.read<MainCubit>();
     final mainState = context.watch<MainCubit>().state;
@@ -41,26 +36,58 @@ class _MoreScreenContentState extends State<MoreScreenContent> {
 
     return Scaffold(
       appBar: _buildAppBar(context, appLoc),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: BlocBuilder<MoreCubit, MoreState>(
         builder: (context, state) {
           return ListView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             children: [
-              _buildLanguageSelector(context, appLoc.language),
-              const Divider(height: 1, thickness: 0.5),
-              _buildSettingsTile(
-                title: appLoc.dark_mode,
-                icon: Icons.dark_mode_outlined,
-                trailing: Switch(
-                  value: mainState.isDarkMode,
-                  onChanged: (bool value) {
-                    mainCubit.toggleTheme(value);
-                  },
+              _buildSectionTitle(appLoc.settings),
+              const SizedBox(height: 10),
+              _buildCard(
+                child: Column(
+                  children: [
+                    _buildLanguageSelector(context, appLoc.language),
+                    const Divider(height: 1),
+                    _buildSettingsTile(
+                      title: appLoc.dark_mode,
+                      icon: mainState.isDarkMode
+                          ? Icons.nightlight_round
+                          : Icons.wb_sunny,
+                      trailing: Switch(
+                        value: mainState.isDarkMode,
+                        onChanged: (bool value) {
+                          mainCubit.toggleTheme(value);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildCard({required Widget child}) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      color: Theme.of(context).cardColor,
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: child,
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).textTheme.bodyLarge!.color,
       ),
     );
   }
@@ -71,8 +98,12 @@ class _MoreScreenContentState extends State<MoreScreenContent> {
     Widget? trailing,
   }) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-      leading: Icon(icon, color: Colors.deepPurple, size: 28),
+      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      leading: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.primary,
+        size: 28,
+      ),
       title: Text(
         title,
         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
@@ -81,11 +112,9 @@ class _MoreScreenContentState extends State<MoreScreenContent> {
     );
   }
 
-  AppBar _buildAppBar(
-    BuildContext context,
-    AppLocalizations appLoc,
-  ) {
+  AppBar _buildAppBar(BuildContext context, AppLocalizations appLoc) {
     return AppBar(
+      backgroundColor: btntxt,
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new,
@@ -97,12 +126,10 @@ class _MoreScreenContentState extends State<MoreScreenContent> {
       ),
       title: Text(
         appLoc.settings,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
+        style: const TextStyle(fontSize: 22, color: Colors.white),
       ),
       centerTitle: true,
-      backgroundColor: btntxt,
+      elevation: 2,
     );
   }
 
@@ -110,7 +137,7 @@ class _MoreScreenContentState extends State<MoreScreenContent> {
     final appLoc = AppLocalizations.of(context);
 
     return ListTile(
-      leading: const Icon(Icons.language, color: Colors.deepPurple),
+      leading: const Icon(Icons.language),
       title: Text(appLoc!.language),
       subtitle: Text(currentLanguage),
       onTap: () {
