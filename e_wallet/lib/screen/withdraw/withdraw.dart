@@ -1,12 +1,13 @@
 import 'package:e_wallet/constant/load_status.dart';
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/screen/withdraw/withdraw_cubit.dart';
 import 'package:e_wallet/screen/withdraw_success/withdraw_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../constant/colours.dart';
+import '../../l10n/app_localizations.dart';
 
 class WithdrawScreen extends StatelessWidget {
   const WithdrawScreen({super.key});
@@ -26,6 +27,7 @@ class _WithdrawPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: _buildAppBar(context),
       body: BlocConsumer<WithdrawCubit, WithdrawState>(
@@ -42,8 +44,8 @@ class _WithdrawPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Withdrawal Amount',
+                        Text(
+                          appLoc.withdrawal_amount,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
@@ -71,7 +73,7 @@ class _WithdrawPage extends StatelessWidget {
                           onChanged: cubit.updateAmount,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: 'Enter custom amount',
+                            hintText: appLoc.enter_custom_amount,
                             prefixIcon: const Icon(Icons.attach_money),
                             filled: true,
                             fillColor: Colors.grey[100],
@@ -102,32 +104,30 @@ class _WithdrawPage extends StatelessWidget {
                               foregroundColor: Colors.white,
                               minimumSize: const Size(double.infinity, 50),
                             ),
-                            child: const Text('Withdraw Now'),
+                            child: Text(appLoc.withdraw_now),
                           ),
                         ),
 
                         const SizedBox(height: 40),
 
                         // Transaction List
-                        const Text(
-                          'Recent Withdrawals',
+                        Text(
+                          appLoc.recent_withdrawals,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 10),
                         state.responses.isEmpty
-                            ? const Text('No withdrawals yet.')
+                            ? Text(appLoc.no_withdrawals_yet)
                             : ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: state.responses.length,
                                 itemBuilder: (context, index) {
                                   final transaction = state.responses[index];
-                                  final parsedDate =
-                                      DateTime.parse(transaction.date ?? "");
-                                  final formattedDate =
-                                      DateFormat('MMMM dd, yyyy - hh:mm a')
-                                          .format(parsedDate);
+                                  final formattedDate = formatCustomDate(
+                                      context, transaction.date!);
+
                                   return Card(
                                     elevation: 4,
                                     shape: RoundedRectangleBorder(
@@ -147,7 +147,7 @@ class _WithdrawPage extends StatelessWidget {
                                                 ? Colors.redAccent
                                                 : Colors.green,
                                           )),
-                                      subtitle: Text('Bank Transfer'),
+                                      subtitle: Text(appLoc.bank_transfer),
                                       trailing: Text(formattedDate),
                                     ),
                                   );
@@ -175,6 +175,7 @@ class _WithdrawPage extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -182,18 +183,14 @@ class _WithdrawPage extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      title: const Text(
-        'Withdraw',
+      title: Text(
+        appLoc.withdraw,
         style: TextStyle(
           color: Colors.white,
         ),
       ),
       centerTitle: true,
       backgroundColor: btntxt,
-      actions: [
-        Image.asset('assets/image/help.png'),
-        const SizedBox(width: 30),
-      ],
     );
   }
 }
