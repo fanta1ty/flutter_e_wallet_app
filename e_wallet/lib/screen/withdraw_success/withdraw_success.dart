@@ -2,6 +2,7 @@ import 'package:e_wallet/screen/withdraw_success/withdraw_success_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../nabbar/nabbar.dart';
 
 class WithdrawSuccessScreen extends StatelessWidget {
@@ -33,6 +34,7 @@ class _WithdrawSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Scaffold(
       body: Center(
         child: Padding(
@@ -50,8 +52,8 @@ class _WithdrawSuccessPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              const Text(
-                'Withdrawal Successful!',
+              Text(
+                appLoc.withdrawal_successful,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -59,7 +61,7 @@ class _WithdrawSuccessPage extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               Text(
-                '\$$amount has been withdrawn.',
+                '\$$amount ${appLoc.has_been_withdrawn}',
                 style: const TextStyle(fontSize: 18, color: Colors.black54),
               ),
               const SizedBox(height: 70),
@@ -78,8 +80,8 @@ class _WithdrawSuccessPage extends StatelessWidget {
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 50),
                 ),
-                child: const Text(
-                  'Return to Home',
+                child: Text(
+                  appLoc.return_to_home,
                   style: TextStyle(fontSize: 16),
                 ),
               ),
