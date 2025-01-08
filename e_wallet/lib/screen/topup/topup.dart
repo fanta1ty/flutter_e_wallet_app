@@ -1,12 +1,13 @@
 import 'package:e_wallet/constant/load_status.dart';
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/repositories/api/api.dart';
 import 'package:e_wallet/screen/topup/topup_cubit.dart';
 import 'package:e_wallet/screen/topup_success/topup_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../constant/colours.dart';
+import '../../l10n/app_localizations.dart';
 
 class TopUpScreen extends StatelessWidget {
   const TopUpScreen({super.key});
@@ -26,6 +27,7 @@ class _TopUpScreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: _buildAppBar(context),
       body: BlocConsumer<TopUpCubit, TopUpState>(builder: (context, state) {
@@ -42,8 +44,8 @@ class _TopUpScreenPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Top-Up Amount',
+                Text(
+                  appLoc.top_up_amount,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 20),
@@ -73,7 +75,7 @@ class _TopUpScreenPage extends StatelessWidget {
 
                 ListTile(
                   leading: const Icon(Icons.account_balance_wallet),
-                  title: const Text('Bank Transfer'),
+                  title: Text(appLoc.bank_transfer),
                   trailing: Radio<String>(
                     value: 'Bank Transfer',
                     groupValue: selectedMethod,
@@ -96,20 +98,20 @@ class _TopUpScreenPage extends StatelessWidget {
                       foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: const Text('Top-Up Now'),
+                    child: Text(appLoc.top_up_now),
                   ),
                 ),
 
                 const SizedBox(height: 40),
 
                 // Transaction List
-                const Text(
-                  'Recent Transactions',
+                Text(
+                  appLoc.recent_top_ups,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 10),
                 state.responses.isEmpty
-                    ? const Text('No transactions yet.')
+                    ? Text(appLoc.no_top_ups_yet)
                     : ConstrainedBox(
                         constraints: BoxConstraints(
                           maxHeight: MediaQuery.of(context).size.height *
@@ -121,11 +123,8 @@ class _TopUpScreenPage extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final transaction = state.responses[index];
 
-                            final parsedDate =
-                                DateTime.parse(transaction.date ?? "");
                             final formattedDate =
-                                DateFormat('MMMM dd, yyyy - hh:mm a')
-                                    .format(parsedDate);
+                                formatCustomDate(context, transaction.date!);
                             return Card(
                               elevation: 4,
                               shape: RoundedRectangleBorder(
@@ -143,7 +142,7 @@ class _TopUpScreenPage extends StatelessWidget {
                                           ? Colors.redAccent
                                           : Colors.green,
                                     )),
-                                subtitle: Text('Bank Transfer'),
+                                subtitle: Text(appLoc.bank_transfer),
                                 trailing: Text(formattedDate),
                               ),
                             );
@@ -170,6 +169,7 @@ class _TopUpScreenPage extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -177,8 +177,8 @@ class _TopUpScreenPage extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      title: const Text(
-        'Transfer',
+      title: Text(
+        appLoc.top_up,
         style: TextStyle(
           color: Colors.white,
         ),
