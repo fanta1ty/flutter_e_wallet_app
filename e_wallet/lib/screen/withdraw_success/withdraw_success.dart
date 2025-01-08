@@ -84,15 +84,6 @@ class _WithdrawSuccessPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Back to the withdraw screen
-                },
-                child: const Text(
-                  'Withdraw Again',
-                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-                ),
-              ),
             ],
           ),
         ),
