@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'firebase_options.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   Log log = LogImpl();
@@ -42,13 +43,13 @@ class MyApp extends StatelessWidget {
           theme: state.themeData,
           locale: locale,
           supportedLocales: const [
-            Locale('en'),
-            Locale('vi'),
+            Locale('en', ''),
+            Locale('vi', ''),
           ],
-          localizationsDelegates: [
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
           ],
           home: Login(),
         );
