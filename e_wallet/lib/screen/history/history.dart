@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import '../../constant/banks.dart';
 import '../../constant/load_status.dart';
 import '../../constant/utils.dart';
+import '../../l10n/app_localizations.dart';
 
 class History extends StatelessWidget {
   const History({super.key});
@@ -32,16 +33,17 @@ class _HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: _buildHistoryList(context),
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return AppBar(
       automaticallyImplyLeading: false,
-      title: const Text(
-        'Transaction History',
+      title: Text(
+        appLoc.transaction_history,
         style: TextStyle(color: Colors.white, fontSize: 22),
       ),
       centerTitle: true,
@@ -59,6 +61,7 @@ class _HistoryPage extends StatelessWidget {
   }
 
   Widget _buildHistoryList(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return BlocConsumer<HistoryCubit, HistoryState>(
       builder: (context, state) {
         final transactions = state.responses;
@@ -67,15 +70,15 @@ class _HistoryPage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (transactions.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
-              'No transactions yet',
+              appLoc.no_transactions_yet,
               style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
           );
         }
 
-        final groupedTransactions = _groupTransactions(transactions);
+        final groupedTransactions = _groupTransactions(context, transactions);
 
         return ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
@@ -149,7 +152,7 @@ class _HistoryPage extends StatelessWidget {
   }
 
   Map<String, Map<String, List<TransactionResponse>>> _groupTransactions(
-      List<TransactionResponse> transactions) {
+      BuildContext context, List<TransactionResponse> transactions) {
     Map<String, Map<String, List<TransactionResponse>>> groupedTransactions =
         {};
 
@@ -159,7 +162,7 @@ class _HistoryPage extends StatelessWidget {
           : transaction.date!);
       final formattedDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
 
-      final type = _getTransactionType(transaction.type);
+      final type = _getTransactionType(context, transaction.type);
 
       groupedTransactions.putIfAbsent(formattedDate, () => {});
       groupedTransactions[formattedDate]!
@@ -169,16 +172,17 @@ class _HistoryPage extends StatelessWidget {
     return groupedTransactions;
   }
 
-  String _getTransactionType(String type) {
+  String _getTransactionType(BuildContext context, String type) {
+    final appLoc = AppLocalizations.of(context)!;
     switch (type) {
       case 'top_up':
-        return 'Top-Ups';
+        return appLoc.top_ups;
       case 'transfer':
-        return 'Transfers';
+        return appLoc.transfers;
       case 'withdraw':
-        return 'Withdrawals';
+        return appLoc.withdrawals;
       default:
-        return 'Others';
+        return appLoc.others;
     }
   }
 }
@@ -197,11 +201,10 @@ class _TransactionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final title = _getTitle();
     final imagePath = _getImagePath();
-    final parsedDate = DateTime.parse(transaction.bankDate?.isNotEmpty == true
+    final parsedDate = transaction.bankDate?.isNotEmpty == true
         ? transaction.bankDate!
-        : transaction.date!);
-    final formattedDate =
-        DateFormat('MMMM dd, yyyy - hh:mm a').format(parsedDate);
+        : transaction.date!;
+    final formattedDate = formatCustomDate(context, parsedDate);
 
     return Card(
       elevation: 3,
