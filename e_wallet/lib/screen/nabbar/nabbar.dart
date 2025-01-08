@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/colours.dart';
+import '../../l10n/app_localizations.dart';
 
 class Nabbar extends StatelessWidget {
   const Nabbar({super.key});
@@ -32,6 +33,7 @@ class _NabbarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NabbarCubit, NabbarState>(builder: (context, state) {
+      final appLoc = AppLocalizations.of(context)!;
       return Scaffold(
         body: _pages[state.index],
         bottomNavigationBar: BottomNavigationBar(
@@ -41,13 +43,13 @@ class _NabbarPage extends StatelessWidget {
             },
             selectedItemColor: btntxt,
             unselectedItemColor: Colors.grey,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.compare_arrows), label: "Home"),
+                  icon: Icon(Icons.compare_arrows), label: appLoc.home),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.history), label: "History"),
+                  icon: Icon(Icons.history), label: appLoc.history),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: "Profile"),
+                  icon: Icon(Icons.person), label: appLoc.profile),
             ]),
       );
     });
