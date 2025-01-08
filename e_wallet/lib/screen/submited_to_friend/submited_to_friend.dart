@@ -35,7 +35,8 @@ class _SubmitedToFriendPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = formatCustomDate(context, request.date);
+    final formattedDate =
+        formatCustomDate2(context, request.date, 'MMMM d, yyyy');
     final formattedTime =
         DateFormat('hh:mm a').format(DateTime.parse(request.date));
 
