@@ -87,15 +87,6 @@ class _TopUpSuccessPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Back to the top-up screen
-                    },
-                    child: const Text(
-                      'Top-Up Again',
-                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-                    ),
-                  ),
                 ],
               ),
             ),
