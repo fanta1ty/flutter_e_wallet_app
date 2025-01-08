@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constant/banks.dart';
 import '../../constant/colours.dart';
 import '../../constant/load_status.dart';
+import '../../l10n/app_localizations.dart';
 
 class TransferToBanks extends StatelessWidget {
   const TransferToBanks({super.key});
@@ -42,6 +43,7 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: _buildAppBar(context),
       body: BlocConsumer<TransferToBanksCubit, TransferToBanksState>(
@@ -55,7 +57,7 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
             child: Column(
               children: [
                 const SizedBox(height: 30),
-                _buildSearchBar(),
+                _buildSearchBar(context),
                 const SizedBox(height: 30),
                 Expanded(
                   child: Container(
@@ -69,11 +71,11 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 20),
                           child: Text(
-                            "All Banks",
+                            appLoc.all_banks,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -94,7 +96,8 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
@@ -104,7 +107,7 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
           });
         },
         decoration: InputDecoration(
-          hintText: "Search Bank Code",
+          hintText: appLoc.search_bank_code,
           filled: true,
           fillColor: Colors.white,
           suffixIcon: const Icon(Icons.search, color: btntxt),
@@ -161,6 +164,7 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -168,20 +172,14 @@ class _TransferToBanksPageState extends State<_TransferToBanksPage> {
           Navigator.pop(context);
         },
       ),
-      title: const Text(
-        'Transfer to Banks',
+      title: Text(
+        appLoc.transfer_to_banks,
         style: TextStyle(
           color: Colors.white,
         ),
       ),
       centerTitle: true,
       backgroundColor: btntxt,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: Image.asset('assets/image/help.png', height: 26),
-        ),
-      ],
     );
   }
 }
