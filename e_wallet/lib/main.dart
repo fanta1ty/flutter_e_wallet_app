@@ -1,3 +1,4 @@
+import 'package:e_wallet/language_cubit.dart';
 import 'package:e_wallet/main_cubit.dart';
 import 'package:e_wallet/repositories/bloc/bloc_observer.dart';
 import 'package:e_wallet/repositories/bloc/repository.dart';
@@ -7,6 +8,7 @@ import 'package:e_wallet/screen/login/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'firebase_options.dart';
 
@@ -32,12 +34,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: BlocBuilder<MainCubit, MainState>(builder: (context, state) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Login(),
-      );
-    }));
+    return BlocBuilder<LanguageCubit, Locale>(builder: (context, locale) {
+      return SafeArea(
+          child: BlocBuilder<MainCubit, MainState>(builder: (context, state) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: state.themeData,
+          locale: locale,
+          supportedLocales: const [
+            Locale('en'),
+            Locale('vi'),
+          ],
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: Login(),
+        );
+      }));
+    });
   }
 }
