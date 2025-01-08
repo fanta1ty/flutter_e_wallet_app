@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 String formattedPhone(String phone) {
   final cleanPhone = phone.replaceAll(RegExp(r'[^0-9]'), '');
@@ -97,4 +98,10 @@ IconData getTransactionIcon(String type) {
     default:
       return Icons.receipt_long;
   }
+}
+
+String formatCustomDate(BuildContext context, String dateString) {
+  final date = DateTime.parse(dateString);
+  final locale = Localizations.localeOf(context).languageCode;
+  return DateFormat('MMMM dd, yyyy - hh:mm a', locale).format(date);
 }
