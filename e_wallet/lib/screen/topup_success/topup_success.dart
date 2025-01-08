@@ -2,6 +2,7 @@ import 'package:e_wallet/screen/topup_success/topup_success_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../nabbar/nabbar.dart';
 
 class TopUpSuccessScreen extends StatelessWidget {
@@ -33,6 +34,7 @@ class _TopUpSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Scaffold(
       body: BlocConsumer<TopupSuccessCubit, TopupSuccessState>(
         builder: (context, state) {
@@ -53,8 +55,8 @@ class _TopUpSuccessPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  const Text(
-                    'Top-Up Successful!',
+                  Text(
+                    appLoc.top_up_successful,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -62,7 +64,7 @@ class _TopUpSuccessPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    '\$$amount has been added to your balance.',
+                    '\$$amount ${appLoc.has_been_added_to_your_balance}',
                     style: const TextStyle(fontSize: 18, color: Colors.black54),
                   ),
                   const SizedBox(height: 60),
@@ -81,8 +83,8 @@ class _TopUpSuccessPage extends StatelessWidget {
                       foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: const Text(
-                      'Return to Home',
+                    child: Text(
+                      appLoc.return_to_home,
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
