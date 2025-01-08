@@ -34,8 +34,8 @@ class _SubmitedSlipPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLoc = AppLocalizations.of(context)!;
-    final formattedDate = formatCustomDate(context, request.bankDate);
-    DateFormat('MMMM d, yyyy').format(DateTime.parse(request.bankDate));
+    final formattedDate =
+        formatCustomDate2(context, request.bankDate, 'MMMM d, yyyy');
     final formattedTime =
         DateFormat('hh:mm a').format(DateTime.parse(request.bankDate));
     final double parsedAmount = double.tryParse(request.amount) ?? 0.0;
