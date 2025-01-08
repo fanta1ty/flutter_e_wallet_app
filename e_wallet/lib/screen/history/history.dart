@@ -7,7 +7,6 @@ import 'package:e_wallet/screen/history/history_cubit.dart';
 import 'package:e_wallet/screen/history_detail/history_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../constant/banks.dart';
 import '../../constant/load_status.dart';
@@ -157,13 +156,13 @@ class _HistoryPage extends StatelessWidget {
         {};
 
     for (var transaction in transactions) {
-      final parsedDate = DateTime.parse(transaction.bankDate?.isNotEmpty == true
+      final parsedDate = transaction.bankDate?.isNotEmpty == true
           ? transaction.bankDate!
-          : transaction.date!);
-      final formattedDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+          : transaction.date!;
+      final formattedDate =
+          formatCustomDate2(context, parsedDate, 'MMMM dd, yyyy');
 
       final type = _getTransactionType(context, transaction.type);
-
       groupedTransactions.putIfAbsent(formattedDate, () => {});
       groupedTransactions[formattedDate]!
           .putIfAbsent(type, () => [])
