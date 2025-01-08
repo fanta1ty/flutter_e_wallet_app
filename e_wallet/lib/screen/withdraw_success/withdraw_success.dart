@@ -27,7 +27,7 @@ class WithdrawSuccessScreen extends StatelessWidget {
 class _WithdrawSuccessPage extends StatelessWidget {
   final String amount;
 
-  _WithdrawSuccessPage({
+  const _WithdrawSuccessPage({
     super.key,
     required this.amount,
   });
@@ -35,17 +35,21 @@ class _WithdrawSuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLoc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 100),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 70,
-                backgroundColor: Colors.green,
-                child: Icon(
+                backgroundColor: Colors.green.shade400,
+                child: const Icon(
                   Icons.check_rounded,
                   color: Colors.white,
                   size: 70,
@@ -54,15 +58,18 @@ class _WithdrawSuccessPage extends StatelessWidget {
               const SizedBox(height: 40),
               Text(
                 appLoc.withdrawal_successful,
-                style: TextStyle(
-                  fontSize: 24,
+                style: theme.textTheme.headlineSmall!.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: theme.textTheme.bodyLarge!.color,
                 ),
               ),
               const SizedBox(height: 15),
               Text(
                 '\$$amount ${appLoc.has_been_withdrawn}',
-                style: const TextStyle(fontSize: 18, color: Colors.black54),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: isDarkMode ? Colors.grey.shade400 : Colors.black54,
+                ),
               ),
               const SizedBox(height: 70),
               ElevatedButton(
@@ -76,13 +83,16 @@ class _WithdrawSuccessPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  foregroundColor: Colors.white,
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
                   minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 child: Text(
                   appLoc.return_to_home,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
               const SizedBox(height: 20),
