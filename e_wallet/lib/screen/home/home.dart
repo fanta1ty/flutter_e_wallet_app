@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../constant/colours.dart';
 import '../../constant/load_status.dart';
 import '../../constant/utils.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/response/transaction_response.dart';
 import '../../repositories/api/api.dart';
 import '../transfer/transfer.dart';
@@ -28,11 +29,6 @@ class Home extends StatelessWidget {
 class _HomePage extends StatelessWidget {
   const _HomePage({super.key});
 
-  static const List<Map<String, String>> users = [
-    {'name': 'Add New', 'image': 'assets/image/add.png'},
-    {'name': 'Thinh Nguyen', 'image': 'assets/image/image1.png'},
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +42,7 @@ class _HomePage extends StatelessWidget {
             child: CustomScrollView(
               slivers: [
                 _buildHeader(context),
-                _buildLatestTransactions(state.responses),
+                _buildLatestTransactions(context, state.responses),
               ],
             ),
           );
@@ -57,6 +53,7 @@ class _HomePage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return SliverToBoxAdapter(
       child: Container(
         height: 289,
@@ -72,14 +69,14 @@ class _HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset('assets/image/logo-in.png', height: 30),
-                  _buildPointsBadge(),
+                  _buildPointsBadge(context),
                 ],
               ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Your Balance',
+                Text(appLoc.your_balance,
                     style: TextStyle(color: Colors.white, fontSize: 19)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -104,18 +101,19 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildPointsBadge() {
+  Widget _buildPointsBadge(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Container(
       width: 130,
       height: 40,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(20)),
-      child: const Center(
+      child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.star, color: Color(0xFFffa41c)),
-            Text('0 Points')
+            const Icon(Icons.star, color: Color(0xFFffa41c)),
+            Text('0 ${appLoc.points}')
           ],
         ),
       ),
@@ -138,6 +136,7 @@ class _HomePage extends StatelessWidget {
   }
 
   Widget _buildActionBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Positioned(
       top: 200,
       left: 30,
@@ -158,16 +157,16 @@ class _HomePage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildActionItem(context, 'Transfer', 'transfer 1.png',
+            _buildActionItem(context, appLoc.transfer, 'transfer 1.png',
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Transfer()))),
-            _buildActionItem(context, 'Top Up', 'icon-wtihdraw.png',
+            _buildActionItem(context, appLoc.top_up, 'icon-wtihdraw.png',
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => TopUpScreen()))),
-            _buildActionItem(context, 'Withdraw', 'icon-wallet.png',
+            _buildActionItem(context, appLoc.withdraw, 'icon-wallet.png',
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => WithdrawScreen()))),
-            _buildActionItem(context, 'More', 'icon-more.png',
+            _buildActionItem(context, appLoc.more, 'icon-more.png',
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MoreScreen()))),
           ],
@@ -197,55 +196,11 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildSendAgainSection() {
-    return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _sectionHeader('Send again'),
-          SizedBox(
-            height: 120,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 70,
-                      width: 70,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage(users[index]['image']!),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: index == 0
-                          ? const Center(
-                              child: Icon(Icons.add,
-                                  color: Colors.purple, size: 30),
-                            )
-                          : null,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      users[index]['name']!,
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLatestTransactions(List<TransactionResponse> transactions) {
+  Widget _buildLatestTransactions(
+    BuildContext context,
+    List<TransactionResponse> transactions,
+  ) {
+    final appLoc = AppLocalizations.of(context)!;
     int topUpCount = 0;
     int transferCount = 0;
     int withdrawCount = 0;
@@ -268,21 +223,21 @@ class _HomePage extends StatelessWidget {
     // Summary Items
     final List<Map<String, dynamic>> summaries = [
       {
-        'title': 'Top-Ups',
+        'title': appLoc.top_ups,
         'count': topUpCount,
         'icon': Icons.account_balance_wallet,
         'color1': const Color(0xFF6DD5FA),
         'color2': const Color(0xFF2980B9),
       },
       {
-        'title': 'Transfers',
+        'title': appLoc.transfers,
         'count': transferCount,
         'icon': Icons.swap_horiz,
         'color1': const Color(0xFFB993D6),
         'color2': const Color(0xFF8CA6DB),
       },
       {
-        'title': 'Withdrawals',
+        'title': appLoc.withdrawals,
         'count': withdrawCount,
         'icon': Icons.arrow_downward_rounded,
         'color1': const Color(0xFFF8C471),
@@ -296,8 +251,8 @@ class _HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Transaction Overview',
+            Text(
+              appLoc.transaction_overview,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
