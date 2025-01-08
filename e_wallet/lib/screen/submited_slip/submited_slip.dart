@@ -1,4 +1,5 @@
 import 'package:e_wallet/constant/banks.dart';
+import 'package:e_wallet/constant/utils.dart';
 import 'package:e_wallet/models/request/transfer_request.dart';
 import 'package:e_wallet/screen/submited_slip/submited_slip_cubit.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../constant/colours.dart';
+import '../../l10n/app_localizations.dart';
 import '../nabbar/nabbar.dart';
 
 class SubmitedSlip extends StatelessWidget {
   final TransferRequest request;
 
-  const SubmitedSlip({required this.request, Key? key}) : super(key: key);
+  const SubmitedSlip({required this.request, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,13 @@ class SubmitedSlip extends StatelessWidget {
 class _SubmitedSlipPage extends StatelessWidget {
   final TransferRequest request;
 
-  _SubmitedSlipPage({required this.request, Key? key}) : super(key: key);
+  const _SubmitedSlipPage({required this.request, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate =
-        DateFormat('MMMM d, yyyy').format(DateTime.parse(request.bankDate));
+    final appLoc = AppLocalizations.of(context)!;
+    final formattedDate = formatCustomDate(context, request.bankDate);
+    DateFormat('MMMM d, yyyy').format(DateTime.parse(request.bankDate));
     final formattedTime =
         DateFormat('hh:mm a').format(DateTime.parse(request.bankDate));
     final double parsedAmount = double.tryParse(request.amount) ?? 0.0;
@@ -69,8 +72,8 @@ class _SubmitedSlipPage extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            const Text(
-                              "Transfer Successful",
+                            Text(
+                              appLoc.transfer_successful,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -78,8 +81,8 @@ class _SubmitedSlipPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 5),
-                            const Text(
-                              "Your transaction was successful",
+                            Text(
+                              appLoc.your_transaction_was_successful,
                               style: TextStyle(fontSize: 15),
                             ),
                             const SizedBox(height: 20),
@@ -105,16 +108,18 @@ class _SubmitedSlipPage extends StatelessWidget {
                               subtitle: const Text("••••• •••• 80901"),
                             ),
                             const Divider(),
-                            _buildTransactionDetails("Payment",
+                            _buildTransactionDetails(appLoc.payment,
                                 '\$ ${parsedAmount.toStringAsFixed(2)}'),
-                            _buildTransactionDetails("Date", formattedDate),
-                            _buildTransactionDetails("Time", formattedTime),
                             _buildTransactionDetails(
-                                "Reference Number", "ALKS-9928-HGJD-1134"),
-                            _buildTransactionDetails("Fee", "\$ 2.0"),
+                                appLoc.date, formattedDate),
+                            _buildTransactionDetails(
+                                appLoc.time, formattedTime),
+                            _buildTransactionDetails(
+                                appLoc.reference_number, "ALKS-9928-HGJD-1134"),
+                            _buildTransactionDetails(appLoc.fee, "\$ 2.0"),
                             const Divider(),
                             _buildTransactionDetails(
-                              "Total Payment",
+                              appLoc.total_payment,
                               '\$ ${totalPayment.toStringAsFixed(2)}',
                               isBold: true,
                               color: btntxt,
@@ -126,7 +131,7 @@ class _SubmitedSlipPage extends StatelessWidget {
                     ),
                     _buildButton(
                       context,
-                      label: "Share",
+                      label: appLoc.share,
                       onPressed: () {},
                       backgroundColor: btn,
                       textColor: Colors.white,
@@ -134,7 +139,7 @@ class _SubmitedSlipPage extends StatelessWidget {
                     const SizedBox(height: 10),
                     _buildButton(
                       context,
-                      label: "Back to Home",
+                      label: appLoc.back_to_home,
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
