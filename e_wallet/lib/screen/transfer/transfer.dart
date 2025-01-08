@@ -8,10 +8,10 @@ import 'package:e_wallet/screen/transfer_to_bank/transfer_to_bank.dart';
 import 'package:e_wallet/screen/transfer_to_friend/transfer_to_friend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../constant/banks.dart';
 import '../../constant/load_status.dart';
+import '../../l10n/app_localizations.dart';
 
 class Transfer extends StatelessWidget {
   const Transfer({super.key});
@@ -32,6 +32,7 @@ class _TransferPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final appLoc = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: _buildAppBar(context),
@@ -63,10 +64,10 @@ class _TransferPage extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            "Latest Transfer",
+                            appLoc.latest_transfer,
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -98,6 +99,7 @@ class _TransferPage extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -105,8 +107,8 @@ class _TransferPage extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      title: const Text(
-        'Transfer',
+      title: Text(
+        appLoc.transfer,
         style: TextStyle(
           color: Colors.white,
         ),
@@ -121,12 +123,13 @@ class _TransferPage extends StatelessWidget {
   }
 
   Widget _buildTransferOptions(BuildContext context) {
+    final appLoc = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _TransferOption(
           icon: Icons.people,
-          label: 'To Friends',
+          label: appLoc.to_friends,
           onTap: () {
             Navigator.push(
               context,
@@ -136,7 +139,7 @@ class _TransferPage extends StatelessWidget {
         ),
         _TransferOption(
           icon: Icons.account_balance,
-          label: 'To Bank',
+          label: appLoc.to_bank,
           onTap: () {
             Navigator.push(
               context,
@@ -219,9 +222,7 @@ class _TransactionItem extends StatelessWidget {
       imagePath = 'assets/image/avatar_${Random().nextInt(4) + 1}.png';
     }
 
-    final parsedDate = DateTime.parse(transactionDate);
-    final formattedDate =
-        DateFormat('MMMM dd, yyyy - hh:mm a').format(parsedDate);
+    final formattedDate = formatCustomDate(context, transactionDate);
 
     return Card(
       elevation: 4,
