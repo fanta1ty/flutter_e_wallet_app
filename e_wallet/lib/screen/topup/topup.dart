@@ -28,6 +28,7 @@ class _TopUpScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLoc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: _buildAppBar(context),
       body: BlocConsumer<TopUpCubit, TopUpState>(builder: (context, state) {
@@ -59,8 +60,8 @@ class _TopUpScreenPage extends StatelessWidget {
                         '\$ $amount',
                         style: TextStyle(
                             color: cubit.state.amount == amount.toString()
-                                ? Colors.white
-                                : Colors.black),
+                                ? theme.colorScheme.onPrimary
+                                : theme.textTheme.bodyLarge!.color),
                       ),
                       selected: cubit.state.amount == amount.toString(),
                       selectedColor: Colors.deepPurple,
