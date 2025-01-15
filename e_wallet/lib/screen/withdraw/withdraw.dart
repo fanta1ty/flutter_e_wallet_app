@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/colours.dart';
 import '../../l10n/app_localizations.dart';
+import '../history_detail/history_detail.dart';
 
 class WithdrawScreen extends StatelessWidget {
   const WithdrawScreen({super.key});
@@ -188,19 +189,28 @@ class _WithdrawPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.account_balance_wallet_rounded,
-                        color: theme.colorScheme.primary,
-                      ),
-                      title: Text(
-                        '\$${transaction.amount}',
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              HistoryDetail(transaction: transaction),
                         ),
                       ),
-                      subtitle: Text(appLoc.bank_transfer),
-                      trailing: Text(formattedDate),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.account_balance_wallet_rounded,
+                          color: theme.colorScheme.primary,
+                        ),
+                        title: Text(
+                          '\$${transaction.amount}',
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(appLoc.bank_transfer),
+                        trailing: Text(formattedDate),
+                      ),
                     ),
                   );
                 },
