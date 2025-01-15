@@ -95,6 +95,18 @@ abstract class AppLocalizations {
     Locale('vi')
   ];
 
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email: '**
+  String get email;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name: '**
+  String get name;
+
   /// No description provided for @from.
   ///
   /// In en, this message translates to:
