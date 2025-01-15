@@ -1,6 +1,7 @@
 import 'package:e_wallet/screen/history/history.dart';
 import 'package:e_wallet/screen/home/home.dart';
 import 'package:e_wallet/screen/nabbar/nabbar_cubit.dart';
+import 'package:e_wallet/screen/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,9 +26,7 @@ class _NabbarPage extends StatelessWidget {
   static final List<Widget> _pages = [
     const Home(),
     const History(),
-    const Center(
-      child: Text("In Developing"),
-    )
+    const Profile(),
   ];
 
   @override
