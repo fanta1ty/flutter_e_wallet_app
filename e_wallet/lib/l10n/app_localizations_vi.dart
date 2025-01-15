@@ -7,6 +7,12 @@ class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
+  String get email => 'Email: ';
+
+  @override
+  String get name => 'Tên: ';
+
+  @override
   String get from => 'Từ';
 
   @override
