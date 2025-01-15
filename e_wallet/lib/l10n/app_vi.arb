@@ -1,4 +1,6 @@
 {
+  "email": "Email: ",
+  "name": "Tên: ",
   "from": "Từ",
   "share_transaction": "Chia sẻ giao dịch",
   "no_note": "Không có ghi chú",
