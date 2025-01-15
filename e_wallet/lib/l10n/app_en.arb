@@ -1,4 +1,6 @@
 {
+  "email": "Email: ",
+  "name": "Name: ",
   "from": "From",
   "share_transaction": "Share Transaction",
   "no_note": "No Note",
