@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constant/colours.dart';
 import '../../l10n/app_localizations.dart';
+import '../history_detail/history_detail.dart';
 
 class TopUpScreen extends StatelessWidget {
   const TopUpScreen({super.key});
@@ -132,19 +133,29 @@ class _TopUpScreenPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: ListTile(
-                                leading: const Icon(Icons.check_circle,
-                                    color: Colors.green),
-                                title: Text('\$${transaction.amount}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: transaction.amount.startsWith('-')
-                                          ? Colors.redAccent
-                                          : Colors.green,
-                                    )),
-                                subtitle: Text(appLoc.bank_transfer),
-                                trailing: Text(formattedDate),
+                              child: GestureDetector(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        HistoryDetail(transaction: transaction),
+                                  ),
+                                ),
+                                child: ListTile(
+                                  leading: const Icon(Icons.check_circle,
+                                      color: Colors.green),
+                                  title: Text('\$${transaction.amount}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color:
+                                            transaction.amount.startsWith('-')
+                                                ? Colors.redAccent
+                                                : Colors.green,
+                                      )),
+                                  subtitle: Text(appLoc.bank_transfer),
+                                  trailing: Text(formattedDate),
+                                ),
                               ),
                             );
                           },
@@ -186,10 +197,6 @@ class _TopUpScreenPage extends StatelessWidget {
       ),
       centerTitle: true,
       backgroundColor: btntxt,
-      actions: [
-        Image.asset('assets/image/help.png'),
-        const SizedBox(width: 30),
-      ],
     );
   }
 }
