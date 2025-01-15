@@ -7,6 +7,12 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get email => 'Email: ';
+
+  @override
+  String get name => 'Name: ';
+
+  @override
   String get from => 'From';
 
   @override
