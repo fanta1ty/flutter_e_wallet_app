@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constant/banks.dart';
 import '../../constant/load_status.dart';
 import '../../l10n/app_localizations.dart';
+import '../history_detail/history_detail.dart';
 
 class Transfer extends StatelessWidget {
   const Transfer({super.key});
@@ -230,28 +231,36 @@ class _TransactionItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       margin: const EdgeInsets.symmetric(vertical: 10),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(12),
-        leading: CircleAvatar(
-          backgroundImage: AssetImage(imagePath),
-          radius: 30,
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HistoryDetail(transaction: transaction),
+          ),
         ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        subtitle: Text(
-          formattedDate,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-        trailing: Text(
-          formatAmount(transaction.amount),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-            color: transaction.amount.startsWith('-')
-                ? Colors.redAccent
-                : Colors.green,
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(12),
+          leading: CircleAvatar(
+            backgroundImage: AssetImage(imagePath),
+            radius: 30,
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          subtitle: Text(
+            formattedDate,
+            style: const TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+          trailing: Text(
+            formatAmount(transaction.amount),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: transaction.amount.startsWith('-')
+                  ? Colors.redAccent
+                  : Colors.green,
+            ),
           ),
         ),
       ),
